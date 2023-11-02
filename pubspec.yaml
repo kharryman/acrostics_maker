@@ -43,6 +43,7 @@ dependencies:
   connectivity: ^3.0.6
   multiselect: ^0.1.0
   font_awesome_flutter: ^10.0.0
+  share: ^2.0.4
 
 dev_dependencies:
   flutter_test:

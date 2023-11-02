@@ -100,7 +100,7 @@ class MyHomeState extends State<MyHome> {
   List<dynamic> completedTables = [];
   List<String> selectedAdjectives = [];
   int selectedTypeIndex = 0;
-  List<List<String>> selectedAllAdjectives = [];
+  List<List<String>> selectedAllAdjectives = [[]];
   List<String> uniqueLetters = [];
   dynamic selectedDropdownAdjective;
   List<Widget> selectedDropdownItems = [];
@@ -182,7 +182,6 @@ class MyHomeState extends State<MyHome> {
         final Map<String, dynamic> data = json.decode(response.body);
         print("initiateTypesAdjectives STATUS=200!!!");
         if (data["SUCCESS"] == true) {
-          isInitiated = true;
           setState(() {
             completedTables = List<dynamic>.from(data["COMPLETED_TABLES"]);
             dropdownTypes = List<String>.from(Set<String>.from(
@@ -194,6 +193,7 @@ class MyHomeState extends State<MyHome> {
             selectedType = dropdownTypes[0];
             dropdownAdjectives = getDropdownAdjectives(dropdownTypes[0]);
             selectedAdjective = dropdownAdjectives[0];
+            isInitiated = true;
           });
           print("initiateTypesAdjectives DONE SUCCESSFULLY");
         } else {
@@ -386,9 +386,13 @@ class MyHomeState extends State<MyHome> {
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          selectedAllAdjectives[i][j],
-                          overflow: TextOverflow.clip,
+                        Expanded(
+                          child: Text(
+                            maxLines: null,
+                            selectedAllAdjectives[i][j],
+                            overflow: TextOverflow.clip,
+                            style: TextStyle(height: 1.0),
+                          ),
                         ),
                         Icon(Icons.delete)
                       ]))),
@@ -575,280 +579,294 @@ class MyHomeState extends State<MyHome> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: scaffoldKey,
-      appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text("Acrostics Maker"),
-          actions: <Widget>[
-            PopupMenuButton<String>(
-                constraints: BoxConstraints(
-                  minWidth: 200,
-                  maxWidth: MediaQuery.of(context).size.width,
-                ),
-                icon: Icon(Icons.menu),
-                onSelected: (value) {
-                  //focusNode.unfocus();
-                  FocusScope.of(context).unfocus();
-                  if (kIsWeb == false) {
-                    Random random = Random();
-                    var isShowAd =
-                        random.nextInt(1000) < MyApp().ofThousandShowAds;
-                    if (isShowAd) {
-                      print(
-                          "Selected Menu makeMajor showInterstitialAd CALLING...");
-                      showInterstitialAd();
+    return Visibility(
+      visible: isInitiated == true,
+      child: Scaffold(
+        key: scaffoldKey,
+        appBar: AppBar(
+            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+            title: Text("Acrostics Maker"),
+            actions: <Widget>[
+              PopupMenuButton<String>(
+                  constraints: BoxConstraints(
+                    minWidth: 200,
+                    maxWidth: MediaQuery.of(context).size.width,
+                  ),
+                  icon: Icon(Icons.menu),
+                  onSelected: (value) {
+                    //focusNode.unfocus();
+                    FocusScope.of(context).unfocus();
+                    if (kIsWeb == false) {
+                      Random random = Random();
+                      var isShowAd =
+                          random.nextInt(1000) < MyApp().ofThousandShowAds;
+                      if (isShowAd) {
+                        print(
+                            "Selected Menu makeMajor showInterstitialAd CALLING...");
+                        showInterstitialAd();
+                      }
+                    } else {
+                      print("NOT SHOWING AD");
                     }
-                  } else {
-                    print("NOT SHOWING AD");
-                  }
-                },
-                itemBuilder: (BuildContext context) {
-                  return [
-                    PopupMenuItem<String>(
-                        value: 'Help',
-                        child: SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            child: Padding(
-                                padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                                child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Html(data: helpText),
-                                    ]))))
-                  ];
-                })
-          ]),
-      body: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Center(
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                  child: Text(
-                      'Enter one word only(only letters): Then press ENTER',
-                      style: TextStyle(fontSize: 12)),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                  child: TextField(
-                      enabled: isInitiated,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z]')),
-                      ],
-                      controller: inputController,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'one word(letters no spaces)',
-                          hintStyle: TextStyle(fontSize: 12)),
-                      keyboardType: TextInputType.text,
-                      onEditingComplete: () {
-                        //if (Platform.isAndroid) {
-                        //  focusNode.unfocus();
-                        //} else if (Platform.isIOS) {
-                        FocusScope.of(context).unfocus();
-                        //}
-                        createAcrostics(context);
-                      }),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                  child: Text('Choose type:', style: TextStyle(fontSize: 12)),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          color: Colors
-                              .black), // Set the border color to transparent
-                    ),
-                    child: DropdownButton<String>(
-                      value: selectedType,
-                      onChanged: (newValue) {
-                        setType(newValue);
-                        //appState.selectedType = newValue!;
-                        //});
-                      },
-                      items: dropdownTypes
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value, style: TextStyle(fontSize: 12)),
-                        );
-                      }).toList(),
-                    ),
+                  },
+                  itemBuilder: (BuildContext context) {
+                    return [
+                      PopupMenuItem<String>(
+                          value: 'Help',
+                          child: SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                                  child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Html(data: helpText),
+                                      ]))))
+                    ];
+                  })
+            ]),
+        body: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Center(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                    child: Text(
+                        'Enter one word only(only letters): Then press ENTER',
+                        style: TextStyle(fontSize: 12)),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                  child:
-                      Text('Choose adjective:', style: TextStyle(fontSize: 12)),
-                ),
-                Visibility(
-                  visible: selectedTypeIndex >= 0 &&
-                      selectedAllAdjectives.length > selectedTypeIndex,
-                  child: Padding(
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                    child: TextField(
+                        enabled: isInitiated,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(
+                              RegExp(r'[a-zA-Z]')),
+                        ],
+                        controller: inputController,
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'one word(letters no spaces)',
+                            hintStyle: TextStyle(fontSize: 12)),
+                        keyboardType: TextInputType.text,
+                        onEditingComplete: () {
+                          //if (Platform.isAndroid) {
+                          //  focusNode.unfocus();
+                          //} else if (Platform.isIOS) {
+                          FocusScope.of(context).unfocus();
+                          //}
+                          createAcrostics(context);
+                        }),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                    child: Text('Choose type:', style: TextStyle(fontSize: 12)),
+                  ),
+                  Padding(
                     padding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
-                    child: DropDownMultiSelect(
-                      isDense: true,
-                      onChanged: (List<String> x) {
-                        setState(() {
-                          selectedAllAdjectives[selectedTypeIndex] = x;
-                          createSelectedDropdown();
-                        });
-                      },
-                      options: dropdownAdjectives,
-                      selectedValues: selectedAllAdjectives[selectedTypeIndex],
-                      whenEmpty: ('Select ').toString() +
-                          selectedType +
-                          (' Adjectives').toString(),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: Colors
+                                .black), // Set the border color to transparent
+                      ),
+                      child: DropdownButton<String>(
+                        value: selectedType,
+                        onChanged: (newValue) {
+                          setType(newValue);
+                          //appState.selectedType = newValue!;
+                          //});
+                        },
+                        items: dropdownTypes
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value, style: TextStyle(fontSize: 12)),
+                          );
+                        }).toList(),
+                      ),
                     ),
                   ),
-                ),
-                Visibility(
-                    visible: countAllSelected == 0,
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                    child: Text('Choose adjective:',
+                        style: TextStyle(fontSize: 12)),
+                  ),
+                  Visibility(
+                    visible: selectedTypeIndex >= 0 &&
+                        selectedAllAdjectives.length > selectedTypeIndex &&
+                        dropdownAdjectives.isNotEmpty,
                     child: Padding(
-                        padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                        child: Text("Nothing selected."))),
-                Visibility(
+                      padding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
+                      child: DropDownMultiSelect(
+                        isDense: true,
+                        onChanged: (List<String> x) {
+                          setState(() {
+                            if (selectedTypeIndex >= 0 &&
+                                selectedAllAdjectives.length >
+                                    selectedTypeIndex) {
+                              selectedAllAdjectives[selectedTypeIndex] = x;
+                            }
+                            createSelectedDropdown();
+                          });
+                        },
+                        options: dropdownAdjectives,
+                        selectedValues:
+                            selectedAllAdjectives[selectedTypeIndex],
+                        whenEmpty: ('Select ').toString() +
+                            selectedType +
+                            (' Adjectives').toString(),
+                      ),
+                    ),
+                  ),
+                  Visibility(
+                      visible: countAllSelected == 0,
+                      child: Padding(
+                          padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                          child: Text("Nothing selected."))),
+                  Visibility(
+                      visible: countAllSelected > 0,
+                      child: Padding(
+                          padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                          child: Text(countAllSelected.toString() +
+                              (" selected.").toString()))),
+                  Visibility(
                     visible: countAllSelected > 0,
                     child: Padding(
-                        padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                        child: Text(countAllSelected.toString() +
-                            (" selected.").toString()))),
-                Visibility(
-                  visible: countAllSelected > 0,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                    child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        constraints: BoxConstraints(maxHeight: 100),
-                        child: SingleChildScrollView(
-                            child: Wrap(
-                                direction: Axis.horizontal,
-                                children: selectedDropdownItems))),
+                      padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                      child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          constraints: BoxConstraints(maxHeight: 100),
+                          child: SingleChildScrollView(
+                              child: Wrap(
+                                  direction: Axis.horizontal,
+                                  children: selectedDropdownItems))),
+                    ),
                   ),
-                ),
-                Row(
-                  children: [
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          child: ElevatedButton(
-                              style: ButtonStyle(
-                                  shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          5.0), // Adjust the radius as needed
+                  Row(
+                    children: [
+                      Padding(
+                          padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.9,
+                            child: ElevatedButton(
+                                style: ButtonStyle(
+                                    shape: MaterialStateProperty.all(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            5.0), // Adjust the radius as needed
+                                      ),
                                     ),
-                                  ),
-                                  backgroundColor: goButtonColor),
-                              onPressed: (isInitiated == true)
-                                  ? () async {
-                                      createAcrostics(context);
-                                    }
-                                  : null,
-                              child: Text('Create Acrostics!',
-                                  style: TextStyle(fontSize: 12))),
-                        )),
-                  ],
-                ),
-                Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: SizedBox(
-                      width: 250,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          launch('https://learnfactsquick.com');
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color.fromARGB(255, 204, 159,
-                              252), // Change the button's background color
-                          foregroundColor:
-                              Colors.white, // Change the text color
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Image.asset(
-                              'assets/images/lfq_icon.png',
-                              width: 25, // Set the desired width
-                              height: 25, // Set the desired height
-                            ),
-                            SizedBox(width: 8),
-                            Text('See other tools from the website',
-                                style: TextStyle(fontSize: 10)), // Text
-                          ],
-                        ),
-                      )),
-                ),
-                Visibility(
-                  visible: isLinkPlayStore(),
-                  child: Padding(
+                                    backgroundColor: goButtonColor),
+                                onPressed: (isInitiated == true)
+                                    ? () async {
+                                        createAcrostics(context);
+                                      }
+                                    : null,
+                                child: Text('Create Acrostics!',
+                                    style: TextStyle(fontSize: 12))),
+                          )),
+                    ],
+                  ),
+                  Padding(
                     padding: EdgeInsets.all(10.0),
                     child: SizedBox(
                         width: 250,
                         child: ElevatedButton(
                           onPressed: () {
-                            launch(
-                                'https://play.google.com/store/apps/dev?id=5263177578338103821');
+                            launch('https://learnfactsquick.com');
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors
-                                .green, // Change the button's background color
+                            backgroundColor: const Color.fromARGB(255, 204, 159,
+                                252), // Change the button's background color
                             foregroundColor:
                                 Colors.white, // Change the text color
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Icon(Icons.play_circle_fill), // Google Play icon
-                              SizedBox(
-                                  width:
-                                      8), // Add some space between the icon and text
-                              Text('See other apps from Play Store',
+                              Image.asset(
+                                'assets/images/lfq_icon.png',
+                                width: 25, // Set the desired width
+                                height: 25, // Set the desired height
+                              ),
+                              SizedBox(width: 8),
+                              Text('See other tools from the website',
                                   style: TextStyle(fontSize: 10)), // Text
                             ],
                           ),
                         )),
                   ),
-                ),
-                Visibility(
-                  visible: isLinkAppStore(),
-                  child: Padding(
+                  Visibility(
+                    visible: isLinkPlayStore(),
+                    child: Padding(
                       padding: EdgeInsets.all(10.0),
                       child: SizedBox(
                           width: 250,
                           child: ElevatedButton(
                             onPressed: () {
                               launch(
-                                  'https://apps.apple.com/us/developer/keith-harryman/id1693739510');
+                                  'https://play.google.com/store/apps/dev?id=5263177578338103821');
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors
-                                  .blue, // Change the button's background color
+                                  .green, // Change the button's background color
                               foregroundColor:
                                   Colors.white, // Change the text color
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Icon(Icons.download_sharp), // Google Play icon
+                                Icon(
+                                    Icons.play_circle_fill), // Google Play icon
                                 SizedBox(
                                     width:
                                         8), // Add some space between the icon and text
-                                Text('See other apps from App Store',
+                                Text('See other apps from Play Store',
                                     style: TextStyle(fontSize: 10)), // Text
                               ],
                             ),
-                          ))),
-                ),
-              ]))),
+                          )),
+                    ),
+                  ),
+                  Visibility(
+                    visible: isLinkAppStore(),
+                    child: Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: SizedBox(
+                            width: 250,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                launch(
+                                    'https://apps.apple.com/us/developer/keith-harryman/id1693739510');
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors
+                                    .blue, // Change the button's background color
+                                foregroundColor:
+                                    Colors.white, // Change the text color
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Icon(
+                                      Icons.download_sharp), // Google Play icon
+                                  SizedBox(
+                                      width:
+                                          8), // Add some space between the icon and text
+                                  Text('See other apps from App Store',
+                                      style: TextStyle(fontSize: 10)), // Text
+                                ],
+                              ),
+                            ))),
+                  ),
+                ]))),
+      ),
     );
   }
 }

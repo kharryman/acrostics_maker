@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
 import 'main.dart';
+import 'package:share/share.dart';
 
 class TablePage extends StatefulWidget {
   final String inputWord;
@@ -466,6 +467,48 @@ class _TablePageState extends State<TablePage> {
                                       },
                                       child: Text("Copy Acrostic")),
                                 ),
+                                Container(
+                                    width: 150.0, // Set the width of the button
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(
+                                          0.0), // Rounded corners
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.pink.shade200,
+                                          offset: Offset(0, 1),
+                                          blurRadius: 20.0,
+                                        ),
+                                      ],
+                                    ),
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Color.fromARGB(
+                                            255,
+                                            206,
+                                            154,
+                                            226), // Transparent background color
+                                        foregroundColor:
+                                            Colors.white, // Text color
+                                        padding: EdgeInsets.all(
+                                            10.0), // Button padding
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              50.0), // Match the container's borderRadius
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        if (yourAcrostic.isEmpty) {
+                                          MyHomeState().showPopup(context,
+                                              "Please create an acrostic to share.");
+                                        } else {
+                                          Share.share(yourAcrostic);
+                                        }
+                                      },
+                                      child: Text('SHARE',
+                                          style: TextStyle(
+                                              color: Colors.black87,
+                                              fontStyle: FontStyle.italic)),
+                                    ))
                               ]))),
                       Table(
                           columnWidths: myColumnWidths,
