@@ -4,7 +4,6 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -13,7 +12,6 @@ import 'package:flutter_html/flutter_html.dart';
 //import 'package:flutter/services.dart';
 //import 'package:provider/provider.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
@@ -21,7 +19,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'table.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:multiselect/multiselect.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 const String testDevice = '974550CBC7D4EA4718A67165E2E3B868';
 const String myIpad = '00008020-0014301102D1002E';
@@ -279,12 +276,12 @@ class MyHomeState extends State<MyHome> {
   }
 
   String buildUrlString(params) {
-    print("buildUrlString called, params = $params");
+    //print("buildUrlString called, params = $params");
     var ret = [];
     for (var p in params.keys) {
       ret.add("${Uri.encodeComponent(p)}=${Uri.encodeComponent(params[p])}");
     }
-    print("buildUrlString ret = {$ret}");
+    //print("buildUrlString ret = {$ret}");
     return ret.join('&');
   }
 
@@ -334,12 +331,11 @@ class MyHomeState extends State<MyHome> {
                 Uri.parse(
                     'https://www.learnfactsquick.com/lfq_app_php/get_alphabet_tables_completed_entries_app.php'),
                 body: json.encode(params));
-            print("createAcrostics GENERATE_ALL RESPONSE = $response");
+            //print("createAcrostics GENERATE_ALL RESPONSE = $response");
             if (response.statusCode == 200) {
               // If the server returns a 200 OK response, parse the JSON data
               final Map<String, dynamic> data = json.decode(response.body);
-              print(
-                  "createAcrostics get_alphabet_tables_completed_entries_app DECODED data! = ${json.encode(data)}");
+              //print("createAcrostics get_alphabet_tables_completed_entries_app DECODED data! = ${json.encode(data)}");
               if (data["SUCCESS"] == true) {
                 hideProgress(context);
                 Navigator.push(
@@ -499,7 +495,7 @@ class MyHomeState extends State<MyHome> {
     var adUnitId = Platform.isAndroid
         ? 'ca-app-pub-8514966468184377/1433817858'
         : 'ca-app-pub-8514966468184377/2780611002';
-    print("Using appId: $adUnitId kDebugMode = $kDebugMode");
+    //print("Using appId: $adUnitId kDebugMode = $kDebugMode");
     InterstitialAd.load(
         adUnitId: adUnitId,
         request: request,
