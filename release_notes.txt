@@ -1,1 +1,26 @@
-This is the first release of Acrostics Maker. Looking forward to comments and better improvements.
+Added dictionary autocomplete word search with definitions.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+h with definitions.

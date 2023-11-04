@@ -1,6 +1,5 @@
 // results.dart
 
-import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
@@ -8,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
 import 'main.dart';
+import 'dictionary.dart';
 import 'package:share/share.dart';
 
 class TablePage extends StatefulWidget {
@@ -21,12 +21,51 @@ class TablePage extends StatefulWidget {
 
   @override
   // ignore: library_private_types_in_public_api
-  _TablePageState createState() => _TablePageState();
+  TablePageState createState() => TablePageState();
 }
 
-class _TablePageState extends State<TablePage> {
+class TablePageState extends State<TablePage> {
+  final myDic = {
+    "a": dicList1,
+    "b": dicList2,
+    "c": dicList3,
+    "d": dicList4,
+    "e": dicList4,
+    "f": dicList5,
+    "g": dicList5,
+    "h": dicList5,
+    "i": dicList6,
+    "j": dicList6,
+    "k": dicList6,
+    "l": dicList6,
+    "m": dicList7,
+    "n": dicList7,
+    "o": dicList7,
+    "p": dicList8,
+    "q": dicList8,
+    "r": dicList8,
+    "s": dicList9,
+    "t": dicList10,
+    "u": dicList10,
+    "v": dicList10,
+    "w": dicList10,
+    "x": dicList10,
+    "y": dicList10,
+    "z": dicList10,
+  };
   List<String> selectedAcrosticWords = [];
   List<TextEditingController> inputControllers = [];
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  List<FocusNode> focusNodes = [];
+  @override
+  void initState() {
+    super.initState();
+    for (var i = 0; i < widget.inputWord.length; i++) {
+      inputControllers.add(TextEditingController());
+      focusNodes.add(FocusNode());
+    }
+  }
+
   String yourAcrostic = "";
 
   isLastWord(index) {
@@ -39,22 +78,6 @@ class _TablePageState extends State<TablePage> {
   }
 
   copyAcrostic(context) {
-    /*
-    var mnemonic = "";
-    List<String> words = [];
-    for (int i = 0; i < inputControllers.length; i++) {
-      if (i == 0 && inputControllers[i].text.length > 1) {
-        words.add(inputControllers[i].text.substring(0, 1).toUpperCase() +
-            inputControllers[i].text.substring(1).toLowerCase());
-      } else if (i > 0 && inputControllers.length > i) {
-        words.add(inputControllers[i].text);
-      }
-    }
-    mnemonic = words.join(" ");
-    if (words.isNotEmpty) {
-      //mnemonic += ".";
-    }
-    */
     showAcrostic();
     MyHomeState().copyToClipboard(context, yourAcrostic);
   }
@@ -104,14 +127,31 @@ class _TablePageState extends State<TablePage> {
     return Wrap(direction: Axis.horizontal, children: texts);
   }
 
+  setInput(i, value) {
+    String myVal = getFormattedWord(value);
+    print("setInput called, myVal = $myVal");
+    selectedAcrosticWords[i] = myVal;
+    inputControllers[i].text = myVal;
+  }
+
+  getFormattedWord(String val) {
+    String myVal = "";
+    if (val.isNotEmpty) {
+      myVal = val.substring(0, 1).toUpperCase();
+    }
+    if (val.length > 1) {
+      myVal += val.substring(1).toLowerCase();
+    }
+    return myVal;
+  }
+
   @override
   Widget build(BuildContext context) {
     //PASSED DATA: ===================>
     String inputWord = widget.inputWord;
     List<dynamic> selectedTypesAdjectives = widget.selectedTypesAdjectives;
     List<dynamic> entries = widget.entries;
-    print(
-        "TablePage REBUILD, inputWord = $inputWord, selectedTypesAdjectives = ${json.encode(selectedTypesAdjectives)}, entries = ${json.encode(entries)}}");
+    //print("TablePage REBUILD, inputWord = $inputWord, selectedTypesAdjectives = ${json.encode(selectedTypesAdjectives)}, entries = ${json.encode(entries)}}");
     //================================>
     List<String> letterList = inputWord.toUpperCase().split("");
 
@@ -154,8 +194,23 @@ class _TablePageState extends State<TablePage> {
     }
 
     //FOR SHOWING YOUR SELECTED ACROSTIC!==>
+    List<List<String>> suggestions = [];
+    Map<String, String> dicEnt;
+    List<String> letterKeys = [];
+    List<TextEditingController> autoFields = [];
 
     for (int i = 0; i < letterList.length; i++) {
+      dicEnt = Map<String, String>.from(
+          myDic[letterList[i].toLowerCase()]!.cast<String, String>());
+      letterKeys = List<String>.from(dicEnt.keys
+          .where((String word) =>
+              word[0].toLowerCase() == letterList[i].toLowerCase())
+          .toList());
+      suggestions.add(letterKeys
+          .map((String key) => key + (": ").toString() + dicEnt[key].toString())
+          .toList());
+      autoFields.add(TextEditingController());
+      //print("suggestions[0] = ${suggestions[0]}");
       myColumnWidths[i] = FixedColumnWidth(columnWidth);
       if (selectedAcrosticWords.length <= i) {
         selectedAcrosticWords.add("");
@@ -176,7 +231,11 @@ class _TablePageState extends State<TablePage> {
           isAcrosticDone == true ? Colors.green : Colors.transparent;
 
       widgetAcrosticList.add(TableCell(
-          child: Container(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
               height: 55,
               padding: EdgeInsets.all(2.0),
               decoration: BoxDecoration(
@@ -191,7 +250,7 @@ class _TablePageState extends State<TablePage> {
                       image: AssetImage('assets/images/transparent.png'),
                       fit: BoxFit.fill)),
               child: SizedBox(
-                height: 55,
+                height: 50,
                 child: TextField(
                     controller: inputControllers[i],
                     decoration: InputDecoration(
@@ -212,7 +271,50 @@ class _TablePageState extends State<TablePage> {
                       FocusScope.of(context).unfocus();
                       //}
                     }),
-              ))));
+              )),
+          Container(
+              height: 55,
+              decoration:
+                  BoxDecoration(border: Border.all(color: Colors.black)),
+              child: Autocomplete<String>(
+                fieldViewBuilder: ((context, textEditingController, focusNode,
+                    onFieldSubmitted) {
+                  autoFields[i] = textEditingController;
+                  focusNodes[i] = focusNode;
+                  return TextFormField(
+                      controller: autoFields[i],
+                      focusNode: focusNode,
+                      onEditingComplete: onFieldSubmitted,
+                      decoration:
+                          const InputDecoration(hintText: 'Search dictionary'));
+                }),
+                //displayStringForOption: (option) => option.split(":")[0],
+                optionsBuilder: (TextEditingValue textEditingValue) {
+                  if (textEditingValue.text == '') {
+                    return const Iterable<String>.empty();
+                  }
+                  return suggestions[i].where((String option) {
+                    return option
+                        .split(":")[0]
+                        .contains(textEditingValue.text.toLowerCase());
+                  });
+                },
+                onSelected: (String selection) {
+                  debugPrint('You just selected $selection');
+                  focusNodes[i].unfocus();
+                  setState(() {
+                    //print("letter= ${letterList[i]}, letterIndex=$i, inp cont length = ${inputControllers.length}");
+                    String myWord = selection.split(":")[0];
+                    autoFields[i].text = myWord;
+                    String myVal = getFormattedWord(myWord);
+                    inputControllers[i].text = myVal;
+                    selectedAcrosticWords[i] = myVal;
+                    showAcrostic();
+                  });
+                },
+              ))
+        ],
+      )));
     }
     print(
         "TablePage TABLE ROW LENGTH widgetAcrosticList.length = ${widgetAcrosticList.length}");
@@ -287,25 +389,9 @@ class _TablePageState extends State<TablePage> {
               onChanged: (value) {
                 setState(() {
                   print("selected value = $value");
-                  selectedAcrosticWords[i] = value.toString();
-                  inputControllers[i].text = value.toString();
-                  for (var it = letterList.length - 1; it >= 0; it--) {
-                    inputTextSet = selectedAcrosticWords[it];
-                    if (it == 0) {
-                      if (inputTextSet.length == 1) {
-                        inputText = inputTextSet.substring(0, 1).toUpperCase();
-                      } else if (inputTextSet.length > 1) {
-                        inputText = inputTextSet.substring(0, 1).toUpperCase() +
-                            inputTextSet.substring(1).toLowerCase();
-                      }
-                    } else {
-                      inputText = inputTextSet;
-                    }
-                    if (isLastWord(it) && inputText.trim() != '') {
-                      inputText += ".";
-                    }
-                    inputControllers[it].text = inputText;
-                  }
+                  String myVal = getFormattedWord(value.toString());
+                  selectedAcrosticWords[i] = myVal;
+                  inputControllers[i].text = myVal;
                   showAcrostic();
                 });
               });
@@ -329,10 +415,7 @@ class _TablePageState extends State<TablePage> {
             .where((dynamic entry) =>
                 entry["Table_name"] == selectedTypesAdjectives[j]["adjective"])
             .toList();
-        print(
-            "filteredEntriesDic.length = ${json.encode(filteredEntriesDic.length)}");
         for (int e = 0; e < filteredEntriesDic.length; e++) {
-          //print("filteredEntries[e] = ${json.encode(filteredEntries[e]["Entry"])}");
           myRadio = RadioListTile<String>(
               dense: true,
               title: getDicEntry(filteredEntriesDic[e]),
@@ -341,25 +424,9 @@ class _TablePageState extends State<TablePage> {
               onChanged: (value) {
                 setState(() {
                   print("selected value = $value");
-                  selectedAcrosticWords[i] = value.toString();
-                  inputControllers[i].text = value.toString();
-                  for (var it = letterList.length - 1; it >= 0; it--) {
-                    inputTextSet = selectedAcrosticWords[it];
-                    if (it == 0) {
-                      if (inputTextSet.length == 1) {
-                        inputText = inputTextSet.substring(0, 1).toUpperCase();
-                      } else if (inputTextSet.length > 1) {
-                        inputText = inputTextSet.substring(0, 1).toUpperCase() +
-                            inputTextSet.substring(1).toLowerCase();
-                      }
-                    } else {
-                      inputText = inputTextSet;
-                    }
-                    if (isLastWord(it) && inputText.trim() != '') {
-                      inputText += ".";
-                    }
-                    inputControllers[it].text = inputText;
-                  }
+                  String myVal = getFormattedWord(value.toString());
+                  selectedAcrosticWords[i] = myVal;
+                  inputControllers[i].text = myVal;
                   showAcrostic();
                 });
               });
@@ -390,6 +457,7 @@ class _TablePageState extends State<TablePage> {
     }
 
     return Scaffold(
+        key: scaffoldKey,
         appBar: AppBar(title: Text(title), toolbarHeight: 30, actions: <Widget>[
           PopupMenuButton<String>(
               constraints: BoxConstraints(
