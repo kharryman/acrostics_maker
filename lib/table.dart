@@ -466,21 +466,11 @@ class TablePageState extends State<TablePage> {
                 maxWidth: MediaQuery.of(context).size.width,
               ),
               icon: Icon(Icons.menu),
+              
               onSelected: (value) {
                 //focusNode.unfocus();
                 FocusScope.of(context).unfocus();
-                if (kIsWeb == false) {
-                  Random random = Random();
-                  var isShowAd =
-                      random.nextInt(1000) < MyApp().ofThousandShowAds;
-                  if (isShowAd) {
-                    print(
-                        "Selected Menu makeMajor showInterstitialAd CALLING...");
-                    MyHomeState().showInterstitialAd();
-                  }
-                } else {
-                  print("NOT SHOWING AD");
-                }
+                //MyHomeState().showInterstitialAd((){});
               },
               itemBuilder: (BuildContext context) {
                 return [
