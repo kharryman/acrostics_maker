@@ -96,6 +96,7 @@ class TablePageState extends State<TablePage> {
       }
     }
     yourAcrostic = words.join(" ");
+    return yourAcrostic;
   }
 
   getDicEntry(dynamic entry) {
@@ -565,10 +566,13 @@ class TablePageState extends State<TablePage> {
                                         ),
                                       ),
                                       onPressed: () {
+                                        yourAcrostic = showAcrostic();
                                         if (yourAcrostic.isEmpty) {
                                           MyHomeState().showPopup(context,
                                               "Please create an acrostic to share.");
                                         } else {
+                                          print(
+                                              "Sharing yourAcrostic = $yourAcrostic");
                                           Share.share(yourAcrostic);
                                         }
                                       },
