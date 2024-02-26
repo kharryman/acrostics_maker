@@ -287,13 +287,8 @@ class MyHomeState extends State<MyHome> {
 
   Future<void> createAcrostics(context) async {
     print("createAcrostics called");
-    Random random = Random();
-    var isShowAd = random.nextInt(1000) >= 500; //EXACTLY HALF.
-    if (kIsWeb == false && isShowAd == true) {
-      print("createAcrostics showInterstitialAd CALLING...");
-      MyHomeState().showInterstitialAd();
-    } else {
-      print("NOT SHOWING AD, CREATING ACROSTICS!");
+    MyHomeState().showInterstitialAd(() async {
+      print("CREATING ACROSTICS!");
       var isOnline = await isNetworkAvailable();
       if (isOnline == false) {
         showPopup(context, "Not online. Please connect and retry.");
@@ -358,7 +353,7 @@ class MyHomeState extends State<MyHome> {
           }
         }
       } //END IS ONLINE.
-    } //END NOT SHOW ADD, CREATE ACROSTICS
+    });
   }
 
   createSelectedDropdown() {
@@ -473,7 +468,7 @@ class MyHomeState extends State<MyHome> {
               myText.toString() +
               ("' copied to clipboard").toString())),
     );
-  }
+  } 
 
   static final AdRequest request = AdRequest(
     keywords: <String>[
@@ -524,35 +519,37 @@ class MyHomeState extends State<MyHome> {
         ));
   }
 
-  void showInterstitialAd() {
+  void showInterstitialAd(Function callback) {
     print("showInterstitialAd called");
     if (interstitialAd == null) {
       print('Warning: attempt to show interstitialAd before loaded.');
-      return;
+      callback();
+    } else {
+      Random random = Random();
+      var isShowAd =
+          (kIsWeb == false && random.nextInt(1000) < MyApp().ofThousandShowAds);
+      if (isShowAd != true) {
+        callback();
+      } else {
+        interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
+          onAdShowedFullScreenContent: (InterstitialAd ad) =>
+              debugPrint('interstitialAd onAdShowedFullScreenContent.'),
+          onAdDismissedFullScreenContent: (InterstitialAd ad) {
+            ad.dispose();
+            createInterstitialAd();
+            callback();
+          },
+          onAdFailedToShowFullScreenContent:
+              (InterstitialAd ad, AdError error) {
+            ad.dispose();
+            createInterstitialAd();
+            callback();
+          },
+        );
+        interstitialAd!.show();
+        interstitialAd = null;
+      }
     }
-    print(
-        "showInterstitialAd called, CALLING interstitialAd!.fullScreenContentCallback!!!");
-    interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
-      onAdShowedFullScreenContent: (InterstitialAd ad) =>
-          print('interstitialAd onAdShowedFullScreenContent.'),
-      onAdDismissedFullScreenContent: (InterstitialAd ad) {
-        print('$ad interstitialAd onAdDismissedFullScreenContent.');
-        ad.dispose();
-        print(
-            'interstitialAd onAdDismissedFullScreenContent Calling createInterstitialAd again');
-        createInterstitialAd();
-      },
-      onAdFailedToShowFullScreenContent: (InterstitialAd ad, AdError error) {
-        print('$ad interstitialAd onAdFailedToShowFullScreenContent: $error');
-        ad.dispose();
-        print(
-            'interstitialAd onAdFailedToShowFullScreenContent Calling createInterstitialAd again');
-        createInterstitialAd();
-      },
-    );
-    interstitialAd!.show();
-    print("SETTING interstitialAd = null!!");
-    interstitialAd = null;
   }
 
   isLinkPlayStore() {
@@ -592,18 +589,7 @@ class MyHomeState extends State<MyHome> {
                   onSelected: (value) {
                     //focusNode.unfocus();
                     FocusScope.of(context).unfocus();
-                    if (kIsWeb == false) {
-                      Random random = Random();
-                      var isShowAd =
-                          random.nextInt(1000) < MyApp().ofThousandShowAds;
-                      if (isShowAd) {
-                        print(
-                            "Selected Menu makeMajor showInterstitialAd CALLING...");
-                        showInterstitialAd();
-                      }
-                    } else {
-                      print("NOT SHOWING AD");
-                    }
+                    //showInterstitialAd(() {});
                   },
                   itemBuilder: (BuildContext context) {
                     return [
