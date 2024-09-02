@@ -1,0 +1,10 @@
+Der Akrostichon-Generator ist ein Tool, mit dem Sie Akrostichonen für Namen erstellen können, sodass die Namen selbst zu Akronymen werden. Es ist nützlich, um sich die wichtigsten Eigenschaften von Dingen zu merken. 
+Ein Beispiel ist das Wort „Erdferkel“ oder eine einzelne Art nachtaktiver afrikanischer Ameisenbären, die nach Ameisen graben. Es kann wie folgt dargestellt werden: 
+Afrikanisch 
+Ameisen 
+Gefräßig 
+Grabend 
+Vampir 
+Allein 
+Dargestellt 
+Königreich

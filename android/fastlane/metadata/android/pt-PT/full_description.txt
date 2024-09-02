@@ -1,0 +1,10 @@
+O Acrostics Maker é uma ferramenta para ajudar a criar acrósticos para nomes, de modo que os próprios nomes se tornem siglas. É útil para lembrar as principais qualidades das coisas. 
+Um exemplo é a palavra "aardvark" ou uma única espécie de tamanduá africano noturno que cava formigas. Pode ser representado como: 
+Africano 
+Formigas 
+Viva 
+Escavando 
+Vampiro 
+Sozinho 
+Representado 
+Reino

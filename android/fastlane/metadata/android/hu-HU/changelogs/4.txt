@@ -1,0 +1,2 @@
+Új funkció több nyelv használatához.
+Megjeleníti a kiválasztott szavakat, és megfelelően formázza az akrosztikus mondatot.

@@ -1,0 +1,10 @@
+Pembuat akrostik adalah alat untuk membantu membuat akrostik untuk nama sehingga nama itu sendiri menjadi akronim. Alat ini berguna untuk mengingat kualitas utama suatu hal. 
+Salah satu contohnya adalah kata 'aardvark' atau satu spesies trenggiling nokturnal Afrika yang menggali untuk semut. Kata ini dapat direpresentasikan sebagai: 
+Afrika 
+Semut 
+Rakus 
+Menggali 
+Vampir 
+Sendiri 
+Terwakili 
+Kerajaan

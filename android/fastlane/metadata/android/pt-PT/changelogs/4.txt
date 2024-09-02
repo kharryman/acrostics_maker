@@ -1,0 +1,2 @@
+Novo recurso para usar vários idiomas. 
+Mostra palavras selecionadas agora e formata a frase acróstica corretamente.

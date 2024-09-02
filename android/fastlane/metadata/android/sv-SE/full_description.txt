@@ -1,0 +1,10 @@
+Acrostics maker är ett verktyg för att skapa akrostiker för namn så att namnen i sig blir akronymer. Det är användbart för att komma ihåg de viktigaste egenskaperna hos saker.
+Ett exempel är ordet "aardvark" eller en enda art av nattaktiva afrikanska myrslokar som gräver efter myror. Det kan representeras som:
+afrikanska
+Myror
+Glupande
+Grävning
+Vampyr
+Ensam
+Representerad
+Rike

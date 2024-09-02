@@ -1,0 +1,2 @@
+Funcție nouă pentru utilizarea mai multor limbi.
+Afișează acum cuvintele selectate și formatează corect propoziția acrostică.

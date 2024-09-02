@@ -1,0 +1,10 @@
+Acrostics maker je nástroj, ktorý pomáha vytvárať akrostichy pre mená tak, že samotné mená sa stávajú skratkami. Je to užitočné na zapamätanie si kľúčových vlastností vecí.
+Jedným z príkladov je slovo „aardvark“ alebo jeden druh nočných afrických mravčiarov, ktorí hrabú mravce. Môže byť reprezentovaný ako:
+africký
+Mravce
+Ravenous
+Kopanie
+Upír
+Sám
+Zastúpený
+Kráľovstvo

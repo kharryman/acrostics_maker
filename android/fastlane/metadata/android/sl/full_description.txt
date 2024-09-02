@@ -1,0 +1,10 @@
+Izdelovalec akrostihov je orodje za pomoč pri ustvarjanju akrostihov za imena, tako da imena sama postanejo akronimi. Koristno je za zapomnitev ključnih lastnosti stvari.
+Eden od primerov je beseda "Aardvark" ali ena vrsta nočnih afriških mravljinčarjev, ki iščejo mravlje. Lahko se predstavi kot:
+Afriški
+Mravlje
+Požrešen
+Kopanje
+Vampir
+sama
+Zastopano
+kraljestvo

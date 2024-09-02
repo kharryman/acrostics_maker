@@ -1,0 +1,10 @@
+Az Acrostics Maker egy olyan eszköz, amely segít a nevek akrosztikájának létrehozásában, hogy a nevek maguk is betűszavakká váljanak. Hasznos a dolgok kulcsfontosságú tulajdonságainak emlékezésében.
+Példa erre az „aardvark” szó, vagy az éjszakai afrikai hangyász egyetlen faja, amely hangyák után kutat. A következőképpen ábrázolható:
+afrikai
+Hangyák
+Falánk
+Ásás
+Vámpír
+Kizárólag
+Képviselt
+Királyság

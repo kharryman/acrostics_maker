@@ -1,0 +1,1 @@
+Työkalu, joka auttaa muistamaan nimiä luomalla sanoja jokaiselle kirjaimelle.

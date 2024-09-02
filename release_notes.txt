@@ -1,26 +1,2 @@
-Added dictionary autocomplete word search with definitions.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-h with definitions.
+New feature to use multiple languages.
+Shows selected words now, and formats acrostic sentence properly.

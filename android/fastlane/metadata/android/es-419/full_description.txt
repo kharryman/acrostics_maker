@@ -1,0 +1,10 @@
+El creador de acrósticos es una herramienta que ayuda a crear acrósticos para nombres, de modo que los nombres mismos se conviertan en acrónimos. Es útil para recordar las cualidades clave de las cosas. 
+Un ejemplo es la palabra "oso hormiguero" o una especie única de osos hormigueros africanos nocturnos que cavan en busca de hormigas. Se puede representar como: 
+Africano 
+Hormigas 
+Voraz 
+Excavadora 
+Vampiro 
+Solo 
+Representado 
+Reino

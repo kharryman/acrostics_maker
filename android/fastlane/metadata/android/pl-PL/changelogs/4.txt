@@ -1,0 +1,2 @@
+Nowa funkcja umożliwiająca korzystanie z wielu języków. 
+Pokazuje teraz wybrane słowa i poprawnie formatuje zdania akrostychowe.

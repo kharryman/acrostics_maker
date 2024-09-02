@@ -1,0 +1,1 @@
+Un outil pour aider à mémoriser les noms en créant des mots pour chaque lettre.

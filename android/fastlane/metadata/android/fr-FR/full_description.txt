@@ -1,0 +1,10 @@
+Le créateur d'acrostiches est un outil permettant de créer des acrostiches pour les noms, de sorte que les noms eux-mêmes deviennent des acronymes. Il est utile pour se souvenir des qualités clés des choses. 
+Un exemple est le mot « aardvark » ou une seule espèce de fourmiliers africains nocturnes qui creusent pour trouver des fourmis. Il peut être représenté comme suit : 
+Africain 
+Fourmis 
+Ravenous 
+Digging 
+Vampire 
+Alone 
+Represented 
+Kingdom

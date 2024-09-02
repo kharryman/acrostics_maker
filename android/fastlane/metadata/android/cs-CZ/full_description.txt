@@ -1,0 +1,10 @@
+Acrostics maker je nástroj, který pomáhá vytvářet akrostichy pro jména, takže ze samotných jmen se stávají akronymy. Je to užitečné pro zapamatování klíčových vlastností věcí.
+Jedním z příkladů je slovo 'aardvark' nebo jeden druh nočních afrických mravenečníků, kteří hrabou mravence. Může být reprezentován jako:
+Afričan
+Mravenci
+Hladový
+Kopání
+Upír
+Sám
+Zastoupená
+Království

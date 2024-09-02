@@ -1,0 +1,2 @@
+Uusi ominaisuus useiden kielten käyttämiseen.
+Näyttää valitut sanat nyt ja muotoilee acrostic-lauseen oikein.

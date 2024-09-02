@@ -1,0 +1,1 @@
+Nuova funzionalità per utilizzare più lingue. Ora mostra le parole selezionate e formatta correttamente la frase acrostica.

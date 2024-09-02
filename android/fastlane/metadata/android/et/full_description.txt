@@ -1,0 +1,10 @@
+Acrostics maker on tööriist, mis aitab luua nimede jaoks akrostikirju, nii et nimed ise muutuvad akronüümideks. See on kasulik asjade põhiomaduste meeldejätmiseks.
+Üks näide on sõna „aardvark” või üksikud öised Aafrika sipelgasipelgad, kes otsivad sipelgaid. Seda saab kujutada järgmiselt:
+Aafrika
+Ants
+Ravenous
+Kaevamine
+Vampiir
+Üksinda
+Esindatud
+Kuningriik

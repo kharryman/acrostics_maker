@@ -1,0 +1,10 @@
+Izrađivač akrostiha je alat koji pomaže u stvaranju akrostiha za imena tako da imena sama po sebi postanu akronimi. Korisno je za pamćenje ključnih kvaliteta stvari.
+Jedan primjer je riječ 'aardvark' ili jedna vrsta noćnih afričkih mravojeda koji traže mrave. Može se predstaviti kao:
+afrički
+Mravi
+Proždrljiv
+Kopanje
+Vampir
+sama
+Zastupani
+Kraljevstvo

@@ -1,0 +1,10 @@
+Acrostics maker on työkalu, joka auttaa luomaan nimille akrostikkoja, jolloin nimistä itsestään tulee lyhenteitä. Siitä on hyötyä asioiden tärkeimpien ominaisuuksien muistamisessa.
+Yksi esimerkki on sana "aardvark" tai yksittäinen afrikkalainen muurahaissirkkalaji, joka etsii muurahaisia. Se voidaan esittää seuraavasti:
+afrikkalainen
+Ants
+Ravenous
+Kaivaminen
+Vampyyri
+Yksin
+Edustettuna
+Kuningaskunta

@@ -1,0 +1,1 @@
+Ett verktyg för att komma ihåg namn genom att skapa ord för varje bokstav.

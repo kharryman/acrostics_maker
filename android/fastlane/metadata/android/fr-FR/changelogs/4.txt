@@ -1,0 +1,2 @@
+Nouvelle fonctionnalité permettant d'utiliser plusieurs langues. 
+Affiche désormais les mots sélectionnés et formate correctement les phrases acrostiches.

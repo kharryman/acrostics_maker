@@ -1,13 +1,13 @@
 // results.dart
 
-import 'dart:math';
+import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
+import 'package:acrostics_maker/menu.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:http/http.dart' as http;
 
 import 'main.dart';
-import 'dictionary.dart';
 import 'package:share/share.dart';
 
 class TablePage extends StatefulWidget {
@@ -25,45 +25,29 @@ class TablePage extends StatefulWidget {
 }
 
 class TablePageState extends State<TablePage> {
-  final myDic = {
-    "a": dicList1,
-    "b": dicList2,
-    "c": dicList3,
-    "d": dicList4,
-    "e": dicList4,
-    "f": dicList5,
-    "g": dicList5,
-    "h": dicList5,
-    "i": dicList6,
-    "j": dicList6,
-    "k": dicList6,
-    "l": dicList6,
-    "m": dicList7,
-    "n": dicList7,
-    "o": dicList7,
-    "p": dicList8,
-    "q": dicList8,
-    "r": dicList8,
-    "s": dicList9,
-    "t": dicList10,
-    "u": dicList10,
-    "v": dicList10,
-    "w": dicList10,
-    "x": dicList10,
-    "y": dicList10,
-    "z": dicList10,
-  };
+  List<Map<String, String>> dictSuggestions = [];
+  List<bool> isWordLettersDictLoaded = [];
+
   List<String> selectedAcrosticWords = [];
   List<TextEditingController> inputControllers = [];
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   List<FocusNode> focusNodes = [];
+  List<String> letterList = [];
   @override
   void initState() {
     super.initState();
+    letterList = widget.inputWord.toUpperCase().split("");
     for (var i = 0; i < widget.inputWord.length; i++) {
       inputControllers.add(TextEditingController());
       focusNodes.add(FocusNode());
+      dictSuggestions.add({});
+      isWordLettersDictLoaded.add(false);
     }
+  }
+
+  updateSelf() {
+    print("MyHomeState updateSelf called");
+    setState(() {});
   }
 
   String yourAcrostic = "";
@@ -80,11 +64,6 @@ class TablePageState extends State<TablePage> {
   copyAcrostic(context) {
     showAcrostic();
     MyHomeState().copyToClipboard(context, yourAcrostic);
-  }
-
-  getValueFromEntry(String value) {
-    var valSplit = value.split("(");
-    return valSplit[0];
   }
 
   showAcrostic() {
@@ -145,42 +124,225 @@ class TablePageState extends State<TablePage> {
     return myVal;
   }
 
+  List<Map<String, String>> convertMapToListMap(Map<String, String> myMap) {
+    print("convertMapToListMap called");
+    List<Map<String, String>> myListMap = [];
+    List<String> keys = Map<String, String>.from(myMap).keys.toList();
+    Map<String, String> listObj = {};
+    for (int i = 0; i < keys.length; i++) {
+      listObj = {};
+      listObj[keys[i]] = myMap[keys[i]]!;
+      //print("ADDING dictObj = ${json.encode(dictObj)}");
+      myListMap.add(listObj);
+    }
+    return myListMap;
+  }
+
+  Future<List<Map<String, String>>> loadDictSuggestions(
+      BuildContext context, int inputListIndex, String hintText) async {
+    print("loadDictSuggestions called, inputListIndex = $inputListIndex");
+    bool isRequestSuccess = true;
+    http.Response response = http.Response("", 200);
+    String letter = letterList[inputListIndex].toUpperCase();
+    print("loadDictSuggestions: getting words from letter = $letter");
+    List<Map<String, String>> myDictSuggestions = [];
+    //return myDictSuggestions;
+    if (MyHomeState().getIsUseOffline() == true) {
+      try {
+        dictSuggestions[inputListIndex] = {};
+        for (int i = 0; i < MyHomeState().myDic[letter]!.length; i++) {
+          dictSuggestions[inputListIndex].addAll(
+              Map<String, String>.from(MyHomeState().myDic[letter]![i]));
+          myDictSuggestions.addAll(List<Map<String, String>>.from(
+              convertMapToListMap(MyHomeState().myDic[letter]![i])));
+        }
+      } catch (e) {
+        print("Error getting dict suggs: $e");
+      }
+      print("RETURNING myDictSuggestions = ${json.encode(myDictSuggestions)}");
+      isWordLettersDictLoaded[inputListIndex] = true;
+      return myDictSuggestions;
+    } else {
+      String appLanguageId = appLanguage["LID"];
+      List<String> availLIDs =
+          List<String>.from(availLanguages.map((lang) => lang["LID"]).toList());
+      if (!availLIDs.contains(appLanguage["LID"])) {
+        appLanguageId = "8"; //ENGLISH
+      }
+      MyHomeState().showProgress(
+          context, FlutterI18n.translate(context, "LOADING_DICTIONARY_WORDS"));
+      try {
+        response = await http.get(Uri.parse(
+            "https://www.learnfactsquick.com/lfq_app_php/get_dict_suggestions.php?letter=$letter&language_id=${selectedAcrosticsLanguage["LID"]}&app_language_id=$appLanguageId"));
+      } catch (e) {
+        isRequestSuccess = false;
+      }
+      // ignore: use_build_context_synchronously
+      MyHomeState().hideProgress(context);
+      dynamic data = {"SUCCESS": false};
+      if (isRequestSuccess == false) {
+        //await showPopup(context, "${FlutterI18n.translate(context, "NETWORK_ERROR")}!");
+        isAppOnline = false;
+        //await doNetworkChange();
+        return myDictSuggestions;
+      } else {
+        //hideProgress(context);
+        if (response.statusCode == 200) {
+          data = Map<String, dynamic>.from(json.decode(response.body));
+          //print("GET DICT SUGGESTED WORDS: data = ${json.encode(data)}");
+          if (data["SUCCESS"] == true) {
+            try {
+              dictSuggestions[inputListIndex]
+                  .addAll(Map<String, String>.from(data["WORDS"]));
+              myDictSuggestions.addAll(List<Map<String, String>>.from(
+                  convertMapToListMap(
+                      Map<String, String>.from(data["WORDS"]))));
+
+              isWordLettersDictLoaded[inputListIndex] = true;
+            } catch (e) {
+              print("ERROR GET DICT SUGGS: ${e.toString()}");
+            }
+            return myDictSuggestions;
+          } else {
+            print("GET DICT SUGGESTED WORDS LFQ ERROR");
+            return myDictSuggestions;
+          }
+        } else {
+          print("GET DICT SUGGESTED WORDS NETWORK ERROR");
+          return myDictSuggestions;
+        }
+      }
+    }
+  }
+
+  Map<String, String> getDictEntriesFromLetter(String letter) {
+    Map<String, String> dictEntries = {};
+    return dictEntries;
+  }
+
+  doSelectWord(int i, String value) {
+    print("doSelectWord called, selected value = $value");
+    setState(() {
+      inputControllers[i].text = getFormattedWord(value.toString());
+      selectedAcrosticWords[i] = value!;
+      print(
+          "selected value = $value, selectedAcrosticWords[$i] = ${selectedAcrosticWords[i]}");
+      showAcrostic();
+    });
+  }
+
+  getWordRadios(i) {
+    List<dynamic> entries = widget.entries;
+    List<dynamic> selectedTypesAdjectives = widget.selectedTypesAdjectives;
+    List<dynamic> filteredEntriesLetter = [];
+    List<dynamic> filteredEntriesAlp = [];
+    List<dynamic> filteredEntriesDic = [];
+    List<Widget> wordsRadios = [];
+    RadioListTile myRadio;
+    filteredEntriesLetter = entries
+        .where((dynamic entry) => entry["Letter"] == letterList[i])
+        .toList();
+    print("IM HERE1");
+    //print("filteredEntriesLetter = ${json.encode(filteredEntriesLetter)}");
+    wordsRadios = [];
+    for (int j = 0; j < selectedTypesAdjectives.length; j++) {
+      //NOW GET entries HAVING inputList[i]=entry(Letter) AND adjective=selectedTypesAdjectives[j].Table=entry(Table_name):
+      wordsRadios.add(Column(children: [
+        Center(
+          child: Text(
+              "${selectedTypesAdjectives[j]["type"]}: ${selectedTypesAdjectives[j]["adjective"]}",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+        )
+      ]));
+      //ADD ADJECTIVES:=========================================>
+      filteredEntriesAlp = filteredEntriesLetter
+          .where((dynamic entry) => entry["DICT"] == "0")
+          .toList();
+      filteredEntriesAlp = filteredEntriesAlp
+          .where((dynamic entry) =>
+              entry["Table_name"] == selectedTypesAdjectives[j]["adjective"])
+          .toList();
+      //print("filteredEntries = ${json.encode(filteredEntries)}");
+      for (int e = 0; e < filteredEntriesAlp.length; e++) {
+        //print("filteredEntries[e] = ${json.encode(filteredEntries[e]["Entry"])}");
+        myRadio = RadioListTile<String>(
+            dense: true,
+            title: Text(filteredEntriesAlp[e]["Entry"] ?? ""),
+            value: filteredEntriesAlp[e]["Word"],
+            groupValue: selectedAcrosticWords[i],
+            onChanged: (value) {
+              setState(() {
+                String myVal = getFormattedWord(value.toString());
+                selectedAcrosticWords[i] = value!;
+                inputControllers[i].text = myVal;
+                print(
+                    "selected value = $value, selectedAcrosticWords[$i] = ${selectedAcrosticWords[i]}");
+                showAcrostic();
+              });
+            });
+        wordsRadios.add(myRadio);
+      }
+
+      //ADD DICTIONARY:=========================================>
+      wordsRadios.add(Column(children: [
+        Center(
+          child: Text("${FlutterI18n.translate(context, "DICTIONARY_WORDS")}:",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 12)),
+        )
+      ]));
+      filteredEntriesDic = filteredEntriesLetter
+          .where((dynamic entry) => entry["DICT"] == "1")
+          .toList();
+      filteredEntriesDic = filteredEntriesDic
+          .where((dynamic entry) =>
+              entry["Table_name"] == selectedTypesAdjectives[j]["adjective"])
+          .toList();
+      for (int e = 0; e < filteredEntriesDic.length; e++) {
+        myRadio = RadioListTile<String>(
+            dense: true,
+            title: getDicEntry(filteredEntriesDic[e]),
+            value: filteredEntriesDic[e]["Word"],
+            groupValue: selectedAcrosticWords[i],
+            onChanged: (value) {
+              setState(() {
+                String myVal = getFormattedWord(value.toString());
+                selectedAcrosticWords[i] = value!;
+                print(
+                    "selected value = $value, selectedAcrosticWords[$i] = ${selectedAcrosticWords[i]}");
+                inputControllers[i].text = myVal;
+                showAcrostic();
+              });
+            });
+        wordsRadios.add(myRadio);
+      }
+    }
+    return wordsRadios;
+  }
+
   @override
   Widget build(BuildContext context) {
     //PASSED DATA: ===================>
     String inputWord = widget.inputWord;
-    List<dynamic> selectedTypesAdjectives = widget.selectedTypesAdjectives;
-    List<dynamic> entries = widget.entries;
+
     //print("TablePage REBUILD, inputWord = $inputWord, selectedTypesAdjectives = ${json.encode(selectedTypesAdjectives)}, entries = ${json.encode(entries)}}");
     //================================>
-    List<String> letterList = inputWord.toUpperCase().split("");
 
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     double cellHeight = MediaQuery.of(context).size.height - 175;
 
-    var title = "Acrostics Table";
-    List<TableRow> widgetTableRowList = [];
+    var title = FlutterI18n.translate(context, "ACROSTICS_TABLE");
     List<Widget> widgetAcrosticList = [];
     List<Widget> widgetWordList = [];
 
     String wordText = "";
     double columnWidth = 250;
-    Color myColor;
-    Color colorLeft;
-    Color colorRight;
-    Color colorTopBottom;
 
     bool isAcrosticDone = true;
-    bool isAcrosticStarted = false;
     Map<int, TableColumnWidth> myColumnWidths = {};
-
-    List<Widget> widgetWordsList = [];
-    List<Widget> wordsRadios = [];
-    RadioListTile myRadio;
-    Text myText;
-    String inputTextSet = "";
-    String inputText = "";
 
     if (selectedAcrosticWords.length >= letterList.length) {
       isAcrosticDone = true;
@@ -200,8 +362,7 @@ class TablePageState extends State<TablePage> {
     List<TextEditingController> autoFields = [];
 
     for (int i = 0; i < letterList.length; i++) {
-      dicEnt = Map<String, String>.from(
-          myDic[letterList[i].toLowerCase()]!.cast<String, String>());
+      dicEnt = getDictEntriesFromLetter(letterList[i].toLowerCase());
       letterKeys = List<String>.from(dicEnt.keys
           .where((String word) =>
               word[0].toLowerCase() == letterList[i].toLowerCase())
@@ -218,274 +379,12 @@ class TablePageState extends State<TablePage> {
       if (inputControllers.length <= i) {
         inputControllers.add(TextEditingController());
       }
-      myColor = inputControllers[i].text.trim() == ''
-          ? Colors.pinkAccent
-          : Colors.lightGreenAccent;
-      colorLeft = (i == 0 && isAcrosticDone == true)
-          ? Colors.green
-          : Colors.transparent;
-      colorRight = ((i == (letterList.length - 1)) && isAcrosticDone == true)
-          ? Colors.green
-          : Colors.transparent;
-      colorTopBottom =
-          isAcrosticDone == true ? Colors.green : Colors.transparent;
-
-      widgetAcrosticList.add(TableCell(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-              height: 55,
-              padding: EdgeInsets.all(2.0),
-              decoration: BoxDecoration(
-                  border: Border(
-                    left: BorderSide(color: colorLeft, width: 5.0),
-                    top: BorderSide(color: colorTopBottom, width: 5.0),
-                    right: BorderSide(color: colorRight, width: 5.0),
-                    bottom: BorderSide(color: colorTopBottom, width: 5.0),
-                  ),
-                  color: myColor,
-                  image: DecorationImage(
-                      image: AssetImage('assets/images/transparent.png'),
-                      fit: BoxFit.fill)),
-              child: SizedBox(
-                height: 50,
-                child: TextField(
-                    controller: inputControllers[i],
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: '..',
-                    ),
-                    keyboardType: TextInputType.text,
-                    onChanged: (value) {
-                      setState(() {
-                        print("selected value = $value");
-                        selectedAcrosticWords[i] = getValueFromEntry(value);
-                      });
-                    },
-                    onEditingComplete: () {
-                      //if (Platform.isAndroid) {
-                      //  focusNode.unfocus();
-                      //} else if (Platform.isIOS) {
-                      FocusScope.of(context).unfocus();
-                      //}
-                    }),
-              )),
-          Container(
-              height: 55,
-              decoration:
-                  BoxDecoration(border: Border.all(color: Colors.black)),
-              child: Autocomplete<String>(
-                fieldViewBuilder: ((context, textEditingController, focusNode,
-                    onFieldSubmitted) {
-                  autoFields[i] = textEditingController;
-                  focusNodes[i] = focusNode;
-                  return TextFormField(
-                      controller: autoFields[i],
-                      focusNode: focusNode,
-                      onEditingComplete: onFieldSubmitted,
-                      decoration:
-                          const InputDecoration(hintText: 'Search dictionary'));
-                }),
-                //displayStringForOption: (option) => option.split(":")[0],
-                optionsBuilder: (TextEditingValue textEditingValue) {
-                  if (textEditingValue.text == '') {
-                    return const Iterable<String>.empty();
-                  }
-                  return suggestions[i].where((String option) {
-                    return option
-                        .split(":")[0]
-                        .contains(textEditingValue.text.toLowerCase());
-                  });
-                },
-                onSelected: (String selection) {
-                  debugPrint('You just selected $selection');
-                  focusNodes[i].unfocus();
-                  setState(() {
-                    //print("letter= ${letterList[i]}, letterIndex=$i, inp cont length = ${inputControllers.length}");
-                    String myWord = selection.split(":")[0];
-                    autoFields[i].text = myWord;
-                    String myVal = getFormattedWord(myWord);
-                    inputControllers[i].text = myVal;
-                    selectedAcrosticWords[i] = myVal;
-                    showAcrostic();
-                  });
-                },
-              ))
-        ],
-      )));
-    }
-    print(
-        "TablePage TABLE ROW LENGTH widgetAcrosticList.length = ${widgetAcrosticList.length}");
-    if (widgetAcrosticList.length == letterList.length) {
-      widgetTableRowList.add(TableRow(children: widgetAcrosticList));
-    }
-    //FOR LETTERS LIST:
-    for (int i = 0; i < letterList.length; i++) {
-      wordText = letterList[i];
-      widgetWordList.add(TableCell(
-          child: Container(
-              height: 50,
-              padding: EdgeInsets.all(2.0),
-              decoration: BoxDecoration(
-                  border: Border(
-                    left: BorderSide(color: Colors.black, width: 2.0),
-                    top: BorderSide(color: Colors.black, width: 2.0),
-                    right: BorderSide(color: Colors.black, width: 2.0),
-                    bottom: BorderSide(color: Colors.black, width: 2.0),
-                  ),
-                  image: DecorationImage(
-                      image: AssetImage('assets/images/transparent.png'),
-                      fit: BoxFit.fill)),
-              child: Center(
-                  child: Text(wordText,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 14))))));
-    }
-    print(
-        "TablePage TABLE ROW LENGTH widgetWordList.length = ${widgetWordList.length}");
-    widgetTableRowList.add(TableRow(children: widgetWordList));
-    dynamic myWord = {};
-    double textHeight = 1.1;
-    List<dynamic> filteredEntriesLetter = [];
-    List<dynamic> filteredEntriesAlp = [];
-    List<dynamic> filteredEntriesDic = [];
-
-    //FOR LETTERS WORDS LIST:
-    for (int i = 0; i < letterList.length; i++) {
-      filteredEntriesLetter = entries
-          .where((dynamic entry) => entry["Letter"] == letterList[i])
-          .toList();
-      //print("filteredEntriesLetter = ${json.encode(filteredEntriesLetter)}");
-      wordsRadios = [];
-      for (int j = 0; j < selectedTypesAdjectives.length; j++) {
-        //NOW GET entries HAVING inputList[i]=entry(Letter) AND adjective=selectedTypesAdjectives[j].Table=entry(Table_name):
-        wordsRadios.add(Column(children: [
-          Center(
-            child: Text(
-                selectedTypesAdjectives[j]["type"] +
-                    ": " +
-                    selectedTypesAdjectives[j]["adjective"],
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-          )
-        ]));
-        //ADD ADJECTIVES:=========================================>
-        filteredEntriesAlp = filteredEntriesLetter
-            .where((dynamic entry) => entry["DICT"] == "0")
-            .toList();
-        filteredEntriesAlp = filteredEntriesAlp
-            .where((dynamic entry) =>
-                entry["Table_name"] == selectedTypesAdjectives[j]["adjective"])
-            .toList();
-        //print("filteredEntries = ${json.encode(filteredEntries)}");
-        for (int e = 0; e < filteredEntriesAlp.length; e++) {
-          //print("filteredEntries[e] = ${json.encode(filteredEntries[e]["Entry"])}");
-          myRadio = RadioListTile<String>(
-              dense: true,
-              title: Text(filteredEntriesAlp[e]["Entry"]),
-              value: getValueFromEntry(filteredEntriesAlp[e]["Entry"]),
-              groupValue: selectedAcrosticWords[i],
-              onChanged: (value) {
-                setState(() {
-                  print("selected value = $value");
-                  String myVal = getFormattedWord(value.toString());
-                  selectedAcrosticWords[i] = myVal;
-                  inputControllers[i].text = myVal;
-                  showAcrostic();
-                });
-              });
-          wordsRadios.add(myRadio);
-        }
-
-        //ADD DICTIONARY:=========================================>
-        wordsRadios.add(Column(children: [
-          Center(
-            child: Text("dictionary words:",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 12)),
-          )
-        ]));
-        filteredEntriesDic = filteredEntriesLetter
-            .where((dynamic entry) => entry["DICT"] == "1")
-            .toList();
-        filteredEntriesDic = filteredEntriesDic
-            .where((dynamic entry) =>
-                entry["Table_name"] == selectedTypesAdjectives[j]["adjective"])
-            .toList();
-        for (int e = 0; e < filteredEntriesDic.length; e++) {
-          myRadio = RadioListTile<String>(
-              dense: true,
-              title: getDicEntry(filteredEntriesDic[e]),
-              value: filteredEntriesDic[e]["Word"],
-              groupValue: selectedAcrosticWords[i],
-              onChanged: (value) {
-                setState(() {
-                  print("selected value = $value");
-                  String myVal = getFormattedWord(value.toString());
-                  selectedAcrosticWords[i] = myVal;
-                  inputControllers[i].text = myVal;
-                  showAcrostic();
-                });
-              });
-          wordsRadios.add(myRadio);
-        }
-      }
-      widgetWordsList.add(TableCell(
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border.all(
-                color: Colors.black), // Set the border color to transparent
-          ),
-          height: cellHeight,
-          width: columnWidth,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: wordsRadios,
-            ),
-          ),
-        ),
-      ));
-    }
-
-    if (widgetWordsList.length == letterList.length) {
-      widgetTableRowList.add(TableRow(children: widgetWordsList));
     }
 
     return Scaffold(
         key: scaffoldKey,
         appBar: AppBar(title: Text(title), toolbarHeight: 30, actions: <Widget>[
-          PopupMenuButton<String>(
-              constraints: BoxConstraints(
-                minWidth: 200,
-                maxWidth: MediaQuery.of(context).size.width,
-              ),
-              icon: Icon(Icons.menu),
-              
-              onSelected: (value) {
-                //focusNode.unfocus();
-                FocusScope.of(context).unfocus();
-                //MyHomeState().showInterstitialAd((){});
-              },
-              itemBuilder: (BuildContext context) {
-                return [
-                  PopupMenuItem<String>(
-                      value: 'Help',
-                      child: SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          child: Padding(
-                              padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                              child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Html(data: MyHomeState().helpText),
-                                  ]))))
-                ];
-              })
+          Menu(context: context, page: 'table', updateParent: updateSelf)
         ]),
         body: Padding(
             padding: const EdgeInsets.all(1.0),
@@ -503,10 +402,9 @@ class TablePageState extends State<TablePage> {
                               padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                               child: Row(children: [
                                 Text(
-                                    ("Your Acrostic sentence, for (")
-                                            .toString() +
-                                        inputWord.toUpperCase() +
-                                        ("): ").toString(),
+                                    "${FlutterI18n.translate(context, "YOUR_ACROSTIC_SENTENCE", translationParams: {
+                                          "acrWor": inputWord.toUpperCase()
+                                        })} ",
                                     textAlign: TextAlign.left,
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold)),
@@ -523,7 +421,8 @@ class TablePageState extends State<TablePage> {
                                       onPressed: () async {
                                         copyAcrostic(context);
                                       },
-                                      child: Text("Copy Acrostic")),
+                                      child: Text(FlutterI18n.translate(
+                                          context, "COPY_ACROSTIC"))),
                                 ),
                                 Container(
                                     width: 150.0, // Set the width of the button
@@ -556,21 +455,341 @@ class TablePageState extends State<TablePage> {
                                       ),
                                       onPressed: () {
                                         if (yourAcrostic.isEmpty) {
-                                          MyHomeState().showPopup(context,
-                                              "Please create an acrostic to share.");
+                                          MyHomeState().showPopup(
+                                              context,
+                                              FlutterI18n.translate(context,
+                                                  "CREATE_ACROSTIC_TO_SHARE"));
                                         } else {
                                           Share.share(yourAcrostic);
                                         }
                                       },
-                                      child: Text('SHARE',
+                                      child: Text(
+                                          FlutterI18n.translate(
+                                              context, "SHARE"),
                                           style: TextStyle(
                                               color: Colors.black87,
                                               fontStyle: FontStyle.italic)),
                                     ))
                               ]))),
-                      Table(
-                          columnWidths: myColumnWidths,
-                          children: widgetTableRowList),
+                      Table(columnWidths: myColumnWidths, children: [
+                        TableRow(children: [
+                          for (int i = 0; i < letterList.length; i++)
+                            TableCell(
+                                child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                    height: 55,
+                                    padding: EdgeInsets.all(2.0),
+                                    decoration: BoxDecoration(
+                                        border: Border(
+                                          left: BorderSide(
+                                              color: (i == 0 &&
+                                                      isAcrosticDone == true)
+                                                  ? Colors.green
+                                                  : Colors.transparent,
+                                              width: 5.0),
+                                          top: BorderSide(
+                                              color: isAcrosticDone == true
+                                                  ? Colors.green
+                                                  : Colors.transparent,
+                                              width: 5.0),
+                                          right: BorderSide(
+                                              color: ((i ==
+                                                          (letterList.length -
+                                                              1)) &&
+                                                      isAcrosticDone == true)
+                                                  ? Colors.green
+                                                  : Colors.transparent,
+                                              width: 5.0),
+                                          bottom: BorderSide(
+                                              color: isAcrosticDone == true
+                                                  ? Colors.green
+                                                  : Colors.transparent,
+                                              width: 5.0),
+                                        ),
+                                        color:
+                                            inputControllers[i].text.trim() ==
+                                                    ''
+                                                ? Colors.pinkAccent
+                                                : Colors.lightGreenAccent,
+                                        image: DecorationImage(
+                                            image: AssetImage(
+                                                'assets/images/transparent.png'),
+                                            fit: BoxFit.fill)),
+                                    child: SizedBox(
+                                      height: 50,
+                                      child: TextField(
+                                          controller: inputControllers[i],
+                                          decoration: InputDecoration(
+                                            border: OutlineInputBorder(),
+                                            hintText: '..',
+                                          ),
+                                          keyboardType: TextInputType.text,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              if (inputControllers[i]
+                                                          .text
+                                                          .trim() !=
+                                                      "" &&
+                                                  inputControllers[i]
+                                                          .text
+                                                          .substring(0, 1)
+                                                          .toUpperCase() !=
+                                                      letterList[i]
+                                                          .toUpperCase()) {
+                                                inputControllers[i].text = "";
+                                              } else {
+                                                inputControllers[i].text =
+                                                    getFormattedWord(value);
+                                                selectedAcrosticWords[i] =
+                                                    value;
+                                                showAcrostic();
+                                                print(
+                                                    "selected value = $value, selectedAcrosticWords[$i] = ${selectedAcrosticWords[i]}");
+                                              }
+                                            });
+                                          },
+                                          onEditingComplete: () {
+                                            //if (Platform.isAndroid) {
+                                            //  focusNode.unfocus();
+                                            //} else if (Platform.isIOS) {
+                                            FocusScope.of(context).unfocus();
+                                            //}
+                                          }),
+                                    )),
+                                Container(
+                                    height: 55,
+                                    width: columnWidth - 20,
+                                    decoration: BoxDecoration(
+                                        border:
+                                            Border.all(color: Colors.black)),
+                                    child: Autocomplete<String>(
+                                        fieldViewBuilder: ((context,
+                                            textEditingController,
+                                            focusNode,
+                                            onFieldSubmitted) {
+                                      autoFields[i] = textEditingController;
+                                      focusNodes[i] = focusNode;
+                                      return TextField(
+                                          controller: autoFields[i],
+                                          focusNode: focusNodes[i],
+                                          onEditingComplete: onFieldSubmitted,
+                                          cursorColor: Colors.black,
+                                          onChanged: (value) =>
+                                              (setState(() {})),
+                                          decoration: InputDecoration(
+                                              filled: true,
+                                              fillColor: Colors.white,
+                                              focusColor: Colors.amber[50],
+                                              border: OutlineInputBorder(),
+                                              hintText: FlutterI18n.translate(
+                                                  context, "SEARCH_DICTIONARY"),
+                                              suffixIcon: Visibility(
+                                                  visible: autoFields[i]
+                                                      .text
+                                                      .isNotEmpty,
+                                                  child: IconButton(
+                                                      icon: Icon(
+                                                        Icons.clear,
+                                                        color: Colors.black,
+                                                      ),
+                                                      onPressed: () =>
+                                                          setState(() {
+                                                            autoFields[i]
+                                                                .clear();
+                                                          })))));
+                                    }), optionsBuilder: (TextEditingValue
+                                            textEditingValue) async {
+                                      print(
+                                          "autoComplete optionsBuilder$i: textEditingValue.text = ${textEditingValue.text}");
+                                      if (textEditingValue.text == '') {
+                                        return [];
+                                      } else if (textEditingValue.text.trim() ==
+                                          "") {
+                                        autoFields[i].text = "";
+                                        return [];
+                                      } else {
+                                        List<Map<String, String>> suggs = [];
+                                        print(
+                                            "dictSuggestions[$i].keys.toList().length = ${dictSuggestions[i].keys.toList().length}");
+                                        List<String> options = [];
+                                        List<String> dictWords =
+                                            dictSuggestions[i]
+                                                .keys
+                                                .whereType<String>()
+                                                .toList();
+                                        if (isWordLettersDictLoaded[i] ==
+                                            true) {
+                                          List<Map<String, String>>
+                                              myDictSuggestions = [];
+                                          String hintText =
+                                              textEditingValue.text;
+
+                                          //print("dictWords = ${json.encode(dictWords)}");
+                                          for (int d = 0;
+                                              d < dictWords.length;
+                                              d++) {
+                                            if (dictWords[d].length >=
+                                                    hintText.length &&
+                                                dictWords[d]
+                                                    .toLowerCase()
+                                                    .contains(hintText
+                                                        .toLowerCase())) {
+                                              Map<String, String> dictEntry =
+                                                  {};
+                                              dictEntry[dictWords[d]] =
+                                                  dictSuggestions[i]
+                                                      [dictWords[d]]!;
+                                              myDictSuggestions.add(
+                                                  Map<String, String>.from(
+                                                      dictEntry));
+                                            }
+                                          }
+                                          suggs = myDictSuggestions;
+                                        } else {
+                                          suggs = await loadDictSuggestions(
+                                              context,
+                                              i,
+                                              textEditingValue.text);
+                                        }
+                                        for (int d = 0; d < suggs.length; d++) {
+                                          options
+                                              .add(suggs[d].keys.toList()[0]);
+                                        }
+                                        return options;
+                                      }
+                                    }, onSelected: (String selection) {
+                                      debugPrint(
+                                          'You just selected $selection');
+                                      autoFields[i].text = "";
+                                      doSelectWord(i, selection);
+                                    }, optionsViewBuilder:
+                                            (BuildContext context,
+                                                AutocompleteOnSelected<String>
+                                                    onSelected,
+                                                Iterable<String> options) {
+                                      return Align(
+                                        alignment: Alignment.topLeft,
+                                        child: Material(
+                                          child: Container(
+                                            height: cellHeight * 0.8,
+                                            width: columnWidth - 10,
+                                            margin:
+                                                const EdgeInsets.only(top: 3.0),
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                border: Border.all(
+                                                    color: Colors.black)),
+                                            child: ListView.builder(
+                                              padding: EdgeInsets.zero,
+                                              shrinkWrap: true,
+                                              itemCount: options.length,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                final String option =
+                                                    options.elementAt(index);
+                                                return Container(
+                                                    width: columnWidth - 10,
+                                                    child: InkWell(
+                                                      onTap: () {
+                                                        onSelected(option);
+                                                      },
+                                                      child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(option),
+                                                            Visibility(
+                                                              visible: dictSuggestions[
+                                                                              i]
+                                                                          [
+                                                                          option] !=
+                                                                      null &&
+                                                                  dictSuggestions[i]
+                                                                              [
+                                                                              option]!
+                                                                          .trim() !=
+                                                                      '',
+                                                              child: Text(
+                                                                  " -- ${dictSuggestions[i][option]}"),
+                                                            ),
+                                                            Divider(
+                                                              color: Colors
+                                                                  .black, // Color of the divider
+                                                              height:
+                                                                  1, // Space around the divider
+                                                              thickness:
+                                                                  1, // Thickness of the divider
+                                                              indent:
+                                                                  0, // Left indent
+                                                              endIndent:
+                                                                  0, // Right indent
+                                                            ),
+                                                          ]),
+                                                    ));
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }))
+                              ],
+                            ))
+                        ]),
+                        TableRow(children: [
+                          for (int i = 0; i < letterList.length; i++)
+                            TableCell(
+                                child: Container(
+                                    height: 50,
+                                    padding: EdgeInsets.all(2.0),
+                                    decoration: BoxDecoration(
+                                        border: Border(
+                                          left: BorderSide(
+                                              color: Colors.black, width: 2.0),
+                                          top: BorderSide(
+                                              color: Colors.black, width: 2.0),
+                                          right: BorderSide(
+                                              color: Colors.black, width: 2.0),
+                                          bottom: BorderSide(
+                                              color: Colors.black, width: 2.0),
+                                        ),
+                                        image: DecorationImage(
+                                            image: AssetImage(
+                                                'assets/images/transparent.png'),
+                                            fit: BoxFit.fill)),
+                                    child: Center(
+                                        child: Text(letterList[i],
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 14)))))
+                        ]),
+                        TableRow(children: [
+                          for (int i = 0; i < letterList.length; i++)
+                            TableCell(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: Colors
+                                          .black), // Set the border color to transparent
+                                ),
+                                height: cellHeight,
+                                width: columnWidth,
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.vertical,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: getWordRadios(i),
+                                  ),
+                                ),
+                              ),
+                            )
+                        ])
+                      ]),
                     ],
                   ),
                 ))));

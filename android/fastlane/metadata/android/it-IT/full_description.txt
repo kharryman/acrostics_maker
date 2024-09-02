@@ -1,0 +1,10 @@
+Acrostics maker è uno strumento che aiuta a creare acrostici per i nomi, in modo che i nomi stessi diventino acronimi. È utile per ricordare le qualità chiave delle cose. 
+Un esempio è la parola "aardvark" o una singola specie di formichieri africani notturni che scavano per le formiche. Può essere rappresentato come: 
+Africano 
+Formiche 
+Famelico 
+Scavando 
+Vampiro 
+Solo 
+Rappresentato 
+Regno
