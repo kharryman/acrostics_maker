@@ -75,6 +75,7 @@ class TablePageState extends State<TablePage> {
       }
     }
     yourAcrostic = words.join(" ");
+    return yourAcrostic;
   }
 
   getDicEntry(dynamic entry) {
@@ -454,12 +455,15 @@ class TablePageState extends State<TablePage> {
                                         ),
                                       ),
                                       onPressed: () {
+                                        yourAcrostic = showAcrostic();
                                         if (yourAcrostic.isEmpty) {
                                           MyHomeState().showPopup(
                                               context,
                                               FlutterI18n.translate(context,
                                                   "CREATE_ACROSTIC_TO_SHARE"));
                                         } else {
+                                          print(
+                                              "Sharing yourAcrostic = $yourAcrostic");
                                           Share.share(yourAcrostic);
                                         }
                                       },
