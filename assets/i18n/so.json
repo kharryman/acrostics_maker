@@ -68,6 +68,7 @@
     "LANGUAGE_VIETNAMESE": "Vietnamese",
     "LANGUAGE_WELSH": "Welsh",
     "LOADING": "Soodejinaya",
+    "LOADING_DICTIONARY_WORDS": "Soo dejinaya erayada qaamuuska...",
     "LOAD_ACROSTICS_OFFLINE": "Ku soo raraya kelmado aan toos ahayn, fadlan sug...",
     "LOAD_ACROSTICS_ONLINE": "Ku soo raraya ereyada soo koobay onlayn, fadlan sug...",
     "NETWORK_ERROR": "Cilada Shabakadda",
@@ -87,6 +88,14 @@
     "SELECT_TYPE_ADJECTIVES": "Dooro {typeAdjs} Sifooyin",
     "SHARE": "SHARE garee",
     "TEXT": "Qoraal",
+    "TYPE_COLOR": "Midabada",
+    "TYPE_DIRECTIONS": "Tilmaamaha",
+    "TYPE_NATIONALITIES": "Qowmiyadaha",
+    "TYPE_NUMBER": "Number",
+    "TYPE_OPPOSITES": "Ka soo horjeeda",
+    "TYPE_PART_SPEECH": "Qayb ka mid ah hadalka",
+    "TYPE_THEMES": "Mawduucyada",
+    "TYPE_TIMES": "Waqtiyada",
     "WORDS": "EREYADA",
     "YOUR_ACROSTIC_SENTENCE": "Waayo, '{acrWor}', jumladaada la soo koobay waa:"
 }

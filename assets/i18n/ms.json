@@ -68,6 +68,7 @@
     "LANGUAGE_VIETNAMESE": "bahasa Vietnam",
     "LANGUAGE_WELSH": "Bahasa Wales",
     "LOADING": "Memuatkan",
+    "LOADING_DICTIONARY_WORDS": "Memuatkan perkataan kamus...",
     "LOAD_ACROSTICS_OFFLINE": "Memuatkan perkataan akrostik di luar talian, sila tunggu...",
     "LOAD_ACROSTICS_ONLINE": "Memuatkan perkataan akrostik dalam talian, sila tunggu...",
     "NETWORK_ERROR": "Ralat Rangkaian",
@@ -87,6 +88,14 @@
     "SELECT_TYPE_ADJECTIVES": "Pilih {typeAdjs} Adjektif",
     "SHARE": "KONGSI",
     "TEXT": "Teks",
+    "TYPE_COLOR": "warna",
+    "TYPE_DIRECTIONS": "Arah",
+    "TYPE_NATIONALITIES": "Kebangsaan",
+    "TYPE_NUMBER": "Nombor",
+    "TYPE_OPPOSITES": "Bertentangan",
+    "TYPE_PART_SPEECH": "Bahagian Ucapan",
+    "TYPE_THEMES": "Tema",
+    "TYPE_TIMES": "Masa",
     "WORDS": "PERKATAAN",
     "YOUR_ACROSTIC_SENTENCE": "Untuk, '{acrWor}', ayat akrostik anda ialah:"
 }

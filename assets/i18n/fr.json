@@ -68,6 +68,7 @@
     "LANGUAGE_VIETNAMESE": "vietnamien",
     "LANGUAGE_WELSH": "Gallois",
     "LOADING": "Chargement",
+    "LOADING_DICTIONARY_WORDS": "Chargement des mots du dictionnaire...",
     "LOAD_ACROSTICS_OFFLINE": "Chargement des mots acrostiches hors ligne, veuillez patienter...",
     "LOAD_ACROSTICS_ONLINE": "Chargement des mots acrostiches en ligne, veuillez patienter...",
     "NETWORK_ERROR": "Erreur réseau",
@@ -87,6 +88,14 @@
     "SELECT_TYPE_ADJECTIVES": "Sélectionnez les adjectifs {typeAdjs}",
     "SHARE": "PARTAGER",
     "TEXT": "Texte",
+    "TYPE_COLOR": "Couleurs",
+    "TYPE_DIRECTIONS": "Instructions",
+    "TYPE_NATIONALITIES": "Nationalités",
+    "TYPE_NUMBER": "Nombre",
+    "TYPE_OPPOSITES": "Les contraires",
+    "TYPE_PART_SPEECH": "Partie du discours",
+    "TYPE_THEMES": "Thèmes",
+    "TYPE_TIMES": "Fois",
     "WORDS": "MOTS",
     "YOUR_ACROSTIC_SENTENCE": "Pour, '{acrWor}', votre phrase acrostiche est :"
 }

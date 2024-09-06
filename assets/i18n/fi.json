@@ -68,6 +68,7 @@
     "LANGUAGE_VIETNAMESE": "vietnam",
     "LANGUAGE_WELSH": "Walesin",
     "LOADING": "Ladataan",
+    "LOADING_DICTIONARY_WORDS": "Ladataan sanakirjan sanoja...",
     "LOAD_ACROSTICS_OFFLINE": "Ladataan acrostic-sanoja offline-tilassa, odota...",
     "LOAD_ACROSTICS_ONLINE": "Ladataan acrostic-sanoja verkkoon, odota...",
     "NETWORK_ERROR": "Verkkovirhe",
@@ -87,6 +88,14 @@
     "SELECT_TYPE_ADJECTIVES": "Valitse {typeAdjs} Adjektiivit",
     "SHARE": "JAA",
     "TEXT": "Teksti",
+    "TYPE_COLOR": "värit",
+    "TYPE_DIRECTIONS": "Ohjeet",
+    "TYPE_NATIONALITIES": "Kansallisuudet",
+    "TYPE_NUMBER": "Määrä",
+    "TYPE_OPPOSITES": "Vastakohdat",
+    "TYPE_PART_SPEECH": "Sanaluokka",
+    "TYPE_THEMES": "Teemat",
+    "TYPE_TIMES": "kertaa",
     "WORDS": "SANAT",
     "YOUR_ACROSTIC_SENTENCE": "'{acrWor}': acrostic lauseesi on:"
 }

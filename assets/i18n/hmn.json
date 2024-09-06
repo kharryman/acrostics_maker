@@ -68,6 +68,7 @@
     "LANGUAGE_VIETNAMESE": "Nyab Laj",
     "LANGUAGE_WELSH": "Welsh",
     "LOADING": "Chaw thau khoom",
+    "LOADING_DICTIONARY_WORDS": "Loading dictionary words...",
     "LOAD_ACROSTICS_OFFLINE": "Loading acrostic lus offline, thov tos ...",
     "LOAD_ACROSTICS_ONLINE": "Loading acrostic lus online, thov tos...",
     "NETWORK_ERROR": "Network yuam kev",
@@ -87,6 +88,14 @@
     "SELECT_TYPE_ADJECTIVES": "Xaiv {typeAdjs} Adjectives",
     "SHARE": "SHARE",
     "TEXT": "Ntawv nyeem",
+    "TYPE_COLOR": "Xim",
+    "TYPE_DIRECTIONS": "Cov lus qhia",
+    "TYPE_NATIONALITIES": "haiv neeg",
+    "TYPE_NUMBER": "Tus lej",
+    "TYPE_OPPOSITES": "Tawm tsam",
+    "TYPE_PART_SPEECH": "Ib feem ntawm Kev Hais Lus",
+    "TYPE_THEMES": "Ntsiab lus",
+    "TYPE_TIMES": "Sijhawm",
     "WORDS": "Cov lus",
     "YOUR_ACROSTIC_SENTENCE": "Rau, '{acrWor}', koj kab lus acrostic yog:"
 }

@@ -269,7 +269,7 @@ class TablePageState extends State<TablePage> {
         myRadio = RadioListTile<String>(
             dense: true,
             title: Text(filteredEntriesAlp[e]["Entry"] ?? ""),
-            value: filteredEntriesAlp[e]["Word"],
+            value: filteredEntriesAlp[e]["Word"] ?? "",
             groupValue: selectedAcrosticWords[i],
             onChanged: (value) {
               setState(() {
@@ -336,11 +336,16 @@ class TablePageState extends State<TablePage> {
     double cellHeight = MediaQuery.of(context).size.height - 175;
 
     var title = FlutterI18n.translate(context, "ACROSTICS_TABLE");
-    List<Widget> widgetAcrosticList = [];
-    List<Widget> widgetWordList = [];
 
-    String wordText = "";
     double columnWidth = 250;
+    double computedcolumnWidth = ((screenWidth - 20) / letterList.length);
+    columnWidth = computedcolumnWidth > 250 ? computedcolumnWidth : 250;
+
+    double tableWidth = (columnWidth * letterList.length);
+    double copyButtonWidth =
+        (tableWidth - 15) / 2 > 300 ? 300 : (tableWidth - 15) / 2;
+    double shareButtonWidth =
+        (tableWidth - 15) / 2 > 300 ? 300 : (tableWidth - 15) / 2;
 
     bool isAcrosticDone = true;
     Map<int, TableColumnWidth> myColumnWidths = {};
@@ -388,7 +393,7 @@ class TablePageState extends State<TablePage> {
           Menu(context: context, page: 'table', updateParent: updateSelf)
         ]),
         body: Padding(
-            padding: const EdgeInsets.all(1.0),
+            padding: const EdgeInsets.all(10.0),
             child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: SingleChildScrollView(
@@ -398,10 +403,11 @@ class TablePageState extends State<TablePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
-                          width: (columnWidth * letterList.length + 100),
-                          child: Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                              child: Row(children: [
+                          width: tableWidth,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Wrap(alignment: WrapAlignment.start, children: [
                                 Text(
                                     "${FlutterI18n.translate(context, "YOUR_ACROSTIC_SENTENCE", translationParams: {
                                           "acrWor": inputWord.toUpperCase()
@@ -409,15 +415,22 @@ class TablePageState extends State<TablePage> {
                                     textAlign: TextAlign.left,
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold)),
-                                Text(
-                                  yourAcrostic,
-                                  style: TextStyle(
-                                      fontStyle: FontStyle.italic,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                                SizedBox(width: 15),
+                                Visibility(
+                                  visible: yourAcrostic.trim() != '',
+                                  child: Text(
+                                    yourAcrostic,
+                                    style: TextStyle(
+                                        color: const Color.fromARGB(
+                                            255, 74, 9, 85),
+                                        fontStyle: FontStyle.italic,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                )
+                              ]),
+                              Row(children: [
+                                SizedBox(
+                                  width: copyButtonWidth,
                                   child: ElevatedButton(
                                       onPressed: () async {
                                         copyAcrostic(context);
@@ -425,8 +438,10 @@ class TablePageState extends State<TablePage> {
                                       child: Text(FlutterI18n.translate(
                                           context, "COPY_ACROSTIC"))),
                                 ),
+                                SizedBox(width: 15),
                                 Container(
-                                    width: 150.0, // Set the width of the button
+                                    width:
+                                        shareButtonWidth, // Set the width of the button
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(
                                           0.0), // Rounded corners
@@ -474,7 +489,9 @@ class TablePageState extends State<TablePage> {
                                               color: Colors.black87,
                                               fontStyle: FontStyle.italic)),
                                     ))
-                              ]))),
+                              ]),
+                            ],
+                          )),
                       Table(columnWidths: myColumnWidths, children: [
                         TableRow(children: [
                           for (int i = 0; i < letterList.length; i++)
@@ -565,182 +582,187 @@ class TablePageState extends State<TablePage> {
                                     )),
                                 Container(
                                     height: 55,
-                                    width: columnWidth - 20,
+                                    width: columnWidth,
                                     decoration: BoxDecoration(
                                         border:
                                             Border.all(color: Colors.black)),
-                                    child: Autocomplete<String>(
-                                        fieldViewBuilder: ((context,
-                                            textEditingController,
-                                            focusNode,
-                                            onFieldSubmitted) {
-                                      autoFields[i] = textEditingController;
-                                      focusNodes[i] = focusNode;
-                                      return TextField(
-                                          controller: autoFields[i],
-                                          focusNode: focusNodes[i],
-                                          onEditingComplete: onFieldSubmitted,
-                                          cursorColor: Colors.black,
-                                          onChanged: (value) =>
-                                              (setState(() {})),
-                                          decoration: InputDecoration(
-                                              filled: true,
-                                              fillColor: Colors.white,
-                                              focusColor: Colors.amber[50],
-                                              border: OutlineInputBorder(),
-                                              hintText: FlutterI18n.translate(
-                                                  context, "SEARCH_DICTIONARY"),
-                                              suffixIcon: Visibility(
-                                                  visible: autoFields[i]
-                                                      .text
-                                                      .isNotEmpty,
-                                                  child: IconButton(
-                                                      icon: Icon(
-                                                        Icons.clear,
-                                                        color: Colors.black,
-                                                      ),
-                                                      onPressed: () =>
-                                                          setState(() {
-                                                            autoFields[i]
-                                                                .clear();
-                                                          })))));
-                                    }), optionsBuilder: (TextEditingValue
-                                            textEditingValue) async {
-                                      print(
-                                          "autoComplete optionsBuilder$i: textEditingValue.text = ${textEditingValue.text}");
-                                      if (textEditingValue.text == '') {
-                                        return [];
-                                      } else if (textEditingValue.text.trim() ==
-                                          "") {
-                                        autoFields[i].text = "";
-                                        return [];
-                                      } else {
-                                        List<Map<String, String>> suggs = [];
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          10, 2, 10, 2),
+                                      child: Autocomplete<String>(
+                                          fieldViewBuilder: ((context,
+                                              textEditingController,
+                                              focusNode,
+                                              onFieldSubmitted) {
+                                        autoFields[i] = textEditingController;
+                                        focusNodes[i] = focusNode;
+                                        return TextField(
+                                            controller: autoFields[i],
+                                            focusNode: focusNodes[i],
+                                            onEditingComplete: onFieldSubmitted,
+                                            cursorColor: Colors.black,
+                                            onChanged: (value) =>
+                                                (setState(() {})),
+                                            decoration: InputDecoration(
+                                                filled: true,
+                                                fillColor: Colors.white,
+                                                focusColor: Colors.amber[50],
+                                                border: OutlineInputBorder(),
+                                                hintText: FlutterI18n.translate(
+                                                    context,
+                                                    "SEARCH_DICTIONARY"),
+                                                suffixIcon: Visibility(
+                                                    visible: autoFields[i]
+                                                        .text
+                                                        .isNotEmpty,
+                                                    child: IconButton(
+                                                        icon: Icon(
+                                                          Icons.clear,
+                                                          color: Colors.black,
+                                                        ),
+                                                        onPressed: () =>
+                                                            setState(() {
+                                                              autoFields[i]
+                                                                  .clear();
+                                                            })))));
+                                      }), optionsBuilder: (TextEditingValue
+                                              textEditingValue) async {
                                         print(
-                                            "dictSuggestions[$i].keys.toList().length = ${dictSuggestions[i].keys.toList().length}");
-                                        List<String> options = [];
-                                        List<String> dictWords =
-                                            dictSuggestions[i]
-                                                .keys
-                                                .whereType<String>()
-                                                .toList();
-                                        if (isWordLettersDictLoaded[i] ==
-                                            true) {
-                                          List<Map<String, String>>
-                                              myDictSuggestions = [];
-                                          String hintText =
-                                              textEditingValue.text;
-
-                                          //print("dictWords = ${json.encode(dictWords)}");
-                                          for (int d = 0;
-                                              d < dictWords.length;
-                                              d++) {
-                                            if (dictWords[d].length >=
-                                                    hintText.length &&
-                                                dictWords[d]
-                                                    .toLowerCase()
-                                                    .contains(hintText
-                                                        .toLowerCase())) {
-                                              Map<String, String> dictEntry =
-                                                  {};
-                                              dictEntry[dictWords[d]] =
-                                                  dictSuggestions[i]
-                                                      [dictWords[d]]!;
-                                              myDictSuggestions.add(
-                                                  Map<String, String>.from(
-                                                      dictEntry));
-                                            }
-                                          }
-                                          suggs = myDictSuggestions;
+                                            "autoComplete optionsBuilder$i: textEditingValue.text = ${textEditingValue.text}");
+                                        if (textEditingValue.text == '') {
+                                          return [];
+                                        } else if (textEditingValue.text
+                                                .trim() ==
+                                            "") {
+                                          autoFields[i].text = "";
+                                          return [];
                                         } else {
-                                          suggs = await loadDictSuggestions(
-                                              context,
-                                              i,
-                                              textEditingValue.text);
+                                          List<Map<String, String>> suggs = [];
+                                          print(
+                                              "dictSuggestions[$i].keys.toList().length = ${dictSuggestions[i].keys.toList().length}");
+                                          List<String> options = [];
+                                          List<String> dictWords =
+                                              dictSuggestions[i]
+                                                  .keys
+                                                  .whereType<String>()
+                                                  .toList();
+                                          if (isWordLettersDictLoaded[i] ==
+                                              true) {
+                                            List<Map<String, String>>
+                                                myDictSuggestions = [];
+                                            String hintText =
+                                                textEditingValue.text;
+
+                                            //print("dictWords = ${json.encode(dictWords)}");
+                                            for (int d = 0;
+                                                d < dictWords.length;
+                                                d++) {
+                                              if (dictWords[d].length >=
+                                                      hintText.length &&
+                                                  dictWords[d]
+                                                      .toLowerCase()
+                                                      .contains(hintText
+                                                          .toLowerCase())) {
+                                                Map<String, String> dictEntry =
+                                                    {};
+                                                dictEntry[dictWords[d]] =
+                                                    dictSuggestions[i]
+                                                        [dictWords[d]]!;
+                                                myDictSuggestions.add(
+                                                    Map<String, String>.from(
+                                                        dictEntry));
+                                              }
+                                            }
+                                            suggs = myDictSuggestions;
+                                          } else {
+                                            suggs = await loadDictSuggestions(
+                                                context,
+                                                i,
+                                                textEditingValue.text);
+                                          }
+                                          for (int d = 0;
+                                              d < suggs.length;
+                                              d++) {
+                                            options
+                                                .add(suggs[d].keys.toList()[0]);
+                                          }
+                                          return options;
                                         }
-                                        for (int d = 0; d < suggs.length; d++) {
-                                          options
-                                              .add(suggs[d].keys.toList()[0]);
-                                        }
-                                        return options;
-                                      }
-                                    }, onSelected: (String selection) {
-                                      debugPrint(
-                                          'You just selected $selection');
-                                      autoFields[i].text = "";
-                                      doSelectWord(i, selection);
-                                    }, optionsViewBuilder:
-                                            (BuildContext context,
-                                                AutocompleteOnSelected<String>
-                                                    onSelected,
-                                                Iterable<String> options) {
-                                      return Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Material(
-                                          child: Container(
-                                            height: cellHeight * 0.8,
-                                            width: columnWidth - 10,
-                                            margin:
-                                                const EdgeInsets.only(top: 3.0),
-                                            decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                border: Border.all(
-                                                    color: Colors.black)),
-                                            child: ListView.builder(
-                                              padding: EdgeInsets.zero,
-                                              shrinkWrap: true,
-                                              itemCount: options.length,
-                                              itemBuilder:
-                                                  (BuildContext context,
-                                                      int index) {
-                                                final String option =
-                                                    options.elementAt(index);
-                                                return Container(
-                                                    width: columnWidth - 10,
-                                                    child: InkWell(
-                                                      onTap: () {
-                                                        onSelected(option);
-                                                      },
-                                                      child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(option),
-                                                            Visibility(
-                                                              visible: dictSuggestions[
-                                                                              i]
-                                                                          [
-                                                                          option] !=
-                                                                      null &&
-                                                                  dictSuggestions[i]
-                                                                              [
-                                                                              option]!
-                                                                          .trim() !=
-                                                                      '',
-                                                              child: Text(
-                                                                  " -- ${dictSuggestions[i][option]}"),
-                                                            ),
-                                                            Divider(
-                                                              color: Colors
-                                                                  .black, // Color of the divider
-                                                              height:
-                                                                  1, // Space around the divider
-                                                              thickness:
-                                                                  1, // Thickness of the divider
-                                                              indent:
-                                                                  0, // Left indent
-                                                              endIndent:
-                                                                  0, // Right indent
-                                                            ),
-                                                          ]),
-                                                    ));
-                                              },
+                                      }, onSelected: (String selection) {
+                                        debugPrint(
+                                            'You just selected $selection');
+                                        autoFields[i].text = "";
+                                        doSelectWord(i, selection);
+                                      }, optionsViewBuilder:
+                                              (BuildContext context,
+                                                  AutocompleteOnSelected<String>
+                                                      onSelected,
+                                                  Iterable<String> options) {
+                                        return Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Material(
+                                            child: Container(
+                                              height: cellHeight * 0.8,
+                                              width: columnWidth - 10,
+                                              margin: const EdgeInsets.only(
+                                                  top: 3.0),
+                                              decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  border: Border.all(
+                                                      color: Colors.black)),
+                                              child: ListView.builder(
+                                                padding: EdgeInsets.zero,
+                                                shrinkWrap: true,
+                                                itemCount: options.length,
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        int index) {
+                                                  final String option =
+                                                      options.elementAt(index);
+                                                  return Container(
+                                                      width: columnWidth - 10,
+                                                      child: InkWell(
+                                                        onTap: () {
+                                                          onSelected(option);
+                                                        },
+                                                        child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(option),
+                                                              Visibility(
+                                                                visible: dictSuggestions[i]
+                                                                            [
+                                                                            option] !=
+                                                                        null &&
+                                                                    dictSuggestions[i][option]!
+                                                                            .trim() !=
+                                                                        '',
+                                                                child: Text(
+                                                                    " -- ${dictSuggestions[i][option]}"),
+                                                              ),
+                                                              Divider(
+                                                                color: Colors
+                                                                    .black, // Color of the divider
+                                                                height:
+                                                                    1, // Space around the divider
+                                                                thickness:
+                                                                    1, // Thickness of the divider
+                                                                indent:
+                                                                    0, // Left indent
+                                                                endIndent:
+                                                                    0, // Right indent
+                                                              ),
+                                                            ]),
+                                                      ));
+                                                },
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      );
-                                    }))
+                                        );
+                                      }),
+                                    ))
                               ],
                             ))
                         ]),

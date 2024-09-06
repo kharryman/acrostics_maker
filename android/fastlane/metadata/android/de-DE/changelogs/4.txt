@@ -1,2 +1,0 @@
-Neue Funktion zur Verwendung mehrerer Sprachen. 
-Zeigt jetzt ausgewählte Wörter an und formatiert Akrostichonsätze richtig.

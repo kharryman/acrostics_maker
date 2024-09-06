@@ -89,18 +89,18 @@ class MenuListState extends State<MenuList> {
   }
 
   Future<void> changeLanguage(String languageCode) async {
-    print("changeLanguage called, languageCode = $languageCode");
+    print("menu.changeLanguage called, languageCode = $languageCode");
 
     FlutterI18n.refresh(widget.context, Locale(languageCode));
     await Future.delayed(Duration(milliseconds: 400));
-    setState(() {
-      //Future.delayed(Duration(milliseconds: 3000), () {
-      dynamic myLanguage = (languages.where(
-          (dynamic language) => language["value"] == languageCode)).toList()[0];
-      context.read<AppData>().setLanguage(myLanguage!);
-      print("SELECTED LANGUAGE = $myLanguage");
-    });
-    widget.updateParent();
+    //setState(() {
+    //Future.delayed(Duration(milliseconds: 3000), () {
+    dynamic myLanguage = (languages.where(
+        (dynamic language) => language["value"] == languageCode)).toList()[0];
+    context.read<AppData>().setLanguage(myLanguage!);
+    print("menu.changeLanguage SELECTED LANGUAGE = $myLanguage");
+    //});
+    //widget.updateParent();
   }
 
   @override

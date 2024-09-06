@@ -68,6 +68,7 @@
     "LANGUAGE_VIETNAMESE": "Vietnamese",
     "LANGUAGE_WELSH": "Welsh",
     "LOADING": "Uta ana",
+    "LOADING_DICTIONARY_WORDS": "Uta ana i nga kupu papakupu...",
     "LOAD_ACROSTICS_OFFLINE": "E uta ana i nga kupu acrostic tuimotu, tatari koa...",
     "LOAD_ACROSTICS_ONLINE": "E uta ana i nga kupu acrostic ki runga ipurangi, tatari koa...",
     "NETWORK_ERROR": "Hapa Whatunga",
@@ -87,6 +88,14 @@
     "SELECT_TYPE_ADJECTIVES": "Tīpakohia {typeAdjs} Kupu āhua",
     "SHARE": "WHAKAMAHI",
     "TEXT": "Kuputuhi",
+    "TYPE_COLOR": "Nga Tae",
+    "TYPE_DIRECTIONS": "Nga tohutohu",
+    "TYPE_NATIONALITIES": "Nga motu",
+    "TYPE_NUMBER": "Tau",
+    "TYPE_OPPOSITES": "He whakakeke",
+    "TYPE_PART_SPEECH": "Wahi o te Korero",
+    "TYPE_THEMES": "Kaupapa",
+    "TYPE_TIMES": "Nga taima",
     "WORDS": "KUPU",
     "YOUR_ACROSTIC_SENTENCE": "Mo, '{acrWor}', ko to rerenga korero:"
 }

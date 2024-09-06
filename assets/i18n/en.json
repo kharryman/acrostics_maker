@@ -68,6 +68,7 @@
     "LANGUAGE_VIETNAMESE": "Vietnamese",
     "LANGUAGE_WELSH": "Welsh",
     "LOADING": "Loading",
+    "LOADING_DICTIONARY_WORDS": "Loading dictionary words...",
     "LOAD_ACROSTICS_OFFLINE": "Loading acrostic words offline, please wait...",
     "LOAD_ACROSTICS_ONLINE": "Loading acrostic words online, please wait...",
     "NETWORK_ERROR": "Network Error",
@@ -87,6 +88,14 @@
     "SELECT_TYPE_ADJECTIVES": "Select {typeAdjs} Adjectives",
     "SHARE": "SHARE",
     "TEXT": "Text",
+    "TYPE_COLOR": "Colors",
+    "TYPE_DIRECTIONS": "Directions",
+    "TYPE_NATIONALITIES": "Nationalities",
+    "TYPE_NUMBER": "Number",
+    "TYPE_OPPOSITES": "Opposites",
+    "TYPE_PART_SPEECH": "Part of Speech",
+    "TYPE_THEMES": "Themes",
+    "TYPE_TIMES": "Times",
     "WORDS": "WORDS",
     "YOUR_ACROSTIC_SENTENCE": "For, '{acrWor}', your acrostic sentence is:"
 }

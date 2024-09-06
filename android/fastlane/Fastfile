@@ -34,8 +34,8 @@ platform :android do
   lane :deploy do
     upload_to_play_store(
       package_name: 'com.lfq.acrostics_maker',
-      aab: 'build\app\outputs\bundle\release\acristics-maker-release.aab',
-      skip_upload_aab:true,
+      aab: '..\build\app\outputs\bundle\release\acrostics-maker-release.aab',
+      skip_upload_apk:true,
       skip_upload_screenshots:true,
       skip_upload_images:true
     )

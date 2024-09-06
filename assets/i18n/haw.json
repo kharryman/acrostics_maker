@@ -68,6 +68,7 @@
     "LANGUAGE_VIETNAMESE": "Vietnamese",
     "LANGUAGE_WELSH": "Welsh",
     "LOADING": "Ke hoʻouka nei",
+    "LOADING_DICTIONARY_WORDS": "Ke hoʻouka nei i nā huaʻōlelo puke wehewehe ʻōlelo...",
     "LOAD_ACROSTICS_OFFLINE": "Ke hoʻouka nei i nā huaʻōlelo acrostic ma waho, e ʻoluʻolu e kali...",
     "LOAD_ACROSTICS_ONLINE": "Ke hoʻouka nei i nā huaʻōlelo acrostic ma ka pūnaewele, e ʻoluʻolu e kali...",
     "NETWORK_ERROR": "Hapa Pūnaewele",
@@ -87,6 +88,14 @@
     "SELECT_TYPE_ADJECTIVES": "E koho i {typeAdjs} Adjectives",
     "SHARE": "Kaʻana like",
     "TEXT": "kikokikona",
+    "TYPE_COLOR": "Nā kala",
+    "TYPE_DIRECTIONS": "Nā kuhikuhi",
+    "TYPE_NATIONALITIES": "Nā lāhui kanaka",
+    "TYPE_NUMBER": "Helu",
+    "TYPE_OPPOSITES": "Kūʻē",
+    "TYPE_PART_SPEECH": "Mahele o ka Haiolelo",
+    "TYPE_THEMES": "Nā kumuhana",
+    "TYPE_TIMES": "Manawa",
     "WORDS": "HUAOLELO",
     "YOUR_ACROSTIC_SENTENCE": "No ka mea, '{acrWor}', ʻo kāu ʻōlelo acrostic:"
 }

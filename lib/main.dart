@@ -44,17 +44,17 @@ dynamic defaultLanguage = {
 List<dynamic> availLanguages = [defaultLanguage];
 dynamic selectedAcrosticsLanguage = defaultLanguage;
 dynamic appLanguage = defaultLanguage;
-List<dynamic> dropdownTypes = [];
 List<dynamic> defaultTypes = [
-  {"Type": "Colors", "Trans": "Colors"},
-  {"Type": "Directions", "Trans": "Directions"},
-  {"Type": "Nationalities", "Trans": "Nationalities"},
-  {"Type": "Number", "Trans": "Number"},
-  {"Type": "Opposites", "Trans": "Opposites"},
-  {"Type": "Part_Speech", "Trans": "Part_Speech"},
-  {"Type": "Themes", "Trans": "Themes"},
-  {"Type": "Times", "Trans": "Times"}
+  {"Type": "Colors", "Trans": "TYPE_COLOR"},
+  {"Type": "Directions", "Trans": "TYPE_DIRECTIONS"},
+  {"Type": "Nationalities", "Trans": "TYPE_NATIONALITIES"},
+  {"Type": "Number", "Trans": "TYPE_NUMBER"},
+  {"Type": "Opposites", "Trans": "TYPE_OPPOSITES"},
+  {"Type": "Part_Speech", "Trans": "TYPE_PART_SPEECH"},
+  {"Type": "Themes", "Trans": "TYPE_THEMES"},
+  {"Type": "Times", "Trans": "TYPE_TIMES"}
 ];
+List<dynamic> dropdownTypes = defaultTypes;
 
 dynamic defaultData = {
   "COMPLETED_TABLES": [
@@ -434,6 +434,7 @@ class AppData extends ChangeNotifier {
     await MyHomeState().setData("LANGUAGE", selectedLanguage["value"]);
     BuildContext? context = MyHomeState().scaffoldKey.currentContext;
     await MyHomeState().initiateTypesAdjectives(context, false);
+    print("AppData.setLanguage dropdownTypes = ${json.encode(dropdownTypes)}");
     notifyListeners();
   }
 
@@ -877,7 +878,8 @@ class MyHomeState extends State<MyHome> {
   Future<void> initiateTypesAdjectives(context, isSetState) async {
     isInitiatingTypesAdjectives = true;
     String appLanguageId = appLanguage["LID"];
-    print("initiateTypesAdjectives called, appLanguageId = $appLanguageId");
+    print(
+        "initiateTypesAdjectives called, isSetState = $isSetState, appLanguageId = $appLanguageId");
     List<String> availLIDs =
         List<String>.from(availLanguages.map((lang) => lang["LID"]).toList());
     print("initiateTypesAdjectives availLIDs = $availLIDs");
@@ -892,10 +894,8 @@ class MyHomeState extends State<MyHome> {
     } catch (e) {
       isRequestSuccess = false;
       isAppOnline = false;
+      isInitiatingTypesAdjectives = false;
       await doNetworkChange();
-      setState(() {
-        isInitiatingTypesAdjectives = false;
-      });
     }
     if (isRequestSuccess == true) {
       if (response.statusCode == 200) {
@@ -905,14 +905,15 @@ class MyHomeState extends State<MyHome> {
         if (data["SUCCESS"] == true) {
           if (isSetState == true) {
             setState(() {
+              print("setState TRUE, CALLING finishInitiateTypesAdjectives");
               finishInitiateTypesAdjectives(appLanguageId, data);
               isInitiatingTypesAdjectives = false;
             });
           } else {
-            setState(() {
-              finishInitiateTypesAdjectives(appLanguageId, data);
-              isInitiatingTypesAdjectives = false;
-            });
+            //setState(() {
+            finishInitiateTypesAdjectives(appLanguageId, data);
+            isInitiatingTypesAdjectives = false;
+            //});
           }
           print("initiateTypesAdjectives DONE SUCCESSFULLY");
         } else {
@@ -935,20 +936,20 @@ class MyHomeState extends State<MyHome> {
     try {
       completedTables = List<dynamic>.from(data["COMPLETED_TABLES"]);
       allCategories = data["CATEGORIES"];
-      List<String> uniqueTypes = List<String>.from(Set.from(completedTables
-          .map((tbl) => tbl["Type"])
-          .whereType<String>()
-          .toSet()));
-      dropdownTypes = [];
-      print("initiateTypesAdjectives appLanguageId = $appLanguageId");
-      for (int u = 0; u < uniqueTypes.length; u++) {
-        dropdownTypes.add({
-          "Type": uniqueTypes[u],
-          "Trans": allCategories[uniqueTypes[u]][appLanguageId]
-        });
-      }
+      //List<String> uniqueTypes = List<String>.from(Set.from(completedTables
+      //    .map((tbl) => tbl["Type"])
+      //    .whereType<String>()
+      //    .toSet()));
+      //dropdownTypes = [];
+      //print("initiateTypesAdjectives appLanguageId = $appLanguageId");
+      //for (int u = 0; u < uniqueTypes.length; u++) {
+      //  dropdownTypes.add({
+      //    "Type": uniqueTypes[u],
+      //    "Trans": allCategories[uniqueTypes[u]][appLanguageId]
+      //  });
+      //}
       //dropdownTypes = List<dynamic>.from(completedTables);
-      print("dropdownTypes = ${json.encode(dropdownTypes)}");
+      //print("949 dropdownTypes = ${json.encode(dropdownTypes)}");
       selectedAllAdjectives = [];
       for (int i = 0; i < completedTables.length; i++) {
         selectedAllAdjectives.add([]);
@@ -957,6 +958,8 @@ class MyHomeState extends State<MyHome> {
         selectedType = dropdownTypes[0];
         dropdownAdjectives = getDropdownAdjectives(dropdownTypes[0]["Type"]);
         selectedAdjective = dropdownAdjectives[0];
+        print(
+            "finishInitiateTypesAdjectives DONE dropdownAdjectives = ${json.encode(dropdownAdjectives)}");
       }
     } catch (e) {
       print("ERROR FINISH initiateTypesAdjectives = $e");
@@ -1115,6 +1118,7 @@ class MyHomeState extends State<MyHome> {
               "DICT": "0",
               "Table_name": selectedSendAdjectives[i],
               "Letter": uniqueLetters[k],
+              "Word": getWordFromEntry(themeEntries[j][uniqueLetters[k]]![l]),
               "Entry": themeEntries[j][uniqueLetters[k]]![l]
             });
           }
@@ -1151,6 +1155,11 @@ class MyHomeState extends State<MyHome> {
                 inputWord: inputWord,
                 selectedTypesAdjectives: selectedTypesAdjectives,
                 entries: List<dynamic>.from(response["ENTRIES"]))));
+  }
+
+  String getWordFromEntry(String entry) {
+    String word = entry.split("(")[0];
+    return word;
   }
 
   Future<void> createAcrosticsNew(context) async {
@@ -1440,6 +1449,7 @@ class MyHomeState extends State<MyHome> {
           selectedAllAdjectives[i] = [];
         }
         createSelectedDropdown();
+        print("main.setLanguage calling initiateTypesAdjectives setState=true");
         initiateTypesAdjectives(context, true);
       });
     });
@@ -1485,11 +1495,12 @@ class MyHomeState extends State<MyHome> {
   Widget build(BuildContext context) {
     final TextStyle commonTextStyle = TextStyle(
       fontSize: 16.0,
+      color: Colors.black,
       fontWeight: FontWeight.normal,
       fontFamily: 'Arial', // Specify the font family
     );
     double screenWidth = MediaQuery.of(context).size.width;
-    double linkButtonSize = screenWidth * 0.7 > 275 ? screenWidth * 0.7 : 275;
+    double linkButtonSize = screenWidth * 0.7 > 300 ? screenWidth * 0.7 : 300;
     double linksFontSize =
         (screenWidth * 0.014 + 4) < 10 ? 10 : (screenWidth * 0.014 + 4);
     return isInitiated == false
@@ -1609,7 +1620,8 @@ class MyHomeState extends State<MyHome> {
                                     child: SizedBox(
                                       width: screenWidth - 100,
                                       child: ListTile(
-                                        title: Text(value["Trans"]),
+                                        title: Text(FlutterI18n.translate(
+                                            context, value["Trans"])),
                                       ),
                                     ),
                                   );
@@ -1643,7 +1655,7 @@ class MyHomeState extends State<MyHome> {
                                       context, "SELECT_TYPE_ADJECTIVES",
                                       translationParams: {
                                           "typeAdjs":
-                                              "'${selectedType["Trans"]}'"
+                                              "'${FlutterI18n.translate(context, selectedType["Trans"])}'"
                                         })
                                   : "",
                               hintStyle: commonTextStyle,

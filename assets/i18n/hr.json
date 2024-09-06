@@ -68,6 +68,7 @@
     "LANGUAGE_VIETNAMESE": "vijetnamski",
     "LANGUAGE_WELSH": "Velški",
     "LOADING": "Učitavanje",
+    "LOADING_DICTIONARY_WORDS": "Učitavanje riječi iz rječnika...",
     "LOAD_ACROSTICS_OFFLINE": "Učitavanje akrostiha izvan mreže, pričekajte...",
     "LOAD_ACROSTICS_ONLINE": "Učitavanje akrostiha online, molimo pričekajte...",
     "NETWORK_ERROR": "Pogreška mreže",
@@ -87,6 +88,14 @@
     "SELECT_TYPE_ADJECTIVES": "Odaberite {typeAdjs} pridjeve",
     "SHARE": "UDIO",
     "TEXT": "Tekst",
+    "TYPE_COLOR": "Boje",
+    "TYPE_DIRECTIONS": "Upute",
+    "TYPE_NATIONALITIES": "Nacionalnosti",
+    "TYPE_NUMBER": "Broj",
+    "TYPE_OPPOSITES": "Suprotnosti",
+    "TYPE_PART_SPEECH": "Dio govora",
+    "TYPE_THEMES": "Teme",
+    "TYPE_TIMES": "vremena",
     "WORDS": "RIJEČI",
     "YOUR_ACROSTIC_SENTENCE": "Za, '{acrWor}', vaša rečenica u akrostihu je:"
 }

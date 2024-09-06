@@ -1,0 +1,2 @@
+Ny funktion til at bruge flere sprog.
+Viser valgte ord nu og formaterer akrostisk sætning korrekt.

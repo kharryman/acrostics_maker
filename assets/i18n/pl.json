@@ -68,6 +68,7 @@
     "LANGUAGE_VIETNAMESE": "wietnamski",
     "LANGUAGE_WELSH": "Walijski",
     "LOADING": "Załadunek",
+    "LOADING_DICTIONARY_WORDS": "Ładowanie słów ze słownika...",
     "LOAD_ACROSTICS_OFFLINE": "Ładowanie akrostychów offline, proszę czekać...",
     "LOAD_ACROSTICS_ONLINE": "Ładowanie akrostychów online, proszę czekać...",
     "NETWORK_ERROR": "Błąd sieci",
@@ -87,6 +88,14 @@
     "SELECT_TYPE_ADJECTIVES": "Wybierz przymiotniki {typeAdjs}",
     "SHARE": "UDZIAŁ",
     "TEXT": "Tekst",
+    "TYPE_COLOR": "Zabarwienie",
+    "TYPE_DIRECTIONS": "Wskazówki",
+    "TYPE_NATIONALITIES": "Narodowości",
+    "TYPE_NUMBER": "Numer",
+    "TYPE_OPPOSITES": "Przeciwieństwa",
+    "TYPE_PART_SPEECH": "Część mowy",
+    "TYPE_THEMES": "Tematy",
+    "TYPE_TIMES": "Czasy",
     "WORDS": "SŁOWA",
     "YOUR_ACROSTIC_SENTENCE": "W przypadku '{acrWor}' Twoje zdanie akrostychowe wygląda następująco:"
 }

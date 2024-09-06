@@ -68,6 +68,7 @@
     "LANGUAGE_VIETNAMESE": "Vietnamesisch",
     "LANGUAGE_WELSH": "Walisisch",
     "LOADING": "Laden",
+    "LOADING_DICTIONARY_WORDS": "Wörterbuchwörter werden geladen ...",
     "LOAD_ACROSTICS_OFFLINE": "Akrostichon-Wörter werden offline geladen, bitte warten …",
     "LOAD_ACROSTICS_ONLINE": "Akrostichon-Wörter werden online geladen, bitte warten …",
     "NETWORK_ERROR": "Netzwerkfehler",
@@ -87,6 +88,14 @@
     "SELECT_TYPE_ADJECTIVES": "Wählen Sie {typeAdjs} Adjektive",
     "SHARE": "AKTIE",
     "TEXT": "Text",
+    "TYPE_COLOR": "Farben",
+    "TYPE_DIRECTIONS": "Wegbeschreibung",
+    "TYPE_NATIONALITIES": "Nationalitäten",
+    "TYPE_NUMBER": "Nummer",
+    "TYPE_OPPOSITES": "Gegensätze",
+    "TYPE_PART_SPEECH": "Wortart",
+    "TYPE_THEMES": "Themen",
+    "TYPE_TIMES": "Mal",
     "WORDS": "WÖRTER",
     "YOUR_ACROSTIC_SENTENCE": "Für „{acrWor}“ lautet Ihr Akrostichonsatz:"
 }

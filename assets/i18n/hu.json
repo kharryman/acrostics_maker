@@ -68,6 +68,7 @@
     "LANGUAGE_VIETNAMESE": "vietnami",
     "LANGUAGE_WELSH": "Walesi",
     "LOADING": "Terhelés",
+    "LOADING_DICTIONARY_WORDS": "Szótári szavak betöltése...",
     "LOAD_ACROSTICS_OFFLINE": "Acrostic szavak offline betöltése, kérjük, várjon...",
     "LOAD_ACROSTICS_ONLINE": "Acrostic szavak online betöltése, kérjük, várjon...",
     "NETWORK_ERROR": "Hálózati hiba",
@@ -87,6 +88,14 @@
     "SELECT_TYPE_ADJECTIVES": "Válassza a {typeAdjs} mellékneveket",
     "SHARE": "OSSZA MEG",
     "TEXT": "Szöveg",
+    "TYPE_COLOR": "Színek",
+    "TYPE_DIRECTIONS": "Útvonalak",
+    "TYPE_NATIONALITIES": "Nemzetiségek",
+    "TYPE_NUMBER": "Szám",
+    "TYPE_OPPOSITES": "Ellentétek",
+    "TYPE_PART_SPEECH": "A beszéd része",
+    "TYPE_THEMES": "Témák",
+    "TYPE_TIMES": "Times",
     "WORDS": "SZAVAK",
     "YOUR_ACROSTIC_SENTENCE": "Az „{acrWor}” acrostic mondata a következő:"
 }

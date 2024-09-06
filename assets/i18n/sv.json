@@ -68,6 +68,7 @@
     "LANGUAGE_VIETNAMESE": "vietnamesiska",
     "LANGUAGE_WELSH": "Walesiska",
     "LOADING": "Belastning",
+    "LOADING_DICTIONARY_WORDS": "Laddar ordbok...",
     "LOAD_ACROSTICS_OFFLINE": "Laddar akrostiska ord offline, vänta...",
     "LOAD_ACROSTICS_ONLINE": "Laddar akrostiska ord online, vänligen vänta...",
     "NETWORK_ERROR": "Nätverksfel",
@@ -87,6 +88,14 @@
     "SELECT_TYPE_ADJECTIVES": "Välj {typeAdjs} Adjektiv",
     "SHARE": "DELA MED SIG",
     "TEXT": "Text",
+    "TYPE_COLOR": "Färger",
+    "TYPE_DIRECTIONS": "Vägbeskrivning",
+    "TYPE_NATIONALITIES": "Nationaliteter",
+    "TYPE_NUMBER": "Antal",
+    "TYPE_OPPOSITES": "Motsatser",
+    "TYPE_PART_SPEECH": "Ordklass",
+    "TYPE_THEMES": "teman",
+    "TYPE_TIMES": "Tider",
     "WORDS": "ORD",
     "YOUR_ACROSTIC_SENTENCE": "För '{acrWor}' är din akrostiska mening:"
 }

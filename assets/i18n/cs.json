@@ -68,6 +68,7 @@
     "LANGUAGE_VIETNAMESE": "vietnamština",
     "LANGUAGE_WELSH": "Velština",
     "LOADING": "Načítání",
+    "LOADING_DICTIONARY_WORDS": "Načítání slov ze slovníku...",
     "LOAD_ACROSTICS_OFFLINE": "Načítání akrostických slov offline, čekejte prosím...",
     "LOAD_ACROSTICS_ONLINE": "Načítání akrostických slov online, čekejte prosím...",
     "NETWORK_ERROR": "Chyba sítě",
@@ -87,6 +88,14 @@
     "SELECT_TYPE_ADJECTIVES": "Vyberte {typeAdjs} Přídavná jména",
     "SHARE": "PODÍL",
     "TEXT": "Text",
+    "TYPE_COLOR": "Barvy",
+    "TYPE_DIRECTIONS": "Pokyny",
+    "TYPE_NATIONALITIES": "národnosti",
+    "TYPE_NUMBER": "Číslo",
+    "TYPE_OPPOSITES": "Protiklady",
+    "TYPE_PART_SPEECH": "Slovní druh",
+    "TYPE_THEMES": "Témata",
+    "TYPE_TIMES": "Times",
     "WORDS": "SLOVA",
     "YOUR_ACROSTIC_SENTENCE": "Pro '{acrWor}' je vaše akrostitická věta:"
 }

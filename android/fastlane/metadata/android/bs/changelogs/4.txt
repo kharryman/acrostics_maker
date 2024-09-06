@@ -1,2 +1,0 @@
-Nova funkcija za korištenje više jezika.
-Sada prikazuje odabrane riječi i pravilno formatira akrostih rečenicu.

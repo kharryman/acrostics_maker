@@ -68,6 +68,7 @@
     "LANGUAGE_VIETNAMESE": "Vyetnamyen",
     "LANGUAGE_WELSH": "Welsh",
     "LOADING": "Chaje",
+    "LOADING_DICTIONARY_WORDS": "Chaje mo diksyonè a...",
     "LOAD_ACROSTICS_OFFLINE": "Chaje mo akwostik offline, tanpri tann...",
     "LOAD_ACROSTICS_ONLINE": "Chaje mo akwostik sou entènèt, tanpri tann...",
     "NETWORK_ERROR": "Erè rezo a",
@@ -87,6 +88,14 @@
     "SELECT_TYPE_ADJECTIVES": "Chwazi {typeAdjs} Adjektif",
     "SHARE": "PATAJE",
     "TEXT": "Tèks",
+    "TYPE_COLOR": "Koulè",
+    "TYPE_DIRECTIONS": "Direksyon",
+    "TYPE_NATIONALITIES": "Nasyonalite",
+    "TYPE_NUMBER": "Nimewo",
+    "TYPE_OPPOSITES": "Opoze",
+    "TYPE_PART_SPEECH": "Pati nan Lapawòl",
+    "TYPE_THEMES": "Tèm",
+    "TYPE_TIMES": "Fwa",
     "WORDS": "PAWÒL",
     "YOUR_ACROSTIC_SENTENCE": "Pou, '{acrWor}', fraz akrostik ou a se:"
 }

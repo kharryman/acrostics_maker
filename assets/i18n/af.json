@@ -68,6 +68,7 @@
     "LANGUAGE_VIETNAMESE": "Viëtnamees",
     "LANGUAGE_WELSH": "Wallies",
     "LOADING": "Laai tans",
+    "LOADING_DICTIONARY_WORDS": "Laai tans woordeboekwoorde...",
     "LOAD_ACROSTICS_OFFLINE": "Laai tans akrostiese woorde vanlyn, wag asseblief...",
     "LOAD_ACROSTICS_ONLINE": "Laai tans akrostiese woorde aanlyn, wag asseblief...",
     "NETWORK_ERROR": "Netwerk fout",
@@ -87,6 +88,14 @@
     "SELECT_TYPE_ADJECTIVES": "Kies {typeAdjs} Byvoeglike naamwoorde",
     "SHARE": "DEEL",
     "TEXT": "Teks",
+    "TYPE_COLOR": "Kleure",
+    "TYPE_DIRECTIONS": "Aanwysings",
+    "TYPE_NATIONALITIES": "Nasionaliteite",
+    "TYPE_NUMBER": "Nommer",
+    "TYPE_OPPOSITES": "Teenoorgesteldes",
+    "TYPE_PART_SPEECH": "Deel van spraak",
+    "TYPE_THEMES": "Temas",
+    "TYPE_TIMES": "Tye",
     "WORDS": "WOORDE",
     "YOUR_ACROSTIC_SENTENCE": "Vir, '{acrWor}', is jou akrostiese sin:"
 }

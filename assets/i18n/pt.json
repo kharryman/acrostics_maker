@@ -68,6 +68,7 @@
     "LANGUAGE_VIETNAMESE": "vietnamita",
     "LANGUAGE_WELSH": "Galês",
     "LOADING": "Carregando",
+    "LOADING_DICTIONARY_WORDS": "Carregando palavras do dicionário...",
     "LOAD_ACROSTICS_OFFLINE": "Carregando palavras acrósticas offline, aguarde...",
     "LOAD_ACROSTICS_ONLINE": "Carregando palavras acrósticas online, aguarde...",
     "NETWORK_ERROR": "Erro de rede",
@@ -87,6 +88,14 @@
     "SELECT_TYPE_ADJECTIVES": "Selecione {typeAdjs} Adjetivos",
     "SHARE": "COMPARTILHAR",
     "TEXT": "Texto",
+    "TYPE_COLOR": "Cores",
+    "TYPE_DIRECTIONS": "Instruções",
+    "TYPE_NATIONALITIES": "Nacionalidades",
+    "TYPE_NUMBER": "Número",
+    "TYPE_OPPOSITES": "Opostos",
+    "TYPE_PART_SPEECH": "Parte do discurso",
+    "TYPE_THEMES": "Temas",
+    "TYPE_TIMES": "Tempos",
     "WORDS": "PALAVRAS",
     "YOUR_ACROSTIC_SENTENCE": "Para '{acrWor}', sua frase acróstica é:"
 }

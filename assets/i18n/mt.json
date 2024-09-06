@@ -68,6 +68,7 @@
     "LANGUAGE_VIETNAMESE": "Vjetnamiż",
     "LANGUAGE_WELSH": "Welsh",
     "LOADING": "Tagħbija",
+    "LOADING_DICTIONARY_WORDS": "Qiegħed il-kliem tad-dizzjunarju qed jgħabbi...",
     "LOAD_ACROSTICS_OFFLINE": "Tagħbija kliem akrostiku offline, jekk jogħġbok stenna...",
     "LOAD_ACROSTICS_ONLINE": "Tagħbija kliem akrostiku onlajn, jekk jogħġbok stenna...",
     "NETWORK_ERROR": "Żball tan-Netwerk",
@@ -87,6 +88,14 @@
     "SELECT_TYPE_ADJECTIVES": "Agħżel {typeAdjs} Aġġettivi",
     "SHARE": "SHARE",
     "TEXT": "Test",
+    "TYPE_COLOR": "Kuluri",
+    "TYPE_DIRECTIONS": "Direzzjonijiet",
+    "TYPE_NATIONALITIES": "Nazzjonalitajiet",
+    "TYPE_NUMBER": "Numru",
+    "TYPE_OPPOSITES": "Opposti",
+    "TYPE_PART_SPEECH": "Parti mid-Diskors",
+    "TYPE_THEMES": "Temi",
+    "TYPE_TIMES": "Times",
     "WORDS": "KLIEM",
     "YOUR_ACROSTIC_SENTENCE": "Għal, '{acrWor}', is-sentenza akrostika tiegħek hija:"
 }

@@ -68,6 +68,7 @@
     "LANGUAGE_VIETNAMESE": "vietnamlane",
     "LANGUAGE_WELSH": "Kõmri",
     "LOADING": "Laadimine",
+    "LOADING_DICTIONARY_WORDS": "Sõnaraamatu sõnade laadimine...",
     "LOAD_ACROSTICS_OFFLINE": "Acrostic sõnade laadimine võrguühenduseta, palun oodake...",
     "LOAD_ACROSTICS_ONLINE": "Acrostic sõnade laadimine võrgus, palun oodake...",
     "NETWORK_ERROR": "Võrgu viga",
@@ -87,6 +88,14 @@
     "SELECT_TYPE_ADJECTIVES": "Valige {typeAdjs} omadussõnad",
     "SHARE": "JAGA",
     "TEXT": "Tekst",
+    "TYPE_COLOR": "Värvid",
+    "TYPE_DIRECTIONS": "Juhised",
+    "TYPE_NATIONALITIES": "Rahvused",
+    "TYPE_NUMBER": "Number",
+    "TYPE_OPPOSITES": "Vastandid",
+    "TYPE_PART_SPEECH": "Osa kõnest",
+    "TYPE_THEMES": "Teemad",
+    "TYPE_TIMES": "Ajad",
     "WORDS": "SÕNAD",
     "YOUR_ACROSTIC_SENTENCE": "'{acrWor}' puhul on teie akrostiline lause:"
 }

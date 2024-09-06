@@ -68,6 +68,7 @@
     "LANGUAGE_VIETNAMESE": "vietnamita",
     "LANGUAGE_WELSH": "Gallese",
     "LOADING": "Caricamento",
+    "LOADING_DICTIONARY_WORDS": "Caricamento parole del dizionario...",
     "LOAD_ACROSTICS_OFFLINE": "Caricamento delle parole acrostiche offline, attendere prego...",
     "LOAD_ACROSTICS_ONLINE": "Caricamento delle parole acrostiche online, attendere prego...",
     "NETWORK_ERROR": "Errore di rete",
@@ -87,6 +88,14 @@
     "SELECT_TYPE_ADJECTIVES": "Seleziona aggettivi {typeAdjs}",
     "SHARE": "CONDIVIDERE",
     "TEXT": "Testo",
+    "TYPE_COLOR": "Colori",
+    "TYPE_DIRECTIONS": "Indicazioni",
+    "TYPE_NATIONALITIES": "Nazionalità",
+    "TYPE_NUMBER": "Numero",
+    "TYPE_OPPOSITES": "Opposti",
+    "TYPE_PART_SPEECH": "Parte del discorso",
+    "TYPE_THEMES": "Temi",
+    "TYPE_TIMES": "Volte",
     "WORDS": "PAROLE",
     "YOUR_ACROSTIC_SENTENCE": "Per '{acrWor}', la tua frase acrostica è:"
 }

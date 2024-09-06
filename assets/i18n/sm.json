@@ -68,6 +68,7 @@
     "LANGUAGE_VIETNAMESE": "Vietnamese",
     "LANGUAGE_WELSH": "Uelese",
     "LOADING": "utaina",
+    "LOADING_DICTIONARY_WORDS": "O lo'o fa'atūina upu lolomifefiloi...",
     "LOAD_ACROSTICS_OFFLINE": "O lo'o fa'atauina upu acrostic i fafo, fa'amolemole fa'atali...",
     "LOAD_ACROSTICS_ONLINE": "O lo'o fa'atūina upu fa'aacrostic i luga ole laiga, fa'amolemole fa'atali...",
     "NETWORK_ERROR": "Sese Network",
@@ -87,6 +88,14 @@
     "SELECT_TYPE_ADJECTIVES": "Filifili {typeAdjs} Adjectives",
     "SHARE": "FA'AFEAGAI",
     "TEXT": "Tusitusi",
+    "TYPE_COLOR": "Lanu",
+    "TYPE_DIRECTIONS": "Fa'atonuga",
+    "TYPE_NATIONALITIES": "Nationality",
+    "TYPE_NUMBER": "Numera",
+    "TYPE_OPPOSITES": "Faafeagai",
+    "TYPE_PART_SPEECH": "Vaega o Lauga",
+    "TYPE_THEMES": "Autu",
+    "TYPE_TIMES": "Taimi",
     "WORDS": "UPU",
     "YOUR_ACROSTIC_SENTENCE": "Mo, '{acrWor}', o lau fa'aupuga acrostic o le:"
 }

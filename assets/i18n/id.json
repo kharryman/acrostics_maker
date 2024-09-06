@@ -68,6 +68,7 @@
     "LANGUAGE_VIETNAMESE": "Orang Vietnam",
     "LANGUAGE_WELSH": "Welsh",
     "LOADING": "Memuat",
+    "LOADING_DICTIONARY_WORDS": "Memuat kata kamus...",
     "LOAD_ACROSTICS_OFFLINE": "Memuat kata akrostik secara offline, harap tunggu...",
     "LOAD_ACROSTICS_ONLINE": "Memuat kata akrostik daring, harap tunggu...",
     "NETWORK_ERROR": "Kesalahan Jaringan",
@@ -87,6 +88,14 @@
     "SELECT_TYPE_ADJECTIVES": "Pilih Kata Sifat {typeAdjs}",
     "SHARE": "MEMBAGIKAN",
     "TEXT": "Teks",
+    "TYPE_COLOR": "Warna",
+    "TYPE_DIRECTIONS": "Petunjuk arah",
+    "TYPE_NATIONALITIES": "Kebangsaan",
+    "TYPE_NUMBER": "Nomor",
+    "TYPE_OPPOSITES": "Berlawanan",
+    "TYPE_PART_SPEECH": "Bagian dari Pidato",
+    "TYPE_THEMES": "Tema",
+    "TYPE_TIMES": "Waktu",
     "WORDS": "KATA-KATA",
     "YOUR_ACROSTIC_SENTENCE": "Untuk, '{acrWor}', kalimat akrostik Anda adalah:"
 }

@@ -68,6 +68,7 @@
     "LANGUAGE_VIETNAMESE": "vietnamez",
     "LANGUAGE_WELSH": "Galeză",
     "LOADING": "Încărcare",
+    "LOADING_DICTIONARY_WORDS": "Se încarcă cuvintele din dicționar...",
     "LOAD_ACROSTICS_OFFLINE": "Se încarcă offline cuvintele acrostice, așteptați...",
     "LOAD_ACROSTICS_ONLINE": "Se încarcă online cuvintele acrostice, așteptați...",
     "NETWORK_ERROR": "Eroare de rețea",
@@ -87,6 +88,14 @@
     "SELECT_TYPE_ADJECTIVES": "Selectați {typeAdjs} Adjective",
     "SHARE": "ACȚIUNE",
     "TEXT": "Text",
+    "TYPE_COLOR": "Culori",
+    "TYPE_DIRECTIONS": "Direcții",
+    "TYPE_NATIONALITIES": "Naţionalităţi",
+    "TYPE_NUMBER": "Număr",
+    "TYPE_OPPOSITES": "Opuse",
+    "TYPE_PART_SPEECH": "Parte de vorbire",
+    "TYPE_THEMES": "Teme",
+    "TYPE_TIMES": "Times",
     "WORDS": "CUVINTE",
     "YOUR_ACROSTIC_SENTENCE": "Pentru „{acrWor}”, propoziția ta acrostică este:"
 }

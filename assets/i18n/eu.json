@@ -68,6 +68,7 @@
     "LANGUAGE_VIETNAMESE": "Vietnamera",
     "LANGUAGE_WELSH": "Galesera",
     "LOADING": "Kargatzen",
+    "LOADING_DICTIONARY_WORDS": "Hiztegiko hitzak kargatzen...",
     "LOAD_ACROSTICS_OFFLINE": "Hitz akrostikoak konexiorik gabe kargatzen, itxaron mesedez...",
     "LOAD_ACROSTICS_ONLINE": "Hitz akrostikoak sarean kargatzen, itxaron mesedez...",
     "NETWORK_ERROR": "Sareko errorea",
@@ -87,6 +88,14 @@
     "SELECT_TYPE_ADJECTIVES": "Hautatu {typeAdjs} Adjektiboak",
     "SHARE": "PARTEKATU",
     "TEXT": "Testua",
+    "TYPE_COLOR": "Koloreak",
+    "TYPE_DIRECTIONS": "Norabideak",
+    "TYPE_NATIONALITIES": "Nazionalitateak",
+    "TYPE_NUMBER": "Zenbakia",
+    "TYPE_OPPOSITES": "Kontrakoak",
+    "TYPE_PART_SPEECH": "Hitzaldiaren zatia",
+    "TYPE_THEMES": "Gaiak",
+    "TYPE_TIMES": "Garaiak",
     "WORDS": "HITZAK",
     "YOUR_ACROSTIC_SENTENCE": "Zeren, '{acrWor}', zure esaldi akrostikoa hauxe da:"
 }

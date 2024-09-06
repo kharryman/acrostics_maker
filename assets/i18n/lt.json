@@ -68,6 +68,7 @@
     "LANGUAGE_VIETNAMESE": "vietnamiečių",
     "LANGUAGE_WELSH": "Valų",
     "LOADING": "Įkeliama",
+    "LOADING_DICTIONARY_WORDS": "Įkeliami žodyno žodžiai...",
     "LOAD_ACROSTICS_OFFLINE": "Acrostic žodžiai įkeliami neprisijungus, palaukite...",
     "LOAD_ACROSTICS_ONLINE": "Įkeliami acrostic žodžiai internete, palaukite...",
     "NETWORK_ERROR": "Tinklo klaida",
@@ -87,6 +88,14 @@
     "SELECT_TYPE_ADJECTIVES": "Pasirinkite {typeAdjs} būdvardžius",
     "SHARE": "DALINTIS",
     "TEXT": "Tekstas",
+    "TYPE_COLOR": "Spalvos",
+    "TYPE_DIRECTIONS": "Kryptys",
+    "TYPE_NATIONALITIES": "Tautybės",
+    "TYPE_NUMBER": "Skaičius",
+    "TYPE_OPPOSITES": "Priešingybės",
+    "TYPE_PART_SPEECH": "Kalbos dalis",
+    "TYPE_THEMES": "Temos",
+    "TYPE_TIMES": "Laikai",
     "WORDS": "ŽODŽIAI",
     "YOUR_ACROSTIC_SENTENCE": "„{acrWor}“ jūsų akrostinis sakinys yra:"
 }

@@ -68,6 +68,7 @@
     "LANGUAGE_VIETNAMESE": "Vítneaimis",
     "LANGUAGE_WELSH": "Breatnais",
     "LOADING": "Ag lódáil",
+    "LOADING_DICTIONARY_WORDS": "Foclóirí á lódáil...",
     "LOAD_ACROSTICS_OFFLINE": "Focail acrostic á lódáil as líne, fan go fóill...",
     "LOAD_ACROSTICS_ONLINE": "Focail acrostic a lódáil ar líne, fan go fóill...",
     "NETWORK_ERROR": "Earráid Líonra",
@@ -87,6 +88,14 @@
     "SELECT_TYPE_ADJECTIVES": "Roghnaigh {typeAdjs} Aidiachtaí",
     "SHARE": "SHARE",
     "TEXT": "Téacs",
+    "TYPE_COLOR": "Dathanna",
+    "TYPE_DIRECTIONS": "Treoracha",
+    "TYPE_NATIONALITIES": "Náisiúntachtaí",
+    "TYPE_NUMBER": "Uimhir",
+    "TYPE_OPPOSITES": "codarsnacha",
+    "TYPE_PART_SPEECH": "Cuid den Óráid",
+    "TYPE_THEMES": "Téamaí",
+    "TYPE_TIMES": "Amanna",
     "WORDS": "FOCAL",
     "YOUR_ACROSTIC_SENTENCE": "I gcás, '{acrWor}', is é an abairt acrostic atá agat ná:"
 }

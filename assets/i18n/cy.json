@@ -68,6 +68,7 @@
     "LANGUAGE_VIETNAMESE": "Fietnameg",
     "LANGUAGE_WELSH": "Cymraeg",
     "LOADING": "Llwytho",
+    "LOADING_DICTIONARY_WORDS": "Wrthi'n llwytho geiriau geiriadur...",
     "LOAD_ACROSTICS_OFFLINE": "Wrthi'n llwytho geiriau acrostig all-lein, arhoswch...",
     "LOAD_ACROSTICS_ONLINE": "Wrthi'n llwytho geiriau acrostig ar-lein, arhoswch...",
     "NETWORK_ERROR": "Gwall Rhwydwaith",
@@ -88,6 +89,14 @@
     "SELECT_TYPE_ADJECTIVES": "Dewiswch {typeAdjs} Ansoddeiriau",
     "SHARE": "RHANNWCH",
     "TEXT": "Testun",
+    "TYPE_COLOR": "Lliwiau",
+    "TYPE_DIRECTIONS": "Cyfarwyddiadau",
+    "TYPE_NATIONALITIES": "Cenedloedd",
+    "TYPE_NUMBER": "Rhif",
+    "TYPE_OPPOSITES": "Gyferbyn",
+    "TYPE_PART_SPEECH": "Rhan o Araith",
+    "TYPE_THEMES": "Themâu",
+    "TYPE_TIMES": "Amseroedd",
     "WORDS": "GEIRIAU",
     "YOUR_ACROSTIC_SENTENCE": "Ar gyfer, '{acrWor}', eich brawddeg acrostig yw:"
 }

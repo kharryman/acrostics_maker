@@ -68,6 +68,7 @@
     "LANGUAGE_VIETNAMESE": "vietnamski",
     "LANGUAGE_WELSH": "Valižanščina",
     "LOADING": "Nalaganje",
+    "LOADING_DICTIONARY_WORDS": "Nalaganje besed iz slovarja ...",
     "LOAD_ACROSTICS_OFFLINE": "Nalaganje akrostihov brez povezave, počakajte ...",
     "LOAD_ACROSTICS_ONLINE": "Nalaganje akrostihov na spletu, počakajte ...",
     "NETWORK_ERROR": "Napaka omrežja",
@@ -87,6 +88,14 @@
     "SELECT_TYPE_ADJECTIVES": "Izberite {typeAdjs} pridevnike",
     "SHARE": "DELITI",
     "TEXT": "Besedilo",
+    "TYPE_COLOR": "Barve",
+    "TYPE_DIRECTIONS": "Navodila",
+    "TYPE_NATIONALITIES": "Narodnosti",
+    "TYPE_NUMBER": "številka",
+    "TYPE_OPPOSITES": "Nasprotja",
+    "TYPE_PART_SPEECH": "Del govora",
+    "TYPE_THEMES": "Teme",
+    "TYPE_TIMES": "Times",
     "WORDS": "BESEDE",
     "YOUR_ACROSTIC_SENTENCE": "Za '{acrWor}' je vaš akrostih stavek:"
 }

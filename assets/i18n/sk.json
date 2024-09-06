@@ -68,6 +68,7 @@
     "LANGUAGE_VIETNAMESE": "Vietnamci",
     "LANGUAGE_WELSH": "Waleský",
     "LOADING": "Načítava sa",
+    "LOADING_DICTIONARY_WORDS": "Načítavam slová zo slovníka...",
     "LOAD_ACROSTICS_OFFLINE": "Načítavajú sa akrosticke slová offline, čakajte...",
     "LOAD_ACROSTICS_ONLINE": "Načítavajú sa akrosticke slová online, čakajte...",
     "NETWORK_ERROR": "Chyba siete",
@@ -87,6 +88,14 @@
     "SELECT_TYPE_ADJECTIVES": "Vyberte {typeAdjs} Prídavné mená",
     "SHARE": "ZDIEĽAM",
     "TEXT": "Text",
+    "TYPE_COLOR": "Farby",
+    "TYPE_DIRECTIONS": "Pokyny",
+    "TYPE_NATIONALITIES": "národnosti",
+    "TYPE_NUMBER": "číslo",
+    "TYPE_OPPOSITES": "Protiklady",
+    "TYPE_PART_SPEECH": "Časti reči",
+    "TYPE_THEMES": "Témy",
+    "TYPE_TIMES": "Times",
     "WORDS": "SLOVÁ",
     "YOUR_ACROSTIC_SENTENCE": "Pre '{acrWor}' je vaša akrostitická veta:"
 }

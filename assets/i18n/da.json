@@ -68,6 +68,7 @@
     "LANGUAGE_VIETNAMESE": "vietnamesisk",
     "LANGUAGE_WELSH": "Walisisk",
     "LOADING": "Indlæser",
+    "LOADING_DICTIONARY_WORDS": "Indlæser ordbogsord...",
     "LOAD_ACROSTICS_OFFLINE": "Indlæser akrostikord offline, vent venligst...",
     "LOAD_ACROSTICS_ONLINE": "Indlæser akrostiske ord online, vent venligst...",
     "NETWORK_ERROR": "Netværksfejl",
@@ -88,6 +89,14 @@
     "SELECT_TYPE_ADJECTIVES": "Vælg {typeAdjs} Adjektiver",
     "SHARE": "DEL",
     "TEXT": "Tekst",
+    "TYPE_COLOR": "Farver",
+    "TYPE_DIRECTIONS": "Vejbeskrivelse",
+    "TYPE_NATIONALITIES": "Nationaliteter",
+    "TYPE_NUMBER": "Antal",
+    "TYPE_OPPOSITES": "Modsætninger",
+    "TYPE_PART_SPEECH": "Del af tale",
+    "TYPE_THEMES": "Temaer",
+    "TYPE_TIMES": "Tider",
     "WORDS": "ORD",
     "YOUR_ACROSTIC_SENTENCE": "For '{acrWor}' er din akrostiske sætning:"
 }

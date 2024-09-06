@@ -1,2 +1,2 @@
 Nueva función para usar varios idiomas. 
-Ahora muestra las palabras seleccionadas y formatea las oraciones acrósticas correctamente.
+Ahora muestra las palabras seleccionadas y formatea las oraciones acrósticas correctamente. 

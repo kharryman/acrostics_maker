@@ -18,6 +18,7 @@ IF "%version%"=="" (
     CALL del /q /S "android\flutter_key.properties"
     CALL del /q /S "android\app\lfq.keystore"
     CALL node node_trans_release_notes.js %version%
+    CALL cd .\android
     CALL bundle exec fastlane deploy
 )
 @ECHO OFF

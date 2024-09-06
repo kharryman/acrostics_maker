@@ -68,6 +68,7 @@
     "LANGUAGE_VIETNAMESE": "Vietnamesesch",
     "LANGUAGE_WELSH": "Waliser",
     "LOADING": "Lueden",
+    "LOADING_DICTIONARY_WORDS": "Luede Wierderbuch Wierder ...",
     "LOAD_ACROSTICS_OFFLINE": "Lueden akrostesche Wierder offline, waart w.e.g. ...",
     "LOAD_ACROSTICS_ONLINE": "Lueden akrostesche Wierder online, waart w.e.g. ...",
     "NETWORK_ERROR": "Netzwierk Feeler",
@@ -87,6 +88,14 @@
     "SELECT_TYPE_ADJECTIVES": "Wielt {typeAdjs} Adjektiver",
     "SHARE": "DEELEN",
     "TEXT": "Text",
+    "TYPE_COLOR": "Faarwen",
+    "TYPE_DIRECTIONS": "Richtungen",
+    "TYPE_NATIONALITIES": "Nationalitéiten",
+    "TYPE_NUMBER": "Zuel",
+    "TYPE_OPPOSITES": "Géigewier",
+    "TYPE_PART_SPEECH": "Deel vun Speech",
+    "TYPE_THEMES": "Themen",
+    "TYPE_TIMES": "Zäiten",
     "WORDS": "Wuert",
     "YOUR_ACROSTIC_SENTENCE": "Fir '{acrWor}' ass Ären akrostesche Saz:"
 }
