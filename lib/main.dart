@@ -491,6 +491,11 @@ bool isAppOnline = true;
 
 class MyHomeState extends State<MyHome> {
   late StreamSubscription<ConnectivityResult> subscription;
+  late BannerAd bannerAd;
+  bool isBannerAdReady = false;
+  String bannerIdAndroid = "ca-app-pub-8514966468184377/3605875610";
+  String bannerIdIos = "ca-app-pub-8514966468184377/2831979873";
+
   bool isLoading = false;
   final TextEditingController inputController = TextEditingController();
   String inputWord = "";
@@ -709,6 +714,7 @@ class MyHomeState extends State<MyHome> {
     initiateAll(context);
     if (kIsWeb == false) {
       createInterstitialAd();
+      loadBannerAd();
     }
     subscription = Connectivity().onConnectivityChanged.listen((result) async {
       isAppOnline = true;
@@ -1417,6 +1423,27 @@ class MyHomeState extends State<MyHome> {
     }
   }
 
+  void loadBannerAd() {
+    String addUnitId = Platform.isAndroid ? bannerIdAndroid : bannerIdIos;
+    bannerAd = BannerAd(
+      adUnitId: addUnitId,
+      size: AdSize.banner,
+      request: AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (_) {
+          setState(() {
+            isBannerAdReady = true;
+          });
+        },
+        onAdFailedToLoad: (ad, error) {
+          print('BannerAd failed to load: $error');
+          ad.dispose();
+        },
+      ),
+    );
+    bannerAd.load();
+  }
+
   getTransLangValue(dynamic value) {
     return "${value["name1"]}(${FlutterI18n.translate(context, value["name2"])})";
   }
@@ -1876,6 +1903,14 @@ class MyHomeState extends State<MyHome> {
                                 ))),
                       ),
                     ]))),
+        bottomNavigationBar: isBannerAdReady
+            ? Container(
+                color: Colors.white,
+                width: bannerAd.size.width.toDouble(),
+                height: bannerAd.size.height.toDouble(),
+                child: AdWidget(ad: bannerAd),
+              )
+            : null                    
           );
   }
 }

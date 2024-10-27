@@ -1,0 +1,2 @@
+Nova značajka za korištenje više jezika.
+Sada prikazuje odabrane riječi i pravilno oblikuje akrostih.

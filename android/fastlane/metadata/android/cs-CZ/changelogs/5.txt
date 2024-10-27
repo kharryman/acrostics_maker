@@ -1,0 +1,2 @@
+Nová funkce pro použití více jazyků.
+Nyní zobrazí vybraná slova a správně naformátuje akrostickou větu.

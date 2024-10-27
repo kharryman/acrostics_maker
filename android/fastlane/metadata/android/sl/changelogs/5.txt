@@ -1,0 +1,2 @@
+Nova funkcija za uporabo več jezikov.
+Zdaj prikaže izbrane besede in pravilno oblikuje akrostih.
