@@ -1,0 +1,2 @@
+Nová funkcia na používanie viacerých jazykov.
+Teraz zobrazuje vybraté slová a správne naformátuje akrostic vetu.

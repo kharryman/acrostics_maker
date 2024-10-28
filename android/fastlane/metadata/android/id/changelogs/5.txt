@@ -1,0 +1,2 @@
+Fitur baru untuk menggunakan beberapa bahasa. 
+Menampilkan kata-kata terpilih sekarang, dan memformat kalimat akrostik dengan tepat.

@@ -1,0 +1,2 @@
+Ny funktion för att använda flera språk.
+Visar valda ord nu och formaterar akrostisk mening korrekt.

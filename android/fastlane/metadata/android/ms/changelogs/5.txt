@@ -1,0 +1,2 @@
+Ciri baharu untuk menggunakan berbilang bahasa.
+Menunjukkan perkataan yang dipilih sekarang dan memformat ayat akrostik dengan betul.

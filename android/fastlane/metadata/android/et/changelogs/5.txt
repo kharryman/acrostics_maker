@@ -1,0 +1,2 @@
+Uus funktsioon mitme keele kasutamiseks.
+Kuvab nüüd valitud sõnu ja vormindab akrostilise lause õigesti.
