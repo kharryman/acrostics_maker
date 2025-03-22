@@ -1,2 +1,1 @@
-New feature to use multiple languages.
-Shows selected words now, and formats acrostic sentence properly.
+Created ability to remove ads for a small fee.
