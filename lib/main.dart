@@ -7,6 +7,7 @@ import 'package:acrostics_maker/menu.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_i18n/loaders/decoders/base_decode_strategy.dart';
 import 'package:flutter_i18n/loaders/decoders/json_decode_strategy.dart';
@@ -28,6 +29,7 @@ import 'dict_big.dart';
 import 'alp.dart';
 //to get reviews:
 import 'package:advanced_in_app_review/advanced_in_app_review.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 
 const String testDevice = '974550CBC7D4EA4718A67165E2E3B868';
 const String myIpad = '00008020-0014301102D1002E';
@@ -392,6 +394,8 @@ dynamic allCategories = [];
 dynamic selectedType = {};
 String selectedAdjective = '';
 bool isInitiated = false;
+String priceNoAds = "\$1";
+bool isAds = true;
 
 class MyObject {
   String name;
@@ -415,6 +419,11 @@ Future<void> main() async {
       ..updateRequestConfiguration(RequestConfiguration(
         testDeviceIds: testDevices,
       ));
+    InAppPurchase.instance.isAvailable().then((available) {
+      if (!available) {
+        print("In-app purchases not available on this device.");
+      }
+    });
   } else {
     print("main NOT SHOWING AD");
   }
@@ -436,6 +445,11 @@ class AppData extends ChangeNotifier {
     await MyHomeState().initiateTypesAdjectives(context, false);
     print("AppData.setLanguage dropdownTypes = ${json.encode(dropdownTypes)}");
     notifyListeners();
+  }
+
+  void setIsAds(bool myIsAds) {
+    print("AppData setIsAds called myIsAds = $myIsAds");
+    isAds = myIsAds;
   }
 
   bool menuOpen = false;
@@ -489,7 +503,7 @@ class MyHome extends StatefulWidget {
 
 bool isAppOnline = true;
 
-class MyHomeState extends State<MyHome> {
+class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
   late StreamSubscription<ConnectivityResult> subscription;
   late BannerAd bannerAd;
   bool isBannerAdReady = false;
@@ -698,6 +712,7 @@ class MyHomeState extends State<MyHome> {
   });
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  StreamSubscription<List<PurchaseDetails>>? purchaseSubscription;
 
   @override
   initState() {
@@ -724,6 +739,11 @@ class MyHomeState extends State<MyHome> {
       }
       await doNetworkChange();
     });
+
+    if (isAds == true) {
+      createInterstitialAd();
+      loadBannerAd();
+    }
   }
 
   doNetworkChange() async {
@@ -739,8 +759,103 @@ class MyHomeState extends State<MyHome> {
     } else {
       BuildContext? context = scaffoldKey.currentContext;
       await initiateAll(context);
+      //if (kIsWeb == false) {
+      //  createInterstitialAd();
+      //}
       if (kIsWeb == false) {
-        createInterstitialAd();
+        await initializeInAppPurchase();
+      }
+    }
+  }
+
+  @override
+  didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      if (kIsWeb == false) {
+        initializeInAppPurchase();
+      }
+    }
+  }
+
+  Future<void> initializeInAppPurchase() async {
+    final InAppPurchase iap = InAppPurchase.instance;
+    final bool isAvailable = await iap.isAvailable();
+
+    if (isAvailable) {
+      if (purchaseSubscription != null) {
+        await purchaseSubscription!.cancel();
+      }
+
+      purchaseSubscription =
+          iap.purchaseStream.listen((List<PurchaseDetails> purchases) async {
+        PurchaseDetails? purchaseRemoveAds = purchases.isNotEmpty
+            ? purchases
+                .firstWhere((purchase) => purchase.productID == 'remove_ads')
+            : null;
+
+        if (purchaseRemoveAds != null) {
+          if (purchaseRemoveAds.status == PurchaseStatus.purchased ||
+              purchaseRemoveAds.status == PurchaseStatus.restored) {
+            print(
+                "main initializeInAppPurchase remove_ads ${purchaseRemoveAds.status == PurchaseStatus.purchased ? "PURCHASED" : "RESTORED"}! Setting isAds=FALSE!");
+
+            print("main initializeInAppPurchase COMPLETING PURCHASE!");
+            setState(() {
+              disposeAds();
+              isAds = false;
+            });
+
+            if (purchaseRemoveAds.pendingCompletePurchase) {
+              print("Completing purchase...");
+              await InAppPurchase.instance.completePurchase(purchaseRemoveAds);
+              await MenuState().showSuccessThanksBuy();
+            }
+          } else if (purchaseRemoveAds.status == PurchaseStatus.error) {
+            // Handle failed purchase
+            print(
+                "main initializeInAppPurchase 'remove_ads' Purchase error: ${purchaseRemoveAds.error}.");
+            //if (mounted) {
+            //  WidgetsBinding.instance.addPostFrameCallback((_) {
+            await MyHomeState().showPopup(context,
+                "${FlutterI18n.translate(context, "PROMPT_PURCHASING_ERROR")}: ${purchaseRemoveAds.error}");
+            // });
+            //}
+          }
+        }
+      }, onError: (error) {
+        print("Purchase Error: $error");
+      }, onDone: () {
+        purchaseSubscription?.cancel(); // Clean up after use
+      }, cancelOnError: true);
+      await restorePurchases();
+    }
+  }
+
+  Future<void> restorePurchases() async {
+    print("restorePurchases called");
+    if (kIsWeb == true) {
+      //MyHomeState().showPopup(context, "CAN'T RESTORE ADS ON WEB!");
+      print("Cant restore purchases on web-app.");
+    } else {
+      //setState(() {
+      //  isRestoring = true;
+      //});
+      final InAppPurchase iapInstance = InAppPurchase.instance;
+      bool isAvailable = await iapInstance.isAvailable();
+      if (isAvailable) {
+        // Fetch past purchases
+        try {
+          await iapInstance.restorePurchases();
+        } catch (e) {
+          print("Failed to restore purchases");
+          //ScaffoldMessenger.of(context).showSnackBar(
+          //  SnackBar(content: Text("Failed to restore purchases")),
+          //);
+          //setState(() {
+          //  isRestoring = false;
+          //});
+          return;
+        }
       }
     }
   }
@@ -866,6 +981,38 @@ class MyHomeState extends State<MyHome> {
               },
               child: Text(FlutterI18n.translate(context, "CLOSE")),
             ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> showConfirm(BuildContext context, String title, String message,
+      String cancelText, String okText, Function callback) async {
+    print("showshowConfirm called");
+    return showDialog<void>(
+      context: context,
+      barrierDismissible:
+          false, // Prevent dismissing by tapping outside the popup
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.70,
+              child: SingleChildScrollView(child: Html(data: message))),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the popup
+              },
+              child: Text(cancelText),
+            ),
+            TextButton(
+              onPressed: () {
+                callback();
+              },
+              child: Text(okText),
+            )
           ],
         );
       },
@@ -1392,7 +1539,13 @@ class MyHomeState extends State<MyHome> {
 
   void showInterstitialAd(Function callback) {
     print("showInterstitialAd called");
-    if (interstitialAd == null) {
+    if (kIsWeb == true) {
+      print('Can not run ads on web!.');
+      callback();
+    } else if (isAds == false) {
+      print('isAds FALSE. SHOW NO-ADS WAS PURCHASED!.');
+      callback();
+    } else if (interstitialAd == null) {
       print('Warning: attempt to show interstitialAd before loaded.');
       callback();
     } else {
@@ -1504,8 +1657,13 @@ class MyHomeState extends State<MyHome> {
     }
     String languageId = selectedAcrosticsLanguage["LID"];
     bool isUse =
-        ((languageId == "8" && appLanguageId == "8") || isAppOnline == false);
+        (isAds == false && ((languageId == "8" && appLanguageId == "8") || isAppOnline == false));
     return isUse;
+  }
+
+  void disposeAds() {
+    interstitialAd?.dispose();
+    bannerAd.dispose();
   }
 
   @override
@@ -1903,14 +2061,13 @@ class MyHomeState extends State<MyHome> {
                                 ))),
                       ),
                     ]))),
-        bottomNavigationBar: isBannerAdReady
-            ? Container(
-                color: Colors.white,
-                width: bannerAd.size.width.toDouble(),
-                height: bannerAd.size.height.toDouble(),
-                child: AdWidget(ad: bannerAd),
-              )
-            : null                    
-          );
+            bottomNavigationBar: (isAds == true && isBannerAdReady)
+                ? Container(
+                    color: Colors.white,
+                    width: bannerAd.size.width.toDouble(),
+                    height: bannerAd.size.height.toDouble(),
+                    child: AdWidget(ad: bannerAd),
+                  )
+                : null);
   }
 }

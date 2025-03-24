@@ -1,0 +1,1 @@
+Criou a capacidade de remover anúncios por uma pequena taxa.
