@@ -396,6 +396,7 @@ String selectedAdjective = '';
 bool isInitiated = false;
 String priceNoAds = "\$1";
 bool isAds = true;
+String removeAdsProductId = "remove_ads";
 
 class MyObject {
   String name;
@@ -411,8 +412,10 @@ Future<void> main() async {
     var testDevices = <String>[];
     if (Platform.isAndroid) {
       testDevices = [testDevice];
+      removeAdsProductId = "remove_ads";
     } else if (Platform.isIOS) {
       testDevices = [myIpad, myIphone11];
+      removeAdsProductId = "remove_ads_acrostics_maker";
     }
     MobileAds.instance
       ..initialize()
@@ -789,15 +792,15 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
       purchaseSubscription =
           iap.purchaseStream.listen((List<PurchaseDetails> purchases) async {
         PurchaseDetails? purchaseRemoveAds = purchases.isNotEmpty
-            ? purchases
-                .firstWhere((purchase) => purchase.productID == 'remove_ads')
+            ? purchases.firstWhere(
+                (purchase) => purchase.productID == removeAdsProductId)
             : null;
 
         if (purchaseRemoveAds != null) {
           if (purchaseRemoveAds.status == PurchaseStatus.purchased ||
               purchaseRemoveAds.status == PurchaseStatus.restored) {
             print(
-                "main initializeInAppPurchase remove_ads ${purchaseRemoveAds.status == PurchaseStatus.purchased ? "PURCHASED" : "RESTORED"}! Setting isAds=FALSE!");
+                "main initializeInAppPurchase $removeAdsProductId ${purchaseRemoveAds.status == PurchaseStatus.purchased ? "PURCHASED" : "RESTORED"}! Setting isAds=FALSE!");
 
             print("main initializeInAppPurchase COMPLETING PURCHASE!");
             setState(() {
@@ -813,7 +816,7 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
           } else if (purchaseRemoveAds.status == PurchaseStatus.error) {
             // Handle failed purchase
             print(
-                "main initializeInAppPurchase 'remove_ads' Purchase error: ${purchaseRemoveAds.error}.");
+                "main initializeInAppPurchase $removeAdsProductId Purchase error: ${purchaseRemoveAds.error}.");
             //if (mounted) {
             //  WidgetsBinding.instance.addPostFrameCallback((_) {
             await MyHomeState().showPopup(context,
@@ -1656,8 +1659,8 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
       appLanguageId = "8"; //ENGLISH
     }
     String languageId = selectedAcrosticsLanguage["LID"];
-    bool isUse =
-        (isAds == false && ((languageId == "8" && appLanguageId == "8") || isAppOnline == false));
+    bool isUse = (isAds == false &&
+        ((languageId == "8" && appLanguageId == "8") || isAppOnline == false));
     return isUse;
   }
 

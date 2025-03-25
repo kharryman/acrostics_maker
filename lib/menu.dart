@@ -39,7 +39,7 @@ class MenuState extends State<Menu> {
   Future<void> loadInAppProducts() async {
     print("Menu.loadInAppProducts called");
     final InAppPurchase iapInstance = InAppPurchase.instance;
-    final Set<String> productIds = {"remove_ads"};
+    final Set<String> productIds = {removeAdsProductId};
     final ProductDetailsResponse response =
         await iapInstance.queryProductDetails(productIds);
 
@@ -56,7 +56,7 @@ class MenuState extends State<Menu> {
         print("------------------------");
       }
       ProductDetails? tempProductNoAds = response.productDetails
-          .firstWhere((product) => product.id == 'remove_ads');
+          .firstWhere((product) => product.id == removeAdsProductId);
       // ignore: unnecessary_null_comparison
       if (tempProductNoAds != null) {
         setState(() {
