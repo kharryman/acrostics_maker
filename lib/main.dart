@@ -721,6 +721,7 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
   initState() {
     super.initState();
     if (kIsWeb == false) {
+      initializeInAppPurchase();
       AdvancedInAppReview()
           .setMinDaysBeforeRemind(7)
           .setMinDaysAfterInstall(2)
@@ -775,7 +776,7 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
   didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       if (kIsWeb == false) {
-        initializeInAppPurchase();
+        //initializeInAppPurchase();
       }
     }
   }
@@ -800,19 +801,21 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
           if (purchaseRemoveAds.status == PurchaseStatus.purchased ||
               purchaseRemoveAds.status == PurchaseStatus.restored) {
             print(
-                "main initializeInAppPurchase $removeAdsProductId ${purchaseRemoveAds.status == PurchaseStatus.purchased ? "PURCHASED" : "RESTORED"}! Setting isAds=FALSE!");
-
-            print("main initializeInAppPurchase COMPLETING PURCHASE!");
+                "main initializeInAppPurchase $removeAdsProductId ${purchaseRemoveAds.status == PurchaseStatus.purchased ? "PURCHASED" : "RESTORED"}!");
             setState(() {
               disposeAds();
               isAds = false;
             });
-
             if (purchaseRemoveAds.pendingCompletePurchase) {
               print("Completing purchase...");
-              await InAppPurchase.instance.completePurchase(purchaseRemoveAds);
               await MenuState().showSuccessThanksBuy();
+              await InAppPurchase.instance.completePurchase(purchaseRemoveAds);
             }
+          } else if (purchaseRemoveAds.status == PurchaseStatus.pending) {
+            print(
+                "IAP.listen purchaseRemoveAds.status == PurchaseStatus.pending ...");
+            //await InAppPurchase.instance.completePurchase(purchaseRemoveAds);
+            await MenuState().showSuccessThanksBuy();
           } else if (purchaseRemoveAds.status == PurchaseStatus.error) {
             // Handle failed purchase
             print(
