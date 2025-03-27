@@ -1,0 +1,4 @@
+Forbedret bordlayout:
+  Akrostiske bogstaver har baggrundsfarve.
+  Bedre ordvalg.
+  Det aktuelle akrostiske adjektiv er fremhævet ovenfor, mens du ruller.

@@ -721,7 +721,9 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
   initState() {
     super.initState();
     if (kIsWeb == false) {
-      initializeInAppPurchase();
+      if (Platform.isIOS) {
+        initializeInAppPurchase();
+      }
       AdvancedInAppReview()
           .setMinDaysBeforeRemind(7)
           .setMinDaysAfterInstall(2)
@@ -731,10 +733,6 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
     }
     BuildContext? context = scaffoldKey.currentContext;
     initiateAll(context);
-    if (kIsWeb == false) {
-      createInterstitialAd();
-      loadBannerAd();
-    }
     subscription = Connectivity().onConnectivityChanged.listen((result) async {
       isAppOnline = true;
       if (result == ConnectivityResult.none) {
@@ -744,7 +742,7 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
       await doNetworkChange();
     });
 
-    if (isAds == true) {
+    if (kIsWeb == false && isAds == true) {
       createInterstitialAd();
       loadBannerAd();
     }
@@ -775,8 +773,8 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
   @override
   didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      if (kIsWeb == false) {
-        //initializeInAppPurchase();
+      if (kIsWeb == false && Platform.isAndroid) {
+        initializeInAppPurchase();
       }
     }
   }
@@ -1228,6 +1226,12 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
 
   bool validateCreate() {
     inputWord = inputController.text;
+    countAllSelected = 0;
+    for (var i = 0; i < selectedAllAdjectives.length; i++) {
+      for (var j = 0; j < selectedAllAdjectives[i].length; j++) {
+        countAllSelected++;
+      }
+    }
     if (inputWord.trim() == '') {
       showPopup(context, FlutterI18n.translate(context, "INPUT_WORD_RETRY"));
       return false;
@@ -1344,6 +1348,7 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
         });
       }
     }
+
     String appLanguageId = appLanguage["LID"];
     print("initiateTypesAdjectives called, appLanguageId = $appLanguageId");
     List<String> availLIDs =
@@ -1507,40 +1512,44 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
   );
 
   void createInterstitialAd() {
-    print("createInterstitialAd interstitialAd CALLED.");
-    //setState(() {
-    //  isMakeMajor = false;
-    //});
-    var adUnitId = Platform.isAndroid
-        ? 'ca-app-pub-8514966468184377/1433817858'
-        : 'ca-app-pub-8514966468184377/1586501727';
-    print("Using appId: $adUnitId kDebugMode = $kDebugMode");
-    InterstitialAd.load(
-        adUnitId: adUnitId,
-        request: request,
-        adLoadCallback: InterstitialAdLoadCallback(
-          onAdLoaded: (InterstitialAd ad) {
-            print('My InterstitialAd $ad loaded');
-            interstitialAd = ad;
-            numInterstitialLoadAttempts = 0;
-            interstitialAd!.setImmersiveMode(true);
-            print("interstitialAd == null ? : ${interstitialAd == null}");
-            //setState(() {
-            //  isMakeMajor = true;
-            //});
-          },
-          onAdFailedToLoad: (LoadAdError error) {
-            print('interstitialAd failed to load: $error.');
-            numInterstitialLoadAttempts += 1;
-            interstitialAd = null;
-            //setState(() {
-            //  isMakeMajor = false;
-            //});
-            if (numInterstitialLoadAttempts < maxFailedLoadAttempts) {
-              createInterstitialAd();
-            }
-          },
-        ));
+    if (kIsWeb == true) {
+      return;
+    } else {
+      print("createInterstitialAd interstitialAd CALLED.");
+      //setState(() {
+      //  isMakeMajor = false;
+      //});
+      var adUnitId = Platform.isAndroid
+          ? 'ca-app-pub-8514966468184377/1433817858'
+          : 'ca-app-pub-8514966468184377/1586501727';
+      print("Using appId: $adUnitId kDebugMode = $kDebugMode");
+      InterstitialAd.load(
+          adUnitId: adUnitId,
+          request: request,
+          adLoadCallback: InterstitialAdLoadCallback(
+            onAdLoaded: (InterstitialAd ad) {
+              print('My InterstitialAd $ad loaded');
+              interstitialAd = ad;
+              numInterstitialLoadAttempts = 0;
+              interstitialAd!.setImmersiveMode(true);
+              print("interstitialAd == null ? : ${interstitialAd == null}");
+              //setState(() {
+              //  isMakeMajor = true;
+              //});
+            },
+            onAdFailedToLoad: (LoadAdError error) {
+              print('interstitialAd failed to load: $error.');
+              numInterstitialLoadAttempts += 1;
+              interstitialAd = null;
+              //setState(() {
+              //  isMakeMajor = false;
+              //});
+              if (numInterstitialLoadAttempts < maxFailedLoadAttempts) {
+                createInterstitialAd();
+              }
+            },
+          ));
+    }
   }
 
   void showInterstitialAd(Function callback) {

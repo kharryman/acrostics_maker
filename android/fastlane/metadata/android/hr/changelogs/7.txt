@@ -1,0 +1,4 @@
+Poboljšan izgled tablice:
+  Akrostih ima boju pozadine.
+  Bolji odabir riječi.
+  Trenutačni akrostih pridjeva istaknut je iznad tijekom pomicanja.

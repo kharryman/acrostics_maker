@@ -1,0 +1,4 @@
+Továbbfejlesztett asztalelrendezés:
+  Az Acrostic betűk háttérszínnel rendelkeznek.
+  Jobb szóválasztás.
+  Az aktuális akrosztikus jelző fent van kiemelve görgetés közben.

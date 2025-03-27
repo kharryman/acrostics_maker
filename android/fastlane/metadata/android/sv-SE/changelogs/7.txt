@@ -1,0 +1,4 @@
+Förbättrad tabelllayout:
+  Akrostiska bokstäver har bakgrundsfärg.
+  Bättre ordval.
+  Det aktuella akrostiska adjektivet är markerat ovan när du rullar.

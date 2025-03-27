@@ -1,0 +1,4 @@
+Täiustatud tabeli paigutus:
+  Akrostitähtedel on taustavärv.
+  Parem sõnavalik.
+  Praegune akrostiline omadussõna on kerimise ajal eespool esile tõstetud.

@@ -6,9 +6,12 @@ import 'package:acrostics_maker/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:http/http.dart' as http;
+import 'package:visibility_detector/visibility_detector.dart';
 
 import 'main.dart';
 import 'package:share/share.dart';
+
+String visibilityCondition = "";
 
 class TablePage extends StatefulWidget {
   final String inputWord;
@@ -33,6 +36,10 @@ class TablePageState extends State<TablePage> {
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   List<FocusNode> focusNodes = [];
   List<String> letterList = [];
+  List<ScrollController> scrollControllers = [];
+  List<String> scrollTopics = [];
+  GlobalKey scrollKey = GlobalKey();
+  double stateCellHeight = 0.0;
   @override
   void initState() {
     super.initState();
@@ -42,12 +49,29 @@ class TablePageState extends State<TablePage> {
       focusNodes.add(FocusNode());
       dictSuggestions.add({});
       isWordLettersDictLoaded.add(false);
+      scrollControllers.add(ScrollController());
+      //scrollTopics.add("");
+      scrollTopics.add(
+          "${widget.selectedTypesAdjectives[0]["type"]}: ${widget.selectedTypesAdjectives[0]["adjective"]}");
+      scrollControllers[i].addListener(() {
+        onScroll(i); // Pass the index `i` to the onScroll function
+      });
     }
   }
 
   updateSelf() {
     print("MyHomeState updateSelf called");
     setState(() {});
+  }
+
+  void onScroll(int i) {
+    double scrollOffset = scrollControllers[i].offset;
+    print("scrollControllers[$i] scrolled, scrollOffset = $scrollOffset");
+    //int currentIndex = (scrollOffset / 60).clamp(0, _items.length - 1).toInt();
+
+    setState(() {
+      scrollTopics[i] = "";
+    });
   }
 
   String yourAcrostic = "";
@@ -233,25 +257,32 @@ class TablePageState extends State<TablePage> {
   }
 
   getWordRadios(i) {
+    final fI = i;
     List<dynamic> entries = widget.entries;
     List<dynamic> selectedTypesAdjectives = widget.selectedTypesAdjectives;
     List<dynamic> filteredEntriesLetter = [];
     List<dynamic> filteredEntriesAlp = [];
     List<dynamic> filteredEntriesDic = [];
     List<Widget> wordsRadios = [];
-    RadioListTile myRadio;
+    ListTile myRadio;
     filteredEntriesLetter = entries
-        .where((dynamic entry) => entry["Letter"] == letterList[i])
+        .where((dynamic entry) => entry["Letter"] == letterList[fI])
         .toList();
     print("IM HERE1");
     //print("filteredEntriesLetter = ${json.encode(filteredEntriesLetter)}");
-    wordsRadios = [];
+
+    List<VisibilityDetector> adjGroups = [];
     for (int j = 0; j < selectedTypesAdjectives.length; j++) {
-      //NOW GET entries HAVING inputList[i]=entry(Letter) AND adjective=selectedTypesAdjectives[j].Table=entry(Table_name):
+      wordsRadios = [];
+      final fJ = j;
+      final typeAdjStr =
+          "${selectedTypesAdjectives[fJ]["type"]}: ${selectedTypesAdjectives[fJ]["adjective"]}";
+      print(
+          "getWordRadios ADDING RADIO FOR TYPE ${selectedTypesAdjectives[fJ]["adjective"]}");
+      //NOW GET entries HAVING inputList[fI]=entry(Letter) AND adjective=selectedTypesAdjectives[fJ].Table=entry(Table_name):
       wordsRadios.add(Column(children: [
         Center(
-          child: Text(
-              "${selectedTypesAdjectives[j]["type"]}: ${selectedTypesAdjectives[j]["adjective"]}",
+          child: Text(typeAdjStr,
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
         )
       ]));
@@ -261,23 +292,32 @@ class TablePageState extends State<TablePage> {
           .toList();
       filteredEntriesAlp = filteredEntriesAlp
           .where((dynamic entry) =>
-              entry["Table_name"] == selectedTypesAdjectives[j]["adjective"])
+              entry["Table_name"] == selectedTypesAdjectives[fJ]["adjective"])
           .toList();
       //print("filteredEntries = ${json.encode(filteredEntries)}");
-      for (int e = 0; e < filteredEntriesAlp.length; e++) {
+      print(
+          "letterList[fI] = ${letterList[fI]}, filteredEntriesAlp.length = ${filteredEntriesAlp.length}");
+      final finalFilteredEntriesAlp = filteredEntriesAlp;
+      for (int e = 0; e < finalFilteredEntriesAlp.length; e++) {
+        final fE = e;
         //print("filteredEntries[e] = ${json.encode(filteredEntries[e]["Entry"])}");
-        myRadio = RadioListTile<String>(
+        myRadio = ListTile(
             dense: true,
-            title: Text(filteredEntriesAlp[e]["Entry"] ?? ""),
-            value: filteredEntriesAlp[e]["Word"] ?? "",
-            groupValue: selectedAcrosticWords[i],
-            onChanged: (value) {
+            title: Text(finalFilteredEntriesAlp[fE]["Entry"] ?? ""),
+            tileColor:
+                selectedAcrosticWords[fI] == finalFilteredEntriesAlp[fE]["Word"]
+                    ? Colors.blue.withOpacity(0.2)
+                    : Colors.transparent,
+            //value: finalFilteredEntriesAlp[e]["Word"] ?? "",
+            //groupValue: selectedAcrosticWords[fI],
+            onTap: () {
               setState(() {
-                String myVal = getFormattedWord(value.toString());
-                selectedAcrosticWords[i] = value!;
-                inputControllers[i].text = myVal;
+                String value = finalFilteredEntriesAlp[fE]["Word"].toString();
+                String myVal = getFormattedWord(value);
+                selectedAcrosticWords[fI] = value;
+                inputControllers[fI].text = myVal;
                 print(
-                    "selected value = $value, selectedAcrosticWords[$i] = ${selectedAcrosticWords[i]}");
+                    "selected value alp = $value, selectedAcrosticWords[$fI] = ${selectedAcrosticWords[fI]}");
                 showAcrostic();
               });
             });
@@ -299,28 +339,63 @@ class TablePageState extends State<TablePage> {
           .toList();
       filteredEntriesDic = filteredEntriesDic
           .where((dynamic entry) =>
-              entry["Table_name"] == selectedTypesAdjectives[j]["adjective"])
+              entry["Table_name"] == selectedTypesAdjectives[fJ]["adjective"])
           .toList();
-      for (int e = 0; e < filteredEntriesDic.length; e++) {
-        myRadio = RadioListTile<String>(
-            dense: true,
-            title: getDicEntry(filteredEntriesDic[e]),
-            value: filteredEntriesDic[e]["Word"],
-            groupValue: selectedAcrosticWords[i],
-            onChanged: (value) {
+      print(
+          "letterList[fI] = ${letterList[fI]}, filteredEntriesDic.length = ${filteredEntriesDic.length}");
+      final finalFilteredEntriesDic = filteredEntriesDic;
+      for (int e = 0; e < finalFilteredEntriesDic.length; e++) {
+        final fE = e;
+        myRadio = ListTile(
+            title: getDicEntry(finalFilteredEntriesDic[fE]),
+            //value: finalFilteredEntriesDic[e]["Word"],
+            //groupValue: selectedAcrosticWords[fI],
+            tileColor:
+                selectedAcrosticWords[fI] == finalFilteredEntriesDic[fE]["Word"]
+                    ? Colors.blue.withOpacity(0.2)
+                    : Colors.transparent,
+            onTap: () {
               setState(() {
-                String myVal = getFormattedWord(value.toString());
-                selectedAcrosticWords[i] = value!;
+                String value = finalFilteredEntriesDic[fE]["Word"].toString();
+                String myVal = getFormattedWord(value);
+                selectedAcrosticWords[fI] = value;
                 print(
-                    "selected value = $value, selectedAcrosticWords[$i] = ${selectedAcrosticWords[i]}");
-                inputControllers[i].text = myVal;
+                    "selected value dict = $value, selectedAcrosticWords[$fI] = ${selectedAcrosticWords[fI]}");
+                inputControllers[fI].text = myVal;
                 showAcrostic();
               });
             });
         wordsRadios.add(myRadio);
       }
+      adjGroups.add(VisibilityDetector(
+          key: Key('item_${fI}_$fJ'),
+          onVisibilityChanged: (visibilityInfo) {
+            // Check if the item is fully visible
+            Rect visibleRect = visibilityInfo.visibleBounds;
+            double visibleHeight = visibleRect.height;
+            double visibleWidth = visibleRect.width;
+            if (stateCellHeight == 0.0) {
+              stateCellHeight = MediaQuery.of(context).size.height - 175;
+            }
+            print(
+                "$typeAdjStr visibilityInfo.visibleFraction = ${visibilityInfo.visibleFraction}, visibleHeight = $visibleHeight, stateCellHeight = $stateCellHeight");
+            String nowVisibilityCondition = "WORD_${fI}_TYPE_$typeAdjStr";
+            if (nowVisibilityCondition != visibilityCondition &&
+                (visibilityInfo.visibleFraction == 1.0 ||
+                    visibleHeight > (0.5 * stateCellHeight))) {
+              print(
+                  "Visibility changed! visibilityCondition = $visibilityCondition, setting state!");
+              visibilityCondition = "WORD_${fI}_TYPE_$typeAdjStr";
+              setState(() {
+                scrollTopics[fI] = typeAdjStr;
+              });
+            }
+          },
+          child: Column(
+            children: wordsRadios,
+          )));
     }
-    return wordsRadios;
+    return adjGroups;
   }
 
   @override
@@ -334,6 +409,7 @@ class TablePageState extends State<TablePage> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     double cellHeight = MediaQuery.of(context).size.height - 175;
+    stateCellHeight = cellHeight;
 
     var title = FlutterI18n.translate(context, "ACROSTICS_TABLE");
 
@@ -773,20 +849,18 @@ class TablePageState extends State<TablePage> {
                                     height: 50,
                                     padding: EdgeInsets.all(2.0),
                                     decoration: BoxDecoration(
-                                        border: Border(
-                                          left: BorderSide(
-                                              color: Colors.black, width: 2.0),
-                                          top: BorderSide(
-                                              color: Colors.black, width: 2.0),
-                                          right: BorderSide(
-                                              color: Colors.black, width: 2.0),
-                                          bottom: BorderSide(
-                                              color: Colors.black, width: 2.0),
-                                        ),
-                                        image: DecorationImage(
-                                            image: AssetImage(
-                                                'assets/images/transparent.png'),
-                                            fit: BoxFit.fill)),
+                                      color: Color(0xFFDAC7FD),
+                                      border: Border(
+                                        left: BorderSide(
+                                            color: Colors.black, width: 2.0),
+                                        top: BorderSide(
+                                            color: Colors.black, width: 2.0),
+                                        right: BorderSide(
+                                            color: Colors.black, width: 2.0),
+                                        bottom: BorderSide(
+                                            color: Colors.black, width: 2.0),
+                                      ),
+                                    ),
                                     child: Center(
                                         child: Text(letterList[i],
                                             style: TextStyle(
@@ -797,22 +871,54 @@ class TablePageState extends State<TablePage> {
                           for (int i = 0; i < letterList.length; i++)
                             TableCell(
                               child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Colors
-                                          .black), // Set the border color to transparent
-                                ),
-                                height: cellHeight,
-                                width: columnWidth,
-                                child: SingleChildScrollView(
-                                  scrollDirection: Axis.vertical,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: getWordRadios(i),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Colors
+                                            .black), // Set the border color to transparent
                                   ),
-                                ),
-                              ),
+                                  height: cellHeight,
+                                  width: columnWidth,
+                                  child: Stack(children: [
+                                    SingleChildScrollView(
+                                      scrollDirection: Axis.vertical,
+                                      //controller: scrollControllers[i],
+                                      child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            SizedBox(height: 35),
+                                            ...getWordRadios(i),
+                                          ]),
+                                    ),
+                                    Positioned(
+                                      top: 0,
+                                      left: 0,
+                                      right: 0,
+                                      child: Container(
+                                        height: 35,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                            color: Color.fromARGB(
+                                                255, 253, 204, 55),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.pink.shade200,
+                                                offset: Offset(0, 1),
+                                                blurRadius: 20.0,
+                                              ),
+                                            ],
+                                            border: Border.all(
+                                                color: Colors.black26)),
+                                        child: Text(
+                                          scrollTopics[i],
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    ),
+                                  ])),
                             )
                         ])
                       ]),
