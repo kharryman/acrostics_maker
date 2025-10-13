@@ -1,0 +1,1 @@
+Bedre offlinehåndtering. Forbedret tabellayout: Akrostikonbogstaver har baggrundsfarve. Bedre ordvalg. Det aktuelle akrostikontillægsord fremhæves ovenfor, mens du ruller.

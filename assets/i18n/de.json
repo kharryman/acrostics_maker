@@ -73,6 +73,7 @@
     "LOAD_ACROSTICS_ONLINE": "Akrostichon-Wörter werden online geladen, bitte warten …",
     "NETWORK_ERROR": "Netzwerkfehler",
     "NOTHING_SELECTED": "Nichts ausgewählt.",
+    "NOT_ONLINE": "Nicht online",
     "NOT_ONLINE_PROMPT": "Nicht online. Bitte verbinden Sie sich und versuchen Sie es erneut.",
     "POPUP_NO_ADS_MESSAGE2": "Genießen Sie ein werbefreies Erlebnis auf **{mDev}** für nur **{mPr}**!",
     "POPUP_NO_ADS_TITLE": "Möchten Sie keine Ablenkungen?",

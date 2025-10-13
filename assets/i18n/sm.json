@@ -73,6 +73,7 @@
     "LOAD_ACROSTICS_ONLINE": "O lo'o fa'atūina upu fa'aacrostic i luga ole laiga, fa'amolemole fa'atali...",
     "NETWORK_ERROR": "Sese Network",
     "NOTHING_SELECTED": "Leai se mea na filifilia.",
+    "NOT_ONLINE": "E le i luga ole laiga",
     "NOT_ONLINE_PROMPT": "E le i luga ole laiga. Fa'amolemole fa'afeso'ota'i ma toe taumafai.",
     "POPUP_NO_ADS_MESSAGE2": "Fiafia i se poto masani e leai ni fa'asalalauga ile **{mDev}** mo na'o **{mPr}**!",
     "POPUP_NO_ADS_TITLE": "E Le Mana'o e Fa'alavelave?",

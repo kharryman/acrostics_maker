@@ -1,4 +1,5 @@
 // ignore_for_file: use_build_context_synchronously, must_be_immutable
+import 'package:acrostics_maker/helpers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -138,10 +139,9 @@ class MenuState extends State<Menu> {
                 // ignore: unnecessary_null_comparison
 
                 if (kIsWeb == true) {
-                  await MyHomeState()
-                      .showPopup(context, "Can't remove ads on web");
+                  await showPopup(context, "Can't remove ads on web");
                 } else if (productNoAds == null) {
-                  await MyHomeState().showPopup(
+                  await showPopup(
                       context,
                       FlutterI18n.translate(
                           context, "PROMPT_NO_REMOVE_AD_PRODUCT"));
@@ -414,11 +414,9 @@ class MenuList extends StatefulWidget {
 }
 
 class MenuListState extends State<MenuList> {
-  List<dynamic> languages = [];
   @override
   void initState() {
     super.initState();
-    languages = MyHomeState().languages;
   }
 
   Future<void> changeLanguage(String languageCode) async {

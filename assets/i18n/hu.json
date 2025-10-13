@@ -73,6 +73,7 @@
     "LOAD_ACROSTICS_ONLINE": "Acrostic szavak online betöltése, kérjük, várjon...",
     "NETWORK_ERROR": "Hálózati hiba",
     "NOTHING_SELECTED": "Semmi nincs kiválasztva.",
+    "NOT_ONLINE": "Nincs online",
     "NOT_ONLINE_PROMPT": "Nem online. Kérjük, csatlakozzon, és próbálja újra.",
     "POPUP_NO_ADS_MESSAGE2": "Élvezze a hirdetésmentes élményt a **{mDev}**-on mindössze **{mPr}**-ért!",
     "POPUP_NO_ADS_TITLE": "Nem akarsz zavarni?",

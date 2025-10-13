@@ -1,0 +1,5 @@
+Penanganan offline yang lebih baik.
+Tata letak tabel yang ditingkatkan:
+Huruf akrostik memiliki warna latar belakang.
+Pemilihan kata yang lebih baik.
+Kata sifat akrostik saat ini disorot di atas saat menggulir.

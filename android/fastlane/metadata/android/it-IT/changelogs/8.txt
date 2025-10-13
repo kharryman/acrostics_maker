@@ -1,0 +1,5 @@
+Migliore gestione offline.
+Layout della tabella migliorato:
+Le lettere dell'acrostico hanno un colore di sfondo.
+Migliore selezione delle parole.
+L'aggettivo dell'acrostico corrente è evidenziato sopra durante lo scorrimento.

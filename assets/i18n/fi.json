@@ -73,6 +73,7 @@
     "LOAD_ACROSTICS_ONLINE": "Ladataan acrostic-sanoja verkkoon, odota...",
     "NETWORK_ERROR": "Verkkovirhe",
     "NOTHING_SELECTED": "Mitään ei valittu.",
+    "NOT_ONLINE": "Ei verkossa",
     "NOT_ONLINE_PROMPT": "Ei verkossa. Yhdistä ja yritä uudelleen.",
     "POPUP_NO_ADS_MESSAGE2": "Nauti mainoksettomasta kokemuksesta **{mDev}**:lla vain **{mPr}**!",
     "POPUP_NO_ADS_TITLE": "Haluatko ei häiriötekijöitä?",

@@ -73,6 +73,7 @@
     "LOAD_ACROSTICS_ONLINE": "Načítavajú sa akrosticke slová online, čakajte...",
     "NETWORK_ERROR": "Chyba siete",
     "NOTHING_SELECTED": "Nič vybraté.",
+    "NOT_ONLINE": "Nie je online",
     "NOT_ONLINE_PROMPT": "Nie online. Pripojte sa a skúste to znova.",
     "POPUP_NO_ADS_MESSAGE2": "Užite si zážitok bez reklám na **{mDev}** len za **{mPr}**!",
     "POPUP_NO_ADS_TITLE": "Nechcete žiadne rozptýlenie?",

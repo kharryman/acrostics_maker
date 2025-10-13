@@ -73,6 +73,7 @@
     "LOAD_ACROSTICS_ONLINE": "Učitavanje akrostiha na mreži, sačekajte...",
     "NETWORK_ERROR": "Mrežna greška",
     "NOTHING_SELECTED": "Ništa nije odabrano.",
+    "NOT_ONLINE": "Nije online",
     "NOT_ONLINE_PROMPT": "Nije na mreži. Povežite se i pokušajte ponovo.",
     "POPUP_NO_ADS_MESSAGE2": "Uživajte u iskustvu bez oglasa na **{mDev}** za samo **{mPr}**!",
     "POPUP_NO_ADS_TITLE": "Želite bez ometanja?",

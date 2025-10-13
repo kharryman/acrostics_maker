@@ -1,0 +1,5 @@
+Parem võrguühenduseta haldamine.
+Täiustatud tabeli paigutus:
+Akrostihhoni tähtedel on taustavärv.
+Parem sõnavalik.
+Praegune akrostihhoni omadussõna on kerimise ajal ülalpool esile tõstetud.

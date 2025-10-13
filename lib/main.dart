@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:acrostics_maker/helpers.dart';
 import 'package:acrostics_maker/menu.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_i18n/loaders/decoders/base_decode_strategy.dart';
 import 'package:flutter_i18n/loaders/decoders/json_decode_strategy.dart';
@@ -22,7 +22,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 // ignore: library_prefixes
 import 'table.dart';
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:multiselect/multiselect.dart';
 //offline:
 import 'dict_big.dart';
@@ -44,7 +44,8 @@ dynamic defaultLanguage = {
   "value": "en"
 };
 List<dynamic> availLanguages = [defaultLanguage];
-dynamic selectedAcrosticsLanguage = defaultLanguage;
+dynamic selectedAcrosticsLanguage =
+    languages.firstWhere((lang) => lang["LID"] == defaultLanguage["LID"]);
 dynamic appLanguage = defaultLanguage;
 List<dynamic> defaultTypes = [
   {"Type": "Colors", "Trans": "TYPE_COLOR"},
@@ -395,8 +396,110 @@ dynamic selectedType = {};
 String selectedAdjective = '';
 bool isInitiated = false;
 String priceNoAds = "\$1";
-bool isAds = true;
+//APP_DEBUG X============================>:
+bool isAds = false;
+//========================================>
 String removeAdsProductId = "remove_ads";
+
+List<dynamic> languages = [
+  {
+    "LID": "1",
+    "name1": "Afrikaans",
+    "name2": "LANGUAGE_AFRIKAANS",
+    "value": "af"
+  },
+  {"LID": "2", "name1": "Euskara", "name2": "LANGUAGE_BASQUE", "value": "eu"},
+  {"LID": "3", "name1": "Bosanski", "name2": "LANGUAGE_BOSNIAN", "value": "bs"},
+  {
+    "LID": "4",
+    "name1": "Hrvatski",
+    "name2": "LANGUAGE_CROATIAN",
+    "value": "hr"
+  },
+  {"LID": "5", "name1": "čeština", "name2": "LANGUAGE_CZECH", "value": "cs"},
+  {"LID": "6", "name1": "Dansk", "name2": "LANGUAGE_DANISH", "value": "da"},
+  {"LID": "8", "name1": "English", "name2": "LANGUAGE_ENGLISH", "value": "en"},
+  {
+    "LID": "9",
+    "name1": "Eesti keel",
+    "name2": "LANGUAGE_ESTONIAN",
+    "value": "et"
+  },
+  {
+    "LID": "11",
+    "name1": "Suomalainen",
+    "name2": "LANGUAGE_FINNISH",
+    "value": "fi"
+  },
+  {"LID": "12", "name1": "Français", "name2": "LANGUAGE_FRENCH", "value": "fr"},
+  {"LID": "13", "name1": "Deutsch", "name2": "LANGUAGE_GERMAN", "value": "de"},
+  {
+    "LID": "14",
+    "name1": "Kreyòl ayisyen",
+    "name2": "LANGUAGE_HAITIAN_CREOLE",
+    "value": "ht"
+  },
+  {
+    "LID": "15",
+    "name1": "ʻŌlelo Hawaiʻi",
+    "name2": "LANGUAGE_HAWAIIAN",
+    "value": "haw"
+  },
+  {"LID": "16", "name1": "Hmoob", "name2": "LANGUAGE_HMONG", "value": "hmn"},
+  {
+    "LID": "17",
+    "name1": "Magyar",
+    "name2": "LANGUAGE_HUNGARIAN",
+    "value": "hu"
+  },
+  {
+    "LID": "18",
+    "name1": "Bahasa Indonesia",
+    "name2": "LANGUAGE_INDONESIAN",
+    "value": "id"
+  },
+  {"LID": "19", "name1": "Gaeilge", "name2": "LANGUAGE_IRISH", "value": "ga"},
+  {
+    "LID": "20",
+    "name1": "Italiano",
+    "name2": "LANGUAGE_ITALIAN",
+    "value": "it"
+  },
+  {
+    "LID": "22",
+    "name1": "Lëtzebuergesch",
+    "name2": "LANGUAGE_LUXEMBOURGISH",
+    "value": "lb"
+  },
+  {"LID": "23", "name1": "Melayu", "name2": "LANGUAGE_MALAY", "value": "ms"},
+  {"LID": "24", "name1": "Malti", "name2": "LANGUAGE_MALTESE", "value": "mt"},
+  {"LID": "25", "name1": "Maori", "name2": "LANGUAGE_MAORI", "value": "mi"},
+  {"LID": "27", "name1": "Polski", "name2": "LANGUAGE_POLISH", "value": "pl"},
+  {
+    "LID": "28",
+    "name1": "Português",
+    "name2": "LANGUAGE_PORTUGUESE",
+    "value": "pt"
+  },
+  {"LID": "29", "name1": "Română", "name2": "LANGUAGE_ROMANIAN", "value": "ro"},
+  {"LID": "30", "name1": "Samoa", "name2": "LANGUAGE_SAMOAN", "value": "sm"},
+  {
+    "LID": "31",
+    "name1": "Slovensko",
+    "name2": "LANGUAGE_SLOVAK",
+    "value": "sk"
+  },
+  {
+    "LID": "32",
+    "name1": "Slovenščina",
+    "name2": "LANGUAGE_SLOVENIAN",
+    "value": "sl"
+  },
+  {"LID": "33", "name1": "Soomaali", "name2": "LANGUAGE_SOMALI", "value": "so"},
+  {"LID": "34", "name1": "Español", "name2": "LANGUAGE_SPANISH", "value": "es"},
+  {"LID": "35", "name1": "Svenska", "name2": "LANGUAGE_SWEDISH", "value": "sv"},
+  {"LID": "39", "name1": "Cymraeg", "name2": "LANGUAGE_WELSH", "value": "cy"}
+];
 
 class MyObject {
   String name;
@@ -404,6 +507,8 @@ class MyObject {
 
   MyObject({required this.name, this.value});
 }
+
+bool isOnline = true;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -491,6 +596,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           useMaterial3: true,
+          scaffoldBackgroundColor: Colors.white,
           colorScheme: ColorScheme.fromSeed(
               seedColor: Color.fromRGBO(200, 255, 200, 1.0))),
       home: MyHome(),
@@ -504,8 +610,6 @@ class MyHome extends StatefulWidget {
   MyHomeState createState() => MyHomeState();
 }
 
-bool isAppOnline = true;
-
 class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
   late StreamSubscription<ConnectivityResult> subscription;
   late BannerAd bannerAd;
@@ -513,7 +617,6 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
   String bannerIdAndroid = "ca-app-pub-8514966468184377/3605875610";
   String bannerIdIos = "ca-app-pub-8514966468184377/2831979873";
 
-  bool isLoading = false;
   final TextEditingController inputController = TextEditingController();
   String inputWord = "";
   List<String> inputList = [];
@@ -561,146 +664,6 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
   bool isAndroid = kIsWeb == false ? false : false;
   bool isIOS = kIsWeb == false ? false : false;
 
-  List<dynamic> languages = [
-    {
-      "LID": "1",
-      "name1": "Afrikaans",
-      "name2": "LANGUAGE_AFRIKAANS",
-      "value": "af"
-    },
-    {"LID": "2", "name1": "Euskara", "name2": "LANGUAGE_BASQUE", "value": "eu"},
-    {
-      "LID": "3",
-      "name1": "Bosanski",
-      "name2": "LANGUAGE_BOSNIAN",
-      "value": "bs"
-    },
-    {
-      "LID": "4",
-      "name1": "Hrvatski",
-      "name2": "LANGUAGE_CROATIAN",
-      "value": "hr"
-    },
-    {"LID": "5", "name1": "čeština", "name2": "LANGUAGE_CZECH", "value": "cs"},
-    {"LID": "6", "name1": "Dansk", "name2": "LANGUAGE_DANISH", "value": "da"},
-    {
-      "LID": "8",
-      "name1": "English",
-      "name2": "LANGUAGE_ENGLISH",
-      "value": "en"
-    },
-    {
-      "LID": "9",
-      "name1": "Eesti keel",
-      "name2": "LANGUAGE_ESTONIAN",
-      "value": "et"
-    },
-    {
-      "LID": "11",
-      "name1": "Suomalainen",
-      "name2": "LANGUAGE_FINNISH",
-      "value": "fi"
-    },
-    {
-      "LID": "12",
-      "name1": "Français",
-      "name2": "LANGUAGE_FRENCH",
-      "value": "fr"
-    },
-    {
-      "LID": "13",
-      "name1": "Deutsch",
-      "name2": "LANGUAGE_GERMAN",
-      "value": "de"
-    },
-    {
-      "LID": "14",
-      "name1": "Kreyòl ayisyen",
-      "name2": "LANGUAGE_HAITIAN_CREOLE",
-      "value": "ht"
-    },
-    {
-      "LID": "15",
-      "name1": "ʻŌlelo Hawaiʻi",
-      "name2": "LANGUAGE_HAWAIIAN",
-      "value": "haw"
-    },
-    {"LID": "16", "name1": "Hmoob", "name2": "LANGUAGE_HMONG", "value": "hmn"},
-    {
-      "LID": "17",
-      "name1": "Magyar",
-      "name2": "LANGUAGE_HUNGARIAN",
-      "value": "hu"
-    },
-    {
-      "LID": "18",
-      "name1": "Bahasa Indonesia",
-      "name2": "LANGUAGE_INDONESIAN",
-      "value": "id"
-    },
-    {"LID": "19", "name1": "Gaeilge", "name2": "LANGUAGE_IRISH", "value": "ga"},
-    {
-      "LID": "20",
-      "name1": "Italiano",
-      "name2": "LANGUAGE_ITALIAN",
-      "value": "it"
-    },
-    {
-      "LID": "22",
-      "name1": "Lëtzebuergesch",
-      "name2": "LANGUAGE_LUXEMBOURGISH",
-      "value": "lb"
-    },
-    {"LID": "23", "name1": "Melayu", "name2": "LANGUAGE_MALAY", "value": "ms"},
-    {"LID": "24", "name1": "Malti", "name2": "LANGUAGE_MALTESE", "value": "mt"},
-    {"LID": "25", "name1": "Maori", "name2": "LANGUAGE_MAORI", "value": "mi"},
-    {"LID": "27", "name1": "Polski", "name2": "LANGUAGE_POLISH", "value": "pl"},
-    {
-      "LID": "28",
-      "name1": "Português",
-      "name2": "LANGUAGE_PORTUGUESE",
-      "value": "pt"
-    },
-    {
-      "LID": "29",
-      "name1": "Română",
-      "name2": "LANGUAGE_ROMANIAN",
-      "value": "ro"
-    },
-    {"LID": "30", "name1": "Samoa", "name2": "LANGUAGE_SAMOAN", "value": "sm"},
-    {
-      "LID": "31",
-      "name1": "Slovensko",
-      "name2": "LANGUAGE_SLOVAK",
-      "value": "sk"
-    },
-    {
-      "LID": "32",
-      "name1": "Slovenščina",
-      "name2": "LANGUAGE_SLOVENIAN",
-      "value": "sl"
-    },
-    {
-      "LID": "33",
-      "name1": "Soomaali",
-      "name2": "LANGUAGE_SOMALI",
-      "value": "so"
-    },
-    {
-      "LID": "34",
-      "name1": "Español",
-      "name2": "LANGUAGE_SPANISH",
-      "value": "es"
-    },
-    {
-      "LID": "35",
-      "name1": "Svenska",
-      "name2": "LANGUAGE_SWEDISH",
-      "value": "sv"
-    },
-    {"LID": "39", "name1": "Cymraeg", "name2": "LANGUAGE_WELSH", "value": "cy"}
-  ];
-
   bool isLanguagesLoading = false;
   bool isInitiatingTypesAdjectives = false;
 
@@ -717,6 +680,9 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   StreamSubscription<List<PurchaseDetails>>? purchaseSubscription;
 
+  late final StreamSubscription<List<ConnectivityResult>>
+      connectivitySubscription;
+
   @override
   initState() {
     super.initState();
@@ -731,28 +697,47 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
           .setMinSecondsBeforeShowDialog(4)
           .monitor();
     }
-    BuildContext? context = scaffoldKey.currentContext;
-    initiateAll(context);
-    subscription = Connectivity().onConnectivityChanged.listen((result) async {
-      isAppOnline = true;
-      if (result == ConnectivityResult.none) {
-        print("ACROSTICS MAKER NETWORK DISCONNECTED.");
-        isAppOnline = false;
-      }
-      await doNetworkChange();
-    });
+    initConnectivityListener();
 
     if (kIsWeb == false && isAds == true) {
       createInterstitialAd();
       loadBannerAd();
     }
+    isInitiated = true;
+  }
+
+  void initConnectivityListener() {
+    // Listen for connectivity changes
+    final Connectivity connectivity = Connectivity();
+    connectivitySubscription = connectivity.onConnectivityChanged
+        .listen((List<ConnectivityResult> results) {
+      final result =
+          results.isNotEmpty ? results.first : ConnectivityResult.none;
+      isOnline = result != ConnectivityResult.none;
+      debugPrint('🔌 Connectivity changed: $result  |  isOnline=$isOnline');
+      doNetworkChange();
+    });
+
+    // Check initial state
+    connectivity.checkConnectivity().then((List<ConnectivityResult> results) {
+      final result =
+          results.isNotEmpty ? results.first : ConnectivityResult.none;
+      isOnline = result != ConnectivityResult.none;
+      debugPrint('📶 Initial connectivity: $result  |  isOnline=$isOnline');
+      doNetworkChange();
+    });
   }
 
   doNetworkChange() async {
-    if (isAppOnline == false) {
+    if (isOnline == false) {
       setState(() {
         print("OFFLINE...");
-        availLanguages = [defaultLanguage];
+        availLanguages = languages
+            .where((dynamic lang) => lang["LID"] == defaultLanguage["LID"])
+            .toList();
+        selectedAcrosticsLanguage = languages.firstWhere(
+            (dynamic lang) => lang["LID"] == defaultLanguage["LID"]);
+        //print("selectedAcrosticsLanguage = ${jsonEncode(selectedAcrosticsLanguage)}");
         isLanguagesLoading = false;
         dropdownTypes = List<dynamic>.from(defaultTypes);
         finishInitiateTypesAdjectives("8", defaultData);
@@ -820,7 +805,7 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
                 "main initializeInAppPurchase $removeAdsProductId Purchase error: ${purchaseRemoveAds.error}.");
             //if (mounted) {
             //  WidgetsBinding.instance.addPostFrameCallback((_) {
-            await MyHomeState().showPopup(context,
+            await showPopup(context,
                 "${FlutterI18n.translate(context, "PROMPT_PURCHASING_ERROR")}: ${purchaseRemoveAds.error}");
             // });
             //}
@@ -838,7 +823,7 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
   Future<void> restorePurchases() async {
     print("restorePurchases called");
     if (kIsWeb == true) {
-      //MyHomeState().showPopup(context, "CAN'T RESTORE ADS ON WEB!");
+      //showPopup(context, "CAN'T RESTORE ADS ON WEB!");
       print("Cant restore purchases on web-app.");
     } else {
       //setState(() {
@@ -867,58 +852,67 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
   setAvailLanguages() async {
     //showProgress(
     //    context, FlutterI18n.translate(context, "PROGRESS_ADD_COMMENT"));
-    dynamic data = {"SUCCESS": false};
-    bool isSuccess = true;
-    List<dynamic> gotLanguages = [];
-    bool isRequestSuccess = true;
-    Response response = http.Response("", 200);
-    try {
-      response = await http.get(Uri.parse(
-          'https://www.learnfactsquick.com/lfq_app_php/get_dict_langs.php'));
-    } catch (e) {
-      isRequestSuccess = false;
-      isAppOnline = false;
-      await doNetworkChange();
-    }
-    if (isRequestSuccess == true) {
-      //hideProgress(context);
-      if (response.statusCode == 200) {
-        data = Map<String, dynamic>.from(json.decode(response.body));
-        print("GET AVAIL LANGUAGES data = ${json.encode(data)}");
-        if (data["SUCCESS"] == true) {
-          print("GOT LANGUAGES = ${json.encode(data)}");
-          gotLanguages = data["LANGUAGES"];
-        } else {
-          print("GET LANGUAGES ERROR: ${data["ERROR"]}");
-          isSuccess = false;
-          await showPopup(context, data["ERROR"]);
-          //showPopup(context, data["ERROR"]);
-        }
-      } else {
-        isSuccess = false;
-        await showPopup(
-            context, FlutterI18n.translate(context, "NETWORK_ERROR"));
+    if (isOnline == false) {
+      showPopup(context, FlutterI18n.translate(context, "NOT_ONLINE"));
+    } else {
+      dynamic data = {"SUCCESS": false};
+      bool isSuccess = true;
+      List<dynamic> gotLanguages = [];
+      bool isRequestSuccess = true;
+      Response response = http.Response("", 200);
+      try {
+        response = await http.get(Uri.parse(
+            'https://www.learnfactsquick.com/lfq_app_php/get_dict_langs.php'));
+      } catch (e) {
+        isRequestSuccess = false;
+        isOnline = false;
+        await doNetworkChange();
       }
-      setState(() {
-        isLanguagesLoading = false;
-        if (isSuccess == false) {
-          availLanguages = [defaultLanguage];
-        } else {
-          availLanguages = [];
-          List<String> languageValues = [];
-          List<dynamic> availLangs;
-          for (int i = 0; i < gotLanguages.length; i++) {
-            availLangs = (MyHomeState().languages.where((dynamic language) =>
-                language["value"] == gotLanguages[i]["Code"])).toList();
-            if (availLangs.isNotEmpty &&
-                !languageValues.contains(availLangs[0]["value"])) {
-              languageValues.add(availLangs[0]["value"]);
-              availLanguages.add(availLangs[0]);
-            }
+      if (isRequestSuccess == true) {
+        //hideProgress(context);
+        if (response.statusCode == 200) {
+          data = Map<String, dynamic>.from(json.decode(response.body));
+          print("GET AVAIL LANGUAGES data = ${json.encode(data)}");
+          if (data["SUCCESS"] == true) {
+            print("GOT LANGUAGES = ${json.encode(data)}");
+            gotLanguages = data["LANGUAGES"];
+          } else {
+            print("GET LANGUAGES ERROR: ${data["ERROR"]}");
+            isSuccess = false;
+            await showPopup(context, data["ERROR"]);
+            //showPopup(context, data["ERROR"]);
           }
-          resetMyList();
+        } else {
+          isSuccess = false;
+          await showPopup(
+              context, FlutterI18n.translate(context, "NETWORK_ERROR"));
         }
-      });
+        setState(() {
+          isLanguagesLoading = false;
+          if (isSuccess == false) {
+            availLanguages = [defaultLanguage];
+          } else {
+            availLanguages = [];
+            List<String> languageValues = [];
+            List<dynamic> availLangs;
+            for (int i = 0; i < gotLanguages.length; i++) {
+              availLangs = languages
+                  .where((dynamic language) =>
+                      language["value"] == gotLanguages[i]["Code"])
+                  .toList();
+              if (availLangs.isNotEmpty &&
+                  !languageValues.contains(availLangs[0]["value"])) {
+                languageValues.add(availLangs[0]["value"]);
+                availLanguages.add(availLangs[0]);
+              }
+            }
+            if (availLanguages.isEmpty) {
+              availLanguages = [defaultLanguage];
+            }
+            resetMyList();
+          }
+        });
+      }
     }
   }
 
@@ -968,123 +962,71 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
     return false;
   }
 
-  Future<void> showPopup(BuildContext context, String message) async {
-    print("showPopup called");
-    return showDialog<void>(
-      context: context,
-      barrierDismissible:
-          false, // Prevent dismissing by tapping outside the popup
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(FlutterI18n.translate(context, "PROMPT_ALERT")),
-          content: Text(message),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the popup
-              },
-              child: Text(FlutterI18n.translate(context, "CLOSE")),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> showConfirm(BuildContext context, String title, String message,
-      String cancelText, String okText, Function callback) async {
-    print("showshowConfirm called");
-    return showDialog<void>(
-      context: context,
-      barrierDismissible:
-          false, // Prevent dismissing by tapping outside the popup
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title),
-          content: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.70,
-              child: SingleChildScrollView(child: Html(data: message))),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the popup
-              },
-              child: Text(cancelText),
-            ),
-            TextButton(
-              onPressed: () {
-                callback();
-              },
-              child: Text(okText),
-            )
-          ],
-        );
-      },
-    );
-  }
-
   Future<void> initiateAll(context) async {
     //var isOnline = await isNetworkAvailable();
     //if (isOnline == true) {
     await setAvailLanguages();
     await initiateTypesAdjectives(context, true);
     //}
-    isInitiated = true;
   }
 
   Future<void> initiateTypesAdjectives(context, isSetState) async {
-    isInitiatingTypesAdjectives = true;
-    String appLanguageId = appLanguage["LID"];
-    print(
-        "initiateTypesAdjectives called, isSetState = $isSetState, appLanguageId = $appLanguageId");
-    List<String> availLIDs =
-        List<String>.from(availLanguages.map((lang) => lang["LID"]).toList());
-    print("initiateTypesAdjectives availLIDs = $availLIDs");
-    if (!availLIDs.contains(appLanguage["LID"])) {
-      appLanguageId = "8"; //ENGLISH
-    }
-    bool isRequestSuccess = true;
-    Response response = http.Response("", 200);
-    try {
-      response = await http.get(Uri.parse(
-          'https://www.learnfactsquick.com/lfq_app_php/get_alp_tabs_complete_app.php?language_id=${selectedAcrosticsLanguage["LID"]}&app_language_id=$appLanguageId'));
-    } catch (e) {
-      isRequestSuccess = false;
-      isAppOnline = false;
-      isInitiatingTypesAdjectives = false;
-      await doNetworkChange();
-    }
-    if (isRequestSuccess == true) {
-      if (response.statusCode == 200) {
-        // If the server returns a 200 OK response, parse the JSON data
-        final Map<String, dynamic> data = json.decode(response.body);
-        print("initiateTypesAdjectives STATUS=200!!!");
-        if (data["SUCCESS"] == true) {
-          if (isSetState == true) {
-            setState(() {
-              print("setState TRUE, CALLING finishInitiateTypesAdjectives");
+    if (isOnline == false) {
+      showPopup(context, FlutterI18n.translate(context, "NOT_ONLINE"));
+    } else {
+      isInitiatingTypesAdjectives = true;
+      String appLanguageId = appLanguage["LID"];
+      print(
+          "initiateTypesAdjectives called, isSetState = $isSetState, appLanguageId = $appLanguageId");
+      List<String> availLIDs =
+          List<String>.from(availLanguages.map((lang) => lang["LID"]).toList());
+      print("initiateTypesAdjectives availLIDs = $availLIDs");
+      if (!availLIDs.contains(appLanguage["LID"])) {
+        appLanguageId = "8"; //ENGLISH
+      }
+      bool isRequestSuccess = true;
+      Response response = http.Response("", 200);
+      try {
+        response = await http.get(Uri.parse(
+            'https://www.learnfactsquick.com/lfq_app_php/get_alp_tabs_complete_app.php?language_id=${selectedAcrosticsLanguage["LID"]}&app_language_id=$appLanguageId'));
+      } catch (e) {
+        isRequestSuccess = false;
+        isOnline = false;
+        isInitiatingTypesAdjectives = false;
+        await doNetworkChange();
+      }
+      if (isRequestSuccess == true) {
+        if (response.statusCode == 200) {
+          // If the server returns a 200 OK response, parse the JSON data
+          final Map<String, dynamic> data = json.decode(response.body);
+          print("initiateTypesAdjectives STATUS=200!!!");
+          if (data["SUCCESS"] == true) {
+            if (isSetState == true) {
+              setState(() {
+                print("setState TRUE, CALLING finishInitiateTypesAdjectives");
+                finishInitiateTypesAdjectives(appLanguageId, data);
+                isInitiatingTypesAdjectives = false;
+              });
+            } else {
+              //setState(() {
               finishInitiateTypesAdjectives(appLanguageId, data);
               isInitiatingTypesAdjectives = false;
-            });
+              //});
+            }
+            print("initiateTypesAdjectives DONE SUCCESSFULLY");
           } else {
-            //setState(() {
-            finishInitiateTypesAdjectives(appLanguageId, data);
-            isInitiatingTypesAdjectives = false;
-            //});
+            await showPopup(context, data["ERROR"]);
+            setState(() {
+              isInitiatingTypesAdjectives = false;
+            });
           }
-          print("initiateTypesAdjectives DONE SUCCESSFULLY");
         } else {
-          await showPopup(context, data["ERROR"]);
+          await showPopup(
+              context, FlutterI18n.translate(context, "NETWORK_ERROR"));
           setState(() {
             isInitiatingTypesAdjectives = false;
           });
         }
-      } else {
-        await showPopup(
-            context, FlutterI18n.translate(context, "NETWORK_ERROR"));
-        setState(() {
-          isInitiatingTypesAdjectives = false;
-        });
       }
     }
   }
@@ -1159,45 +1101,6 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
     setState(() {
       selectedAdjective = adjective;
     });
-  }
-
-  void showProgress(BuildContext context, message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Center(
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white, // Background color
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            padding: EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
-                ),
-                SizedBox(height: 16.0),
-                Text(
-                  message,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 18.0,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  void hideProgress(BuildContext context) {
-    print("hideProgress called");
-    Navigator.of(context, rootNavigator: true).pop();
-    isLoading = false;
   }
 
   String buildUrlString(params) {
@@ -1327,82 +1230,86 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
 
   Future<void> createAcrosticsNew(context) async {
     print("createAcrosticsNew called");
-
-    print("CREATING ACROSTICS!");
-    inputWord = inputController.text;
-    var progressMessage =
-        FlutterI18n.translate(context, "LOAD_ACROSTICS_ONLINE");
-    showProgress(context, progressMessage);
-    var inputSplit = inputWord.split("");
-    uniqueLetters = List<String>.from(Set<String>.from(inputSplit));
-    List<String> selectedSendAdjectives = [];
-    List<dynamic> selectedTypesAdjectives = [];
-    print(
-        "createAcrostics selectedAllAdjectives = ${json.encode(selectedAllAdjectives)}");
-    for (var i = 0; i < selectedAllAdjectives.length; i++) {
-      for (var j = 0; j < selectedAllAdjectives[i].length; j++) {
-        selectedSendAdjectives.add(selectedAllAdjectives[i][j]);
-        selectedTypesAdjectives.add({
-          "type": dropdownTypes[i]["Type"],
-          "adjective": selectedAllAdjectives[i][j]
-        });
-      }
-    }
-
-    String appLanguageId = appLanguage["LID"];
-    print("initiateTypesAdjectives called, appLanguageId = $appLanguageId");
-    List<String> availLIDs =
-        List<String>.from(availLanguages.map((lang) => lang["LID"]).toList());
-    print("initiateTypesAdjectives availLIDs = $availLIDs");
-    if (!availLIDs.contains(appLanguage["LID"])) {
-      appLanguageId = "8"; //ENGLISH
-    }
-    Map<String, dynamic> params = {
-      "selectedThemes": selectedSendAdjectives,
-      "uniqueLetters": uniqueLetters,
-      "languageId": selectedAcrosticsLanguage["LID"],
-      "appLanguageId": appLanguageId
-    };
-    print(
-        "createAcrostics NEXT CALLING get_alphabet_tables_completed_entries_app");
-    bool isRequestSuccess = true;
-    Response response = http.Response("", 200);
-    try {
-      response = await http.post(
-          Uri.parse('https://www.learnfactsquick.com/lfq_app_php/get_acrs.php'),
-          body: json.encode(params));
-    } catch (e) {
-      hideProgress(context);
-      isRequestSuccess = false;
-      isAppOnline = false;
-      await doNetworkChange();
-    }
-    if (isRequestSuccess == true) {
-      //print("createAcrostics GENERATE_ALL RESPONSE = $response");
-      if (response.statusCode == 200) {
-        // If the server returns a 200 OK response, parse the JSON data
-        final Map<String, dynamic> data = json.decode(response.body);
-        print(
-            "createAcrostics get_alphabet_tables_completed_entries_app DECODED data! = ${json.encode(data)}");
-        if (data["SUCCESS"] == true) {
-          hideProgress(context);
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => TablePage(
-                      inputWord: inputWord,
-                      selectedTypesAdjectives: selectedTypesAdjectives,
-                      entries: List<dynamic>.from(data["ENTRIES"]))));
-        } else {
-          print("createAcrostics SUCCESS=false");
-          hideProgress(context);
-          showPopup(context,
-              "${FlutterI18n.translate(context, "ERROR_MAKING_ACROSTICS")}: ${data["ERROR"]}");
+    if (isOnline == false) {
+      showPopup(context, FlutterI18n.translate(context, "NOT_ONLINE"));
+    } else {
+      print("CREATING ACROSTICS!");
+      inputWord = inputController.text;
+      var progressMessage =
+          FlutterI18n.translate(context, "LOAD_ACROSTICS_ONLINE");
+      showProgress(context, progressMessage);
+      var inputSplit = inputWord.split("");
+      uniqueLetters = List<String>.from(Set<String>.from(inputSplit));
+      List<String> selectedSendAdjectives = [];
+      List<dynamic> selectedTypesAdjectives = [];
+      print(
+          "createAcrostics selectedAllAdjectives = ${json.encode(selectedAllAdjectives)}");
+      for (var i = 0; i < selectedAllAdjectives.length; i++) {
+        for (var j = 0; j < selectedAllAdjectives[i].length; j++) {
+          selectedSendAdjectives.add(selectedAllAdjectives[i][j]);
+          selectedTypesAdjectives.add({
+            "type": dropdownTypes[i]["Type"],
+            "adjective": selectedAllAdjectives[i][j]
+          });
         }
-      } else {
-        showPopup(context,
-            "${FlutterI18n.translate(context, "ERROR_MAKING_ACROSTICS")}: ${json.encode(e)}");
+      }
+
+      String appLanguageId = appLanguage["LID"];
+      print("initiateTypesAdjectives called, appLanguageId = $appLanguageId");
+      List<String> availLIDs =
+          List<String>.from(availLanguages.map((lang) => lang["LID"]).toList());
+      print("initiateTypesAdjectives availLIDs = $availLIDs");
+      if (!availLIDs.contains(appLanguage["LID"])) {
+        appLanguageId = "8"; //ENGLISH
+      }
+      Map<String, dynamic> params = {
+        "selectedThemes": selectedSendAdjectives,
+        "uniqueLetters": uniqueLetters,
+        "languageId": selectedAcrosticsLanguage["LID"],
+        "appLanguageId": appLanguageId
+      };
+      print(
+          "createAcrostics NEXT CALLING get_alphabet_tables_completed_entries_app");
+      bool isRequestSuccess = true;
+      Response response = http.Response("", 200);
+      try {
+        response = await http.post(
+            Uri.parse(
+                'https://www.learnfactsquick.com/lfq_app_php/get_acrs.php'),
+            body: json.encode(params));
+      } catch (e) {
         hideProgress(context);
+        isRequestSuccess = false;
+        isOnline = false;
+        await doNetworkChange();
+      }
+      if (isRequestSuccess == true) {
+        //print("createAcrostics GENERATE_ALL RESPONSE = $response");
+        if (response.statusCode == 200) {
+          // If the server returns a 200 OK response, parse the JSON data
+          final Map<String, dynamic> data = json.decode(response.body);
+          print(
+              "createAcrostics get_alphabet_tables_completed_entries_app DECODED data! = ${json.encode(data)}");
+          if (data["SUCCESS"] == true) {
+            hideProgress(context);
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => TablePage(
+                        inputWord: inputWord,
+                        selectedTypesAdjectives: selectedTypesAdjectives,
+                        entries: List<dynamic>.from(data["ENTRIES"]))));
+          } else {
+            print("createAcrostics SUCCESS=false");
+            hideProgress(context);
+            showPopup(context,
+                "${FlutterI18n.translate(context, "ERROR_MAKING_ACROSTICS")}: ${data["ERROR"]}");
+          }
+        } else {
+          showPopup(context,
+              "${FlutterI18n.translate(context, "ERROR_MAKING_ACROSTICS")}: ${json.encode(e)}");
+          hideProgress(context);
+        }
       }
     }
   }
@@ -1629,9 +1536,11 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
 
     if (foundLangs.isNotEmpty) {
       dynamic myLang = foundLangs[0];
-      selectedAcrosticsLanguage = myLang;
+      selectedAcrosticsLanguage =
+          languages.firstWhere((dynamic lang) => lang["LID"] == myLang["LID"]);
     } else {
-      selectedAcrosticsLanguage = null;
+      selectedAcrosticsLanguage = languages
+          .firstWhere((dynamic lang) => lang["LID"] == defaultLanguage["LID"]);
     }
   }
 
@@ -1639,7 +1548,8 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
     print("setLanguage called, newLanguage = $newLanguage");
     Future.delayed(Duration(microseconds: 10), () {
       setState(() {
-        selectedAcrosticsLanguage = newLanguage;
+        selectedAcrosticsLanguage = languages
+            .firstWhere((dynamic lang) => lang["LID"] == newLanguage["LID"]);
         for (var i = 0; i < selectedAllAdjectives.length; i++) {
           selectedAllAdjectives[i] = [];
         }
@@ -1664,6 +1574,7 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
   }
 
   bool getIsUseOffline() {
+    print("getIsUseOffline called, isOnline = $isOnline, isAds = $isAds");
     String appLanguageId = appLanguage["LID"];
     List<String> availLIDs =
         List<String>.from(availLanguages.map((lang) => lang["LID"]).toList());
@@ -1671,8 +1582,8 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
       appLanguageId = "8"; //ENGLISH
     }
     String languageId = selectedAcrosticsLanguage["LID"];
-    bool isUse = (isAds == false &&
-        ((languageId == "8" && appLanguageId == "8") || isAppOnline == false));
+    bool isUse =
+        (isAds == false && ((languageId == "8" && appLanguageId == "8")));
     return isUse;
   }
 
@@ -1693,6 +1604,8 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    print(
+        "Main build Widget called, selectedAcrosticLanguage = ${jsonEncode(selectedAcrosticsLanguage)}, availLanguages = ${jsonEncode(availLanguages)}");
     final TextStyle commonTextStyle = TextStyle(
       fontSize: 16.0,
       color: Colors.black,
@@ -1744,7 +1657,7 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                       Visibility(
-                          visible: isAppOnline == false,
+                          visible: isOnline == false,
                           child: Container(
                               height: linksFontSize + 3,
                               width: double.infinity,

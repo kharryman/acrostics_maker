@@ -73,6 +73,7 @@
     "LOAD_ACROSTICS_ONLINE": "Įkeliami acrostic žodžiai internete, palaukite...",
     "NETWORK_ERROR": "Tinklo klaida",
     "NOTHING_SELECTED": "Nieko nepasirinkta.",
+    "NOT_ONLINE": "Ne prisijungęs",
     "NOT_ONLINE_PROMPT": "Ne internete. Prisijunkite ir bandykite dar kartą.",
     "POPUP_NO_ADS_MESSAGE2": "Mėgaukitės patirtimi be skelbimų **{mDev}** tik už **{mPr}**!",
     "POPUP_NO_ADS_TITLE": "Nenorite jokių trukdžių?",

@@ -73,6 +73,7 @@
     "LOAD_ACROSTICS_ONLINE": "Se încarcă online cuvintele acrostice, așteptați...",
     "NETWORK_ERROR": "Eroare de rețea",
     "NOTHING_SELECTED": "Nimic selectat.",
+    "NOT_ONLINE": "Nu este online",
     "NOT_ONLINE_PROMPT": "Nu este online. Vă rugăm să vă conectați și să încercați din nou.",
     "POPUP_NO_ADS_MESSAGE2": "Bucurați-vă de o experiență fără anunțuri pe **{mDev}** pentru doar **{mPr}**!",
     "POPUP_NO_ADS_TITLE": "Nu vrei distrageri?",

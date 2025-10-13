@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:acrostics_maker/helpers.dart';
 import 'package:acrostics_maker/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -9,7 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:visibility_detector/visibility_detector.dart';
 
 import 'main.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 
 String visibilityCondition = "";
 
@@ -188,53 +189,58 @@ class TablePageState extends State<TablePage> {
       isWordLettersDictLoaded[inputListIndex] = true;
       return myDictSuggestions;
     } else {
-      String appLanguageId = appLanguage["LID"];
-      List<String> availLIDs =
-          List<String>.from(availLanguages.map((lang) => lang["LID"]).toList());
-      if (!availLIDs.contains(appLanguage["LID"])) {
-        appLanguageId = "8"; //ENGLISH
-      }
-      MyHomeState().showProgress(
-          context, FlutterI18n.translate(context, "LOADING_DICTIONARY_WORDS"));
-      try {
-        response = await http.get(Uri.parse(
-            "https://www.learnfactsquick.com/lfq_app_php/get_dict_suggestions.php?letter=$letter&language_id=${selectedAcrosticsLanguage["LID"]}&app_language_id=$appLanguageId"));
-      } catch (e) {
-        isRequestSuccess = false;
-      }
-      // ignore: use_build_context_synchronously
-      MyHomeState().hideProgress(context);
-      dynamic data = {"SUCCESS": false};
-      if (isRequestSuccess == false) {
-        //await showPopup(context, "${FlutterI18n.translate(context, "NETWORK_ERROR")}!");
-        isAppOnline = false;
-        //await doNetworkChange();
+      if (isOnline == false) {
+        await showPopup(context, FlutterI18n.translate(context, "NOT_ONLINE"));
         return myDictSuggestions;
       } else {
-        //hideProgress(context);
-        if (response.statusCode == 200) {
-          data = Map<String, dynamic>.from(json.decode(response.body));
-          //print("GET DICT SUGGESTED WORDS: data = ${json.encode(data)}");
-          if (data["SUCCESS"] == true) {
-            try {
-              dictSuggestions[inputListIndex]
-                  .addAll(Map<String, String>.from(data["WORDS"]));
-              myDictSuggestions.addAll(List<Map<String, String>>.from(
-                  convertMapToListMap(
-                      Map<String, String>.from(data["WORDS"]))));
+        String appLanguageId = appLanguage["LID"];
+        List<String> availLIDs = List<String>.from(
+            availLanguages.map((lang) => lang["LID"]).toList());
+        if (!availLIDs.contains(appLanguage["LID"])) {
+          appLanguageId = "8"; //ENGLISH
+        }
+        showProgress(context,
+            FlutterI18n.translate(context, "LOADING_DICTIONARY_WORDS"));
+        try {
+          response = await http.get(Uri.parse(
+              "https://www.learnfactsquick.com/lfq_app_php/get_dict_suggestions.php?letter=$letter&language_id=${selectedAcrosticsLanguage["LID"]}&app_language_id=$appLanguageId"));
+        } catch (e) {
+          isRequestSuccess = false;
+        }
+        // ignore: use_build_context_synchronously
+        hideProgress(context);
+        dynamic data = {"SUCCESS": false};
+        if (isRequestSuccess == false) {
+          //await showPopup(context, "${FlutterI18n.translate(context, "NETWORK_ERROR")}!");
+          isOnline = false;
+          //await doNetworkChange();
+          return myDictSuggestions;
+        } else {
+          //hideProgress(context);
+          if (response.statusCode == 200) {
+            data = Map<String, dynamic>.from(json.decode(response.body));
+            //print("GET DICT SUGGESTED WORDS: data = ${json.encode(data)}");
+            if (data["SUCCESS"] == true) {
+              try {
+                dictSuggestions[inputListIndex]
+                    .addAll(Map<String, String>.from(data["WORDS"]));
+                myDictSuggestions.addAll(List<Map<String, String>>.from(
+                    convertMapToListMap(
+                        Map<String, String>.from(data["WORDS"]))));
 
-              isWordLettersDictLoaded[inputListIndex] = true;
-            } catch (e) {
-              print("ERROR GET DICT SUGGS: ${e.toString()}");
+                isWordLettersDictLoaded[inputListIndex] = true;
+              } catch (e) {
+                print("ERROR GET DICT SUGGS: ${e.toString()}");
+              }
+              return myDictSuggestions;
+            } else {
+              print("GET DICT SUGGESTED WORDS LFQ ERROR");
+              return myDictSuggestions;
             }
-            return myDictSuggestions;
           } else {
-            print("GET DICT SUGGESTED WORDS LFQ ERROR");
+            print("GET DICT SUGGESTED WORDS NETWORK ERROR");
             return myDictSuggestions;
           }
-        } else {
-          print("GET DICT SUGGESTED WORDS NETWORK ERROR");
-          return myDictSuggestions;
         }
       }
     }
@@ -548,7 +554,7 @@ class TablePageState extends State<TablePage> {
                                       onPressed: () {
                                         yourAcrostic = showAcrostic();
                                         if (yourAcrostic.isEmpty) {
-                                          MyHomeState().showPopup(
+                                          showPopup(
                                               context,
                                               FlutterI18n.translate(context,
                                                   "CREATE_ACROSTIC_TO_SHARE"));

@@ -1,0 +1,1 @@
+Boljše delo brez povezave. Izboljšana postavitev tabele: Akrosihi imajo barvo ozadja. Boljša izbira besed. Trenutni akrostihični pridevnik je med pomikanjem označen zgoraj.

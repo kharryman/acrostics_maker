@@ -73,6 +73,7 @@
     "LOAD_ACROSTICS_ONLINE": "Loading acrostic words online, please wait...",
     "NETWORK_ERROR": "Network Error",
     "NOTHING_SELECTED": "Nothing selected.",
+    "NOT_ONLINE": "Not Online",
     "NOT_ONLINE_PROMPT": "Not online. Please connect and retry.",
     "POPUP_NO_ADS_MESSAGE2": "Enjoy an ad-free experience on **{mDev}** for just **{mPr}**!",
     "POPUP_NO_ADS_TITLE": "Want No Distractions?",

@@ -73,6 +73,7 @@
     "LOAD_ACROSTICS_ONLINE": "Acrostic sõnade laadimine võrgus, palun oodake...",
     "NETWORK_ERROR": "Võrgu viga",
     "NOTHING_SELECTED": "Midagi pole valitud.",
+    "NOT_ONLINE": "Pole võrgus",
     "NOT_ONLINE_PROMPT": "Mitte võrgus. Ühendage ja proovige uuesti.",
     "POPUP_NO_ADS_MESSAGE2": "Nautige reklaamideta kogemust teenuses **{mDev}** vaid **{mPr}** eest!",
     "POPUP_NO_ADS_TITLE": "Kas soovite mitte segada?",

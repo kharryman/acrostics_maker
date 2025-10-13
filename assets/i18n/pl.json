@@ -73,6 +73,7 @@
     "LOAD_ACROSTICS_ONLINE": "Ładowanie akrostychów online, proszę czekać...",
     "NETWORK_ERROR": "Błąd sieci",
     "NOTHING_SELECTED": "Nic nie wybrano.",
+    "NOT_ONLINE": "Nie online",
     "NOT_ONLINE_PROMPT": "Niedostępny. Połącz się i spróbuj ponownie.",
     "POPUP_NO_ADS_MESSAGE2": "Ciesz się korzystaniem z serwisu **{mDev}** bez reklam za jedyne **{mPr}**!",
     "POPUP_NO_ADS_TITLE": "Chcesz, żeby nic Cię nie rozpraszało?",

@@ -73,6 +73,7 @@
     "LOAD_ACROSTICS_ONLINE": "Cargando palabras acrósticas en línea, por favor espere...",
     "NETWORK_ERROR": "Error de red",
     "NOTHING_SELECTED": "Nada seleccionado.",
+    "NOT_ONLINE": "No en línea",
     "NOT_ONLINE_PROMPT": "Fuera de linea. Por favor conéctese y vuelva a intentarlo.",
     "POPUP_NO_ADS_MESSAGE2": "¡Disfruta de una experiencia sin publicidad en **{mDev}** por solo **{mPr}**!",
     "POPUP_NO_ADS_TITLE": "¿No quieres distracciones?",

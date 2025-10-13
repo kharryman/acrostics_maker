@@ -1,0 +1,1 @@
+Lepšia manipulácia offline. Vylepšené rozloženie tabuľky: Akrostické písmená majú farbu pozadia. Lepší výber slov. Aktuálne akrostichické prídavné meno je pri rolovaní zvýraznené hore.

@@ -1,0 +1,19 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Flutter Web (Offline Build)",
+            "type": "shell",
+            "command": "flutter build web --no-web-resources-cdn --pwa-strategy=offline-first && npx serve build/web",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated"
+            }
+        }
+    ]
+}

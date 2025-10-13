@@ -73,6 +73,7 @@
     "LOAD_ACROSTICS_ONLINE": "Wrthi'n llwytho geiriau acrostig ar-lein, arhoswch...",
     "NETWORK_ERROR": "Gwall Rhwydwaith",
     "NOTHING_SELECTED": "Dim byd wedi'i ddewis.",
+    "NOT_ONLINE": "Ddim Ar-lein",
     "NOT_ONLINE_PROMPT": "Ddim ar-lein. Cysylltwch a rhowch gynnig arall arni.",
     "NO_WORDS_ENTERED": "Angen mewnbynnu rhestr o eiriau i mnemonigeiddio...",
     "POPUP_NO_ADS_MESSAGE2": "Mwynhewch brofiad di-hysbyseb ar **{mDev}** am ddim ond **{mPr}**!",

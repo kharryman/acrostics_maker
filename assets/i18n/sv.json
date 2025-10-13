@@ -73,6 +73,7 @@
     "LOAD_ACROSTICS_ONLINE": "Laddar akrostiska ord online, vänligen vänta...",
     "NETWORK_ERROR": "Nätverksfel",
     "NOTHING_SELECTED": "Inget valt.",
+    "NOT_ONLINE": "Inte online",
     "NOT_ONLINE_PROMPT": "Inte online. Anslut och försök igen.",
     "POPUP_NO_ADS_MESSAGE2": "Njut av en annonsfri upplevelse på **{mDev}** för bara **{mPr}**!",
     "POPUP_NO_ADS_TITLE": "Vill du inte ha några distraktioner?",

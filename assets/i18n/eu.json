@@ -73,6 +73,7 @@
     "LOAD_ACROSTICS_ONLINE": "Hitz akrostikoak sarean kargatzen, itxaron mesedez...",
     "NETWORK_ERROR": "Sareko errorea",
     "NOTHING_SELECTED": "Ez dago ezer hautatuta.",
+    "NOT_ONLINE": "Ez dago sarean",
     "NOT_ONLINE_PROMPT": "Ez sarean. Konektatu eta saiatu berriro.",
     "POPUP_NO_ADS_MESSAGE2": "Gozatu iragarkirik gabeko esperientzia batez **{mDev}** **{mPr}** soilik!",
     "POPUP_NO_ADS_TITLE": "Ez al duzu distrakziorik nahi?",

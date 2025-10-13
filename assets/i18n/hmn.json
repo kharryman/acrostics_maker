@@ -73,6 +73,7 @@
     "LOAD_ACROSTICS_ONLINE": "Loading acrostic lus online, thov tos...",
     "NETWORK_ERROR": "Network yuam kev",
     "NOTHING_SELECTED": "Tsis muaj dab tsi xaiv.",
+    "NOT_ONLINE": "Tsis Online",
     "NOT_ONLINE_PROMPT": "Tsis online. Thov txuas thiab rov sim dua.",
     "POPUP_NO_ADS_MESSAGE2": "Txaus siab rau qhov kev paub tsis pub tshaj tawm ntawm **{mDev}** rau **{mPr}**!",
     "POPUP_NO_ADS_TITLE": "Xav tsis muaj kev cuam tshuam?",
