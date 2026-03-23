@@ -1,5 +1,3 @@
-Better offline handling.
-Improved table layout:
-  Acrostic letters have background color.
-  Better word selection.
-  The current acrostic adjective is highlighted above while scrolling.
+Added feature to show example acrostics by category.
+Added feature to upload acrostics with a name, name information, category or new cateogory, and image.
+Added feature to remove ads for 24 hours.
