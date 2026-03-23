@@ -1,6 +1,7 @@
 {
     "ACROSTIC": "Acrostic",
     "ACROSTICS_TABLE": "Shaxda Acrostics",
+    "ACROSTIC_ALREADY_EXISTS": "Fartan '{nM}', horey ayay u jirtay.",
     "APP_OFFLINE": "App-ka offline. Kuma xidhna",
     "APP_TITLE": "Sameeyaha Acrostics",
     "CAMERA": "Kamarad",
@@ -100,6 +101,7 @@
     "POPUP_NO_ADS_MESSAGE2": "Ku raaxayso khibrad xayaysiis la'aan ah **{mDev}** kaliya **{mPr}**!",
     "POPUP_NO_ADS_TITLE": "Ma rabtaa wax kala jiidasho leh?",
     "PROGRESS_CHECKING_EXISTS": "Hubinta haddii ay hore u jirtay ...",
+    "PROGRESS_CREATE_TABLE": "Samaynta jadwalka, '{tBL}' ...",
     "PROGRESS_INSERT_ACROSTIC": "Gelinta acrostic, fadlan sug ...",
     "PROGRESS_INSERT_ACROSTIC:": "Gelinta acrostic, fadlan sug...,",
     "PROMPT_ADS_FREE": "Hadda ma lihid xayaysiis",

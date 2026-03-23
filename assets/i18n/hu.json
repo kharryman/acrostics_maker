@@ -1,6 +1,7 @@
 {
     "ACROSTIC": "Akrosztikon",
     "ACROSTICS_TABLE": "Acrostics táblázat",
+    "ACROSTIC_ALREADY_EXISTS": "Ez az akrosztichon a(z) '{nM}' szóhoz már létezik.",
     "APP_OFFLINE": "Offline alkalmazás. Nincs csatlakoztatva.",
     "APP_TITLE": "Acrostics Maker",
     "CAMERA": "Kamera",
@@ -100,6 +101,7 @@
     "POPUP_NO_ADS_MESSAGE2": "Élvezze a hirdetésmentes élményt a **{mDev}**-on mindössze **{mPr}**-ért!",
     "POPUP_NO_ADS_TITLE": "Nem akarsz zavarni?",
     "PROGRESS_CHECKING_EXISTS": "Ellenőrzés, hogy már létezik-e...",
+    "PROGRESS_CREATE_TABLE": "Tábla létrehozása, '{tBL}' ...",
     "PROGRESS_INSERT_ACROSTIC": "Akrostichon beszúrása folyamatban, kérem várjon...",
     "PROGRESS_INSERT_ACROSTIC:": "Akrostichon beszúrása folyamatban, kérem várjon...,",
     "PROMPT_ADS_FREE": "Most nincsenek hirdetései",

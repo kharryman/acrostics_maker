@@ -1,0 +1,5 @@
+Adicionada funcionalidade para exibir exemplos de acrósticos por categoria.
+
+Adicionada funcionalidade para fazer o upload de acrósticos com o nome, informação sobre o nome, categoria ou nova categoria e imagem.
+
+Adicionada funcionalidade para remover anúncios durante 24 horas.

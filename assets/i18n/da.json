@@ -1,6 +1,7 @@
 {
     "ACROSTIC": "Akrostikon",
     "ACROSTICS_TABLE": "Acrostics bord",
+    "ACROSTIC_ALREADY_EXISTS": "Dette akrostikon for '{nM}' findes allerede.",
     "APP_OFFLINE": "App offline. Ikke forbundet.",
     "APP_TITLE": "Acrostics Maker",
     "CAMERA": "Kamera",
@@ -101,6 +102,7 @@
     "POPUP_NO_ADS_MESSAGE2": "Nyd en annoncefri oplevelse på **{mDev}** for kun **{mPr}**!",
     "POPUP_NO_ADS_TITLE": "Ønsker du ingen distraktioner?",
     "PROGRESS_CHECKING_EXISTS": "Tjekker om det allerede findes...",
+    "PROGRESS_CREATE_TABLE": "Opretter tabellen '{tBL}' ...",
     "PROGRESS_INSERT_ACROSTIC": "Indsætter akrostikon, vent venligst ...",
     "PROGRESS_INSERT_ACROSTIC:": "Indsætter akrostikon, vent venligst...",
     "PROMPT_ADS_FREE": "Du har nu ingen annoncer",

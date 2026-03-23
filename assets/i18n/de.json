@@ -1,6 +1,7 @@
 {
     "ACROSTIC": "Akrostichon",
     "ACROSTICS_TABLE": "Akrostichon-Tabelle",
+    "ACROSTIC_ALREADY_EXISTS": "Dieses Akrostichon für '{nM}' existiert bereits.",
     "APP_OFFLINE": "App offline. Nicht verbunden.",
     "APP_TITLE": "Akrostichon-Generator",
     "CAMERA": "Kamera",
@@ -100,6 +101,7 @@
     "POPUP_NO_ADS_MESSAGE2": "Genießen Sie ein werbefreies Erlebnis auf **{mDev}** für nur **{mPr}**!",
     "POPUP_NO_ADS_TITLE": "Möchten Sie keine Ablenkungen?",
     "PROGRESS_CHECKING_EXISTS": "Es wird geprüft, ob es bereits existiert ...",
+    "PROGRESS_CREATE_TABLE": "Tabelle '{tBL}' wird erstellt ...",
     "PROGRESS_INSERT_ACROSTIC": "Akrostichon wird eingefügt, bitte warten ...",
     "PROGRESS_INSERT_ACROSTIC:": "Akrostichon wird eingefügt, bitte warten...",
     "PROMPT_ADS_FREE": "Sie haben jetzt keine Anzeigen",

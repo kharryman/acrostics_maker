@@ -1,0 +1,3 @@
+A fost adăugată o funcție de afișare a acrostihurilor exemplificative pe categorii.
+A fost adăugată o funcție de încărcare a acrostihurilor cu nume, informații despre nume, categorie sau categorie nouă și imagine.
+A fost adăugată o funcție de eliminare a reclamelor timp de 24 de ore.

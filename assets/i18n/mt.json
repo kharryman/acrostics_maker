@@ -1,6 +1,7 @@
 {
     "ACROSTIC": "Akrostiku",
     "ACROSTICS_TABLE": "Tabella Akrostiċi",
+    "ACROSTIC_ALREADY_EXISTS": "Dan l-akrostiku għal, '{nM}', diġà jeżisti.",
     "APP_OFFLINE": "App offline. Mhux konnessi.",
     "APP_TITLE": "Akrostiċi Maker",
     "CAMERA": "Kamera",
@@ -100,6 +101,7 @@
     "POPUP_NO_ADS_MESSAGE2": "Igawdu esperjenza mingħajr reklami fuq **{mDev}** għal **{mPr}** biss!",
     "POPUP_NO_ADS_TITLE": "Trid Ebda Distrazzjonijiet?",
     "PROGRESS_CHECKING_EXISTS": "Qed nivverifika jekk diġà teżistix ...",
+    "PROGRESS_CREATE_TABLE": "Qed tinħoloq it-tabella, '{tBL}' ...",
     "PROGRESS_INSERT_ACROSTIC": "Qed jiddaħħal akrostiku, jekk jogħġbok stenna ...",
     "PROGRESS_INSERT_ACROSTIC:": "Qed jiddaħħal akrostiku, jekk jogħġbok stenna...,",
     "PROMPT_ADS_FREE": "Issa m'għandekx reklami",

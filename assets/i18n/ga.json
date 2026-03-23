@@ -1,6 +1,7 @@
 {
     "ACROSTIC": "Acrastach",
     "ACROSTICS_TABLE": "Tábla Acrostics",
+    "ACROSTIC_ALREADY_EXISTS": "Tá an acrastach seo do '{nM}' ann cheana féin.",
     "APP_OFFLINE": "App as líne. Gan ceangal.",
     "APP_TITLE": "Déantóir Acrostics",
     "CAMERA": "Ceamara",
@@ -100,6 +101,7 @@
     "POPUP_NO_ADS_MESSAGE2": "Bain sult as eispéireas saor ó fhógra ar **{mDev}** le haghaidh **{mPr}**!",
     "POPUP_NO_ADS_TITLE": "Níl aon seachrán uait?",
     "PROGRESS_CHECKING_EXISTS": "Ag seiceáil an bhfuil sé ann cheana féin...",
+    "PROGRESS_CREATE_TABLE": "Ag cruthú tábla, '{tBL}' ...",
     "PROGRESS_INSERT_ACROSTIC": "Ag cur acrastice isteach, fan le do thoil ...",
     "PROGRESS_INSERT_ACROSTIC:": "Ag cur acrastice isteach, fan le do thoil...,",
     "PROMPT_ADS_FREE": "Níl aon fhógraí agat anois",

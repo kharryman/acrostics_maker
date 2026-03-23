@@ -1,6 +1,7 @@
 {
     "ACROSTIC": "Akrostych",
     "ACROSTICS_TABLE": "Tabela akrostychów",
+    "ACROSTIC_ALREADY_EXISTS": "Ten akrostych dla '{nM}' już istnieje.",
     "APP_OFFLINE": "Aplikacja offline. Brak połączenia.",
     "APP_TITLE": "Twórca Akrostychów",
     "CAMERA": "Kamera",
@@ -100,6 +101,7 @@
     "POPUP_NO_ADS_MESSAGE2": "Ciesz się korzystaniem z serwisu **{mDev}** bez reklam za jedyne **{mPr}**!",
     "POPUP_NO_ADS_TITLE": "Chcesz, żeby nic Cię nie rozpraszało?",
     "PROGRESS_CHECKING_EXISTS": "Sprawdzanie czy już istnieje...",
+    "PROGRESS_CREATE_TABLE": "Tworzenie tabeli '{tBL}' ...",
     "PROGRESS_INSERT_ACROSTIC": "Wstawianie akrostychu, proszę czekać...",
     "PROGRESS_INSERT_ACROSTIC:": "Wstawianie akrostychu, proszę czekać...,",
     "PROMPT_ADS_FREE": "Teraz nie masz żadnych reklam",

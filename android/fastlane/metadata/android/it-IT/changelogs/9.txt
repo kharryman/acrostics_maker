@@ -1,0 +1,3 @@
+Aggiunta la funzione per mostrare esempi di acrostici per categoria.
+Aggiunta la funzione per caricare acrostici con nome, informazioni sul nome, categoria o nuova categoria e immagine.
+Aggiunta la funzione per rimuovere gli annunci per 24 ore.

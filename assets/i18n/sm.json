@@ -1,6 +1,7 @@
 {
     "ACROSTIC": "Fa'a-akrosika",
     "ACROSTICS_TABLE": "Laulau acrostics",
+    "ACROSTIC_ALREADY_EXISTS": "O lenei fa'aupuga fa'atusa mo le, '{nM}', ua uma ona iai.",
     "APP_OFFLINE": "App tuimotu. Le feso'ota'i.",
     "APP_TITLE": "Fau Acrostics",
     "CAMERA": "Meapueata",
@@ -100,6 +101,7 @@
     "POPUP_NO_ADS_MESSAGE2": "Fiafia i se poto masani e leai ni fa'asalalauga ile **{mDev}** mo na'o **{mPr}**!",
     "POPUP_NO_ADS_TITLE": "E Le Mana'o e Fa'alavelave?",
     "PROGRESS_CHECKING_EXISTS": "Siaki pe ua iai ...",
+    "PROGRESS_CREATE_TABLE": "Fausiaina o le laulau, '{tBL}' ...",
     "PROGRESS_INSERT_ACROSTIC": "O loʻo faʻaofiina le acrostic, faʻamolemole faʻatali ...",
     "PROGRESS_INSERT_ACROSTIC:": "O loʻo faʻaofiina le acrostic, faʻamolemole faʻatali...,",
     "PROMPT_ADS_FREE": "Ua leai ni au fa'asalalauga",

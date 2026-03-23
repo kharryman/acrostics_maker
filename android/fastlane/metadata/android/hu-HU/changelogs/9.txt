@@ -1,0 +1,4 @@
+Hozzáadott funkció, amely kategóriák szerint mutatja akrosztichonok példáit.
+
+Hozzáadott funkció, amely névvel, névadatokkal, kategóriával vagy új kategóriával és képpel ellátott akrosztichonokat tölt fel.
+Hozzáadott funkció, amely 24 órára eltávolítja a hirdetéseket.

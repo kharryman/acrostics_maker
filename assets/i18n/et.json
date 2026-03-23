@@ -1,6 +1,7 @@
 {
     "ACROSTIC": "Akrostikoon",
     "ACROSTICS_TABLE": "Acrosticsi tabel",
+    "ACROSTIC_ALREADY_EXISTS": "See akrostihhon sõnale '{nM}' on juba olemas.",
     "APP_OFFLINE": "Rakendus võrguühenduseta. Pole ühendatud.",
     "APP_TITLE": "Acrostics Maker",
     "CAMERA": "Kaamera",
@@ -100,6 +101,7 @@
     "POPUP_NO_ADS_MESSAGE2": "Nautige reklaamideta kogemust teenuses **{mDev}** vaid **{mPr}** eest!",
     "POPUP_NO_ADS_TITLE": "Kas soovite mitte segada?",
     "PROGRESS_CHECKING_EXISTS": "Kontrollitakse, kas see on juba olemas ...",
+    "PROGRESS_CREATE_TABLE": "Tabeli '{tBL}' loomine ...",
     "PROGRESS_INSERT_ACROSTIC": "Akrostihhoni lisamine, palun oodake ...",
     "PROGRESS_INSERT_ACROSTIC:": "Akrostihhoni lisamine, palun oodake...",
     "PROMPT_ADS_FREE": "Teil pole nüüd reklaame",

@@ -1,0 +1,5 @@
+Es wurde eine Funktion hinzugefügt, die Beispiel-Akrostichen nach Kategorie anzeigt.
+
+Es wurde eine Funktion hinzugefügt, mit der Akrostichen inklusive Name, Namensinformationen, Kategorie oder neuer Kategorie und Bild hochgeladen werden können.
+
+Die Funktion zum Ausblenden von Werbung für 24 Stunden wurde hinzugefügt.

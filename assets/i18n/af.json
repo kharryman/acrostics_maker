@@ -1,6 +1,7 @@
 {
     "ACROSTIC": "Akrostiese",
     "ACROSTICS_TABLE": "Acrostics Tafel",
+    "ACROSTIC_ALREADY_EXISTS": "Hierdie akrostiek vir '{nM}' bestaan reeds.",
     "APP_OFFLINE": "Toepassing vanlyn. Nie gekoppel nie.",
     "APP_TITLE": "Acrostics Maker",
     "CAMERA": "Kamera",
@@ -100,6 +101,7 @@
     "POPUP_NO_ADS_MESSAGE2": "Geniet 'n advertensievrye ervaring op **{mDev}** vir net **{mPr}**!",
     "POPUP_NO_ADS_TITLE": "Wil jy geen afleiding hê nie?",
     "PROGRESS_CHECKING_EXISTS": "Kontroleer of dit reeds bestaan ...",
+    "PROGRESS_CREATE_TABLE": "Skep tabel, '{tBL}' ...",
     "PROGRESS_INSERT_ACROSTIC": "Voeg akrostiek in, wag asseblief ...",
     "PROGRESS_INSERT_ACROSTIC:": "Voeg akrostiek in, wag asseblief...,",
     "PROMPT_ADS_FREE": "Jy het nou geen advertensies nie",

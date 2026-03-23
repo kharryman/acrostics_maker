@@ -1,6 +1,7 @@
 {
     "ACROSTIC": "Akrostichon",
     "ACROSTICS_TABLE": "Acrostic Dësch",
+    "ACROSTIC_ALREADY_EXISTS": "Dësen Akrostichon fir '{nM}' existéiert schonn.",
     "APP_OFFLINE": "App offline. Net ugeschloss.",
     "APP_TITLE": "Acrostic Maker",
     "CAMERA": "Kamera",
@@ -100,6 +101,7 @@
     "POPUP_NO_ADS_MESSAGE2": "Genéisst eng ad-gratis Erfahrung op **{mDev}** fir just **{mPr}**!",
     "POPUP_NO_ADS_TITLE": "Wëllt Dir keng Oflenkungen?",
     "PROGRESS_CHECKING_EXISTS": "Iwwerpréift ob et schonn existéiert ...",
+    "PROGRESS_CREATE_TABLE": "Tabelle erstellen, '{tBL}' ...",
     "PROGRESS_INSERT_ACROSTIC": "Akrostichon gëtt agefouert, waart w.e.g. ...",
     "PROGRESS_INSERT_ACROSTIC:": "Akrostichon gëtt agefouert, waart w.e.g. ...",
     "PROMPT_ADS_FREE": "Dir hutt elo keng Annoncen",

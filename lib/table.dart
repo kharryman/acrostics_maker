@@ -456,386 +456,413 @@ class TablePageState extends State<TablePage> {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             return Dialog(
+                insetPadding: EdgeInsets.only(
+                  bottom: 16,
+                  left: 16,
+                  right: 16,
+                  top: 16,
+                ),
                 child: Container(
-              width: screenWidth * 0.95, // Set width to 95% of screen width
-              constraints: BoxConstraints(
-                maxHeight: screenHeight * 0.85, // 👈 key
-              ),
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          textAlign: TextAlign.center,
-                          FlutterI18n.translate(context, "UPLOAD_ACROSTIC"),
-                          style: TextStyle(
-                              fontSize: dialogTitleFontSize,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.close),
-                        onPressed: () {
-                          Navigator.of(context).pop(); // Close the dialog
-                        },
-                      ),
-                    ],
+                  width: screenWidth * 0.95,
+                  constraints: BoxConstraints(
+                    maxHeight: screenHeight * 0.85,
                   ),
-                  Flexible(
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
-                            children: [
-                              Text(
-                                  "${FlutterI18n.translate(context, "NAME")}: ",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: promptFontSize,
-                                      decoration: TextDecoration.underline)),
-                              Expanded(
-                                child: Text(widget.inputWord.toUpperCase(),
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: promptFontSizeSmall)),
-                              ),
-                            ],
-                          ),
-                          Row(children: [
-                            Text("${FlutterI18n.translate(context, "IMAGE")}: ",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: promptFontSize,
-                                    decoration: TextDecoration.underline)),
-                            SizedBox(width: 5),
-                            Container(
-                              width: screenWidth * 0.2,
-                              height: 30,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(
-                                    color:
-                                        const Color.fromRGBO(64, 196, 255, 1)),
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: IconButton(
-                                iconSize: 20,
-                                constraints: BoxConstraints(),
-                                padding: EdgeInsets.zero,
-                                icon: Icon(Icons.photo_outlined,
-                                    color: Colors.blue),
-                                onPressed: () async {
-                                  //Uint8List? gotMyImage = await showImageSourceDialog(context);
-                                  Uint8List? gotMyImage =
-                                      await HelpersService.pickImage(
-                                          ImageSource.gallery);
-                                  if (gotMyImage != null) {
-                                    setState(() {
-                                      myImage = gotMyImage;
-                                    });
-                                  }
-                                },
-                              ),
+                          Expanded(
+                            child: Text(
+                              textAlign: TextAlign.center,
+                              FlutterI18n.translate(context, "UPLOAD_ACROSTIC"),
+                              style: TextStyle(
+                                  fontSize: dialogTitleFontSize,
+                                  fontWeight: FontWeight.bold),
                             ),
-                            if (myImage != null)
-                              Row(
-                                children: [
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.close),
+                            onPressed: () {
+                              Navigator.of(context).pop(); // Close the dialog
+                            },
+                          ),
+                        ],
+                      ),
+                      Flexible(
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                        "${FlutterI18n.translate(context, "NAME")}: ",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: promptFontSize,
+                                            decoration:
+                                                TextDecoration.underline)),
+                                    Expanded(
+                                      child: Text(widget.inputWord,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: promptFontSizeSmall)),
+                                    ),
+                                  ],
+                                ),
+                                Row(children: [
+                                  Text(
+                                      "${FlutterI18n.translate(context, "IMAGE")}: ",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: promptFontSize,
+                                          decoration:
+                                              TextDecoration.underline)),
                                   SizedBox(width: 5),
                                   Container(
                                     width: screenWidth * 0.2,
                                     height: 30,
                                     decoration: BoxDecoration(
-                                      color: Colors.red[50],
-                                      border:
-                                          Border.all(color: Colors.redAccent),
+                                      color: Colors.white,
+                                      border: Border.all(
+                                          color: const Color.fromRGBO(
+                                              64, 196, 255, 1)),
                                       borderRadius: BorderRadius.circular(5),
                                     ),
                                     child: IconButton(
                                       iconSize: 20,
                                       constraints: BoxConstraints(),
                                       padding: EdgeInsets.zero,
-                                      icon: Icon(Icons.delete_forever,
-                                          color: Colors.red),
-                                      onPressed: () {
-                                        setState(() {
-                                          myImage = null;
-                                        });
+                                      icon: Icon(Icons.photo_outlined,
+                                          color: Colors.blue),
+                                      onPressed: () async {
+                                        //Uint8List? gotMyImage = await showImageSourceDialog(context);
+                                        Uint8List? gotMyImage =
+                                            await HelpersService.pickImage(
+                                                ImageSource.gallery);
+                                        if (gotMyImage != null) {
+                                          setState(() {
+                                            myImage = gotMyImage;
+                                          });
+                                        }
                                       },
                                     ),
                                   ),
-                                ],
-                              ),
-                          ]),
-                          if (myImage != null)
-                            Row(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.grey),
-                                    borderRadius: BorderRadius.circular(4),
-                                  ),
-                                  constraints: BoxConstraints(
-                                      maxWidth: screenWidth * 0.5),
-                                  child: Image.memory(
-                                    myImage!,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          Row(children: [
-                            Text(
-                                "${FlutterI18n.translate(context, "INFORMATION")}: ",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: promptFontSize,
-                                    decoration: TextDecoration.underline)),
-                          ]),
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 1),
-                            child: TextField(
-                              minLines: 2,
-                              maxLines: 10,
-                              key: ValueKey("NAME_INFO"),
-                              controller: acrosticInfoController,
-                              style: TextStyle(
-                                fontSize: promptFontSizeSmall,
-                              ),
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.all(5),
-                                isDense: true,
-                                filled: true,
-                                fillColor: Colors.white,
-                                enabledBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color.fromARGB(
-                                      255,
-                                      29,
-                                      169,
-                                      33,
+                                  if (myImage != null)
+                                    Row(
+                                      children: [
+                                        SizedBox(width: 5),
+                                        Container(
+                                          width: screenWidth * 0.2,
+                                          height: 30,
+                                          decoration: BoxDecoration(
+                                            color: Colors.red[50],
+                                            border: Border.all(
+                                                color: Colors.redAccent),
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                          ),
+                                          child: IconButton(
+                                            iconSize: 20,
+                                            constraints: BoxConstraints(),
+                                            padding: EdgeInsets.zero,
+                                            icon: Icon(Icons.delete_forever,
+                                                color: Colors.red),
+                                            onPressed: () {
+                                              setState(() {
+                                                myImage = null;
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    width: 2.0,
-                                  ),
-                                ),
-                                focusedBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color.fromARGB(
-                                      255,
-                                      162,
-                                      29,
-                                      169,
-                                    ),
-                                    width: 2.0,
-                                  ),
-                                ),
-                                hintText:
-                                    FlutterI18n.translate(context, "NAME_INFO"),
-                                hintStyle: TextStyle(
-                                  fontSize: promptFontSizeSmall,
-                                ),
-                              ),
-                              keyboardType: TextInputType.text,
-                              onEditingComplete: () {
-                                FocusScope.of(context).unfocus();
-                              },
-                            ),
-                          ),
-                          SizedBox(height: 5),
-                          Row(
-                            children: [
-                              Text(
-                                  "${FlutterI18n.translate(context, "ACROSTIC")}: ",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: promptFontSize,
-                                      decoration: TextDecoration.underline)),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Text(yourAcrostic,
-                                    style: TextStyle(
-                                        fontSize: promptFontSizeSmall,
-                                        fontWeight: FontWeight.bold)),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 1),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  "${FlutterI18n.translate(context, "TABLE")}:",
-                                  style: TextStyle(
-                                      fontSize: promptFontSize,
-                                      fontWeight: FontWeight.bold,
-                                      decoration: TextDecoration.underline),
-                                  overflow: TextOverflow
-                                      .ellipsis, // Truncate with ellipsis if it overflows
-                                ),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        isNewTable = !isNewTable;
-                                      });
-                                    },
-                                    child: Text(
-                                      FlutterI18n.translate(
-                                        context,
-                                        "ENTER_TABLE_PROMPT",
+                                ]),
+                                if (myImage != null)
+                                  Row(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          border:
+                                              Border.all(color: Colors.grey),
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                        ),
+                                        constraints: BoxConstraints(
+                                            maxWidth: screenWidth * 0.5,
+                                            maxHeight: screenHeight * 0.25),
+                                        child: Image.memory(
+                                          myImage!,
+                                          fit: BoxFit.contain,
+                                        ),
                                       ),
-                                      softWrap: true,
+                                    ],
+                                  ),
+                                Row(children: [
+                                  Text(
+                                      "${FlutterI18n.translate(context, "INFORMATION")}: ",
                                       style: TextStyle(
+                                          fontWeight: FontWeight.bold,
                                           fontSize: promptFontSize,
-                                          fontWeight: FontWeight.bold),
-                                      overflow: TextOverflow
-                                          .ellipsis, // Truncate if it overflows
+                                          decoration:
+                                              TextDecoration.underline)),
+                                ]),
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 1),
+                                  child: TextField(
+                                    minLines: 2,
+                                    maxLines: 10,
+                                    key: ValueKey("NAME_INFO"),
+                                    controller: acrosticInfoController,
+                                    style: TextStyle(
+                                      fontSize: promptFontSizeSmall,
                                     ),
-                                  ),
-                                  Checkbox(
-                                    value: isNewTable,
-                                    onChanged: (newValue) {
-                                      setState(() {
-                                        isNewTable = newValue!;
-                                      });
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Visibility(
-                                visible: isNewTable == true,
-                                child: Expanded(
-                                  child: Padding(
-                                    padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                                    child: TextField(
-                                      key: ValueKey("CREATE_ACROSTIC_TABLE"),
-                                      controller: tableController,
-                                      style:
-                                          TextStyle(fontSize: promptFontSize),
-                                      decoration: InputDecoration(
-                                        contentPadding: EdgeInsets.zero,
-                                        isDense: true,
-                                        filled: true,
-                                        fillColor: Colors.white,
-                                        border: OutlineInputBorder(),
-                                        hintText: FlutterI18n.translate(
-                                          context,
-                                          "ENTER_TABLE",
-                                        ),
-                                        hintStyle: TextStyle(
-                                          fontSize: promptFontSize,
-                                        ),
-                                        labelText: FlutterI18n.translate(
-                                          context,
-                                          "ENTER_TABLE",
-                                        ),
-                                        labelStyle: TextStyle(
-                                          fontSize: promptFontSize,
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.all(5),
+                                      isDense: true,
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      enabledBorder: const OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Color.fromARGB(
+                                            255,
+                                            29,
+                                            169,
+                                            33,
+                                          ),
+                                          width: 2.0,
                                         ),
                                       ),
-                                      keyboardType: TextInputType.text,
-                                      onEditingComplete: () {
-                                        FocusScope.of(context).unfocus();
-                                      },
+                                      focusedBorder: const OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Color.fromARGB(
+                                            255,
+                                            162,
+                                            29,
+                                            169,
+                                          ),
+                                          width: 2.0,
+                                        ),
+                                      ),
+                                      hintText: FlutterI18n.translate(
+                                          context, "NAME_INFO"),
+                                      hintStyle: TextStyle(
+                                        fontSize: promptFontSizeSmall,
+                                      ),
                                     ),
+                                    keyboardType: TextInputType.text,
+                                    onEditingComplete: () {
+                                      FocusScope.of(context).unfocus();
+                                    },
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          Visibility(
-                            visible: isNewTable == false,
-                            child: Column(
-                              children: [
-                                Container(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(5, 0, 3, 0),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.grey),
-                                    borderRadius: BorderRadius.circular(4),
-                                    color: Colors.white,
-                                  ),
-                                  child: DropdownButton<dynamic>(
-                                    underline: SizedBox(),
-                                    isExpanded:
-                                        true, // Expands the dropdown to fill the width
-                                    value: selectedTable,
-                                    icon: Icon(
-                                      Icons.arrow_drop_down,
-                                    ), // Custom arrow icon on the right
-                                    iconSize: 24, // Size of the dropdown arrow
-                                    dropdownColor: Colors.white,
-                                    onChanged: (dynamic newValue) {
-                                      debugPrint("Table changed! to $newValue");
-                                      setState(() {
-                                        selectedTable = dropdownTables!
-                                            .where(
-                                              (dynamic selTbl) =>
-                                                  selTbl["Table_name"] ==
-                                                  newValue["Table_name"],
-                                            )
-                                            .toList()[0];
-                                        debugPrint(
-                                          "SET selectedTable = ${json.encode(selectedTable)}",
-                                        );
-                                      });
-                                    },
-                                    items: dropdownTables == null
-                                        ? []
-                                        : dropdownTables!
-                                            .map<DropdownMenuItem<dynamic>>((
-                                            dynamic value,
-                                          ) {
-                                            return DropdownMenuItem<dynamic>(
-                                              value: value,
-                                              child: Text(
-                                                HelpersService.prettify(
-                                                    value["Table_name"]),
-                                                style: TextStyle(
-                                                  fontSize: promptFontSize,
-                                                ),
+                                SizedBox(height: 5),
+                                Row(
+                                  children: [
+                                    Text(
+                                        "${FlutterI18n.translate(context, "ACROSTIC")}: ",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: promptFontSize,
+                                            decoration:
+                                                TextDecoration.underline)),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(yourAcrostic,
+                                          style: TextStyle(
+                                              fontSize: promptFontSizeSmall,
+                                              fontWeight: FontWeight.bold)),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 1),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        "${FlutterI18n.translate(context, "TABLE")}:",
+                                        style: TextStyle(
+                                            fontSize: promptFontSize,
+                                            fontWeight: FontWeight.bold,
+                                            decoration:
+                                                TextDecoration.underline),
+                                        overflow: TextOverflow
+                                            .ellipsis, // Truncate with ellipsis if it overflows
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              isNewTable = !isNewTable;
+                                            });
+                                          },
+                                          child: Text(
+                                            FlutterI18n.translate(
+                                              context,
+                                              "ENTER_TABLE_PROMPT",
+                                            ),
+                                            softWrap: true,
+                                            style: TextStyle(
+                                                fontSize: promptFontSize,
+                                                fontWeight: FontWeight.bold),
+                                            overflow: TextOverflow
+                                                .ellipsis, // Truncate if it overflows
+                                          ),
+                                        ),
+                                        Checkbox(
+                                          value: isNewTable,
+                                          onChanged: (newValue) {
+                                            setState(() {
+                                              isNewTable = newValue!;
+                                            });
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Visibility(
+                                      visible: isNewTable == true,
+                                      child: Expanded(
+                                        child: Padding(
+                                          padding:
+                                              EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                          child: TextField(
+                                            key: ValueKey(
+                                                "CREATE_ACROSTIC_TABLE"),
+                                            controller: tableController,
+                                            style: TextStyle(
+                                                fontSize: promptFontSize),
+                                            decoration: InputDecoration(
+                                              contentPadding: EdgeInsets.zero,
+                                              filled: true,
+                                              fillColor: Colors.white,
+                                              border: OutlineInputBorder(),
+                                              hintText: FlutterI18n.translate(
+                                                context,
+                                                "ENTER_TABLE",
                                               ),
-                                            );
-                                          }).toList(),
+                                              hintStyle: TextStyle(
+                                                fontSize: promptFontSize,
+                                              ),
+                                              labelText: FlutterI18n.translate(
+                                                context,
+                                                "ENTER_TABLE",
+                                              ),
+                                              labelStyle: TextStyle(
+                                                fontSize: promptFontSize,
+                                              ),
+                                            ),
+                                            keyboardType: TextInputType.text,
+                                            onEditingComplete: () {
+                                              FocusScope.of(context).unfocus();
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Visibility(
+                                  visible: isNewTable == false,
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            5, 0, 3, 0),
+                                        decoration: BoxDecoration(
+                                          border:
+                                              Border.all(color: Colors.grey),
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                          color: Colors.white,
+                                        ),
+                                        child: DropdownButton<dynamic>(
+                                          underline: SizedBox(),
+                                          isExpanded:
+                                              true, // Expands the dropdown to fill the width
+                                          value: selectedTable,
+                                          icon: Icon(
+                                            Icons.arrow_drop_down,
+                                          ), // Custom arrow icon on the right
+                                          iconSize:
+                                              24, // Size of the dropdown arrow
+                                          dropdownColor: Colors.white,
+                                          onChanged: (dynamic newValue) {
+                                            debugPrint(
+                                                "Table changed! to $newValue");
+                                            setState(() {
+                                              selectedTable = dropdownTables!
+                                                  .where(
+                                                    (dynamic selTbl) =>
+                                                        selTbl["Table_name"] ==
+                                                        newValue["Table_name"],
+                                                  )
+                                                  .toList()[0];
+                                              debugPrint(
+                                                "SET selectedTable = ${json.encode(selectedTable)}",
+                                              );
+                                            });
+                                          },
+                                          items: dropdownTables == null
+                                              ? []
+                                              : dropdownTables!.map<
+                                                  DropdownMenuItem<dynamic>>((
+                                                  dynamic value,
+                                                ) {
+                                                  return DropdownMenuItem<
+                                                      dynamic>(
+                                                    value: value,
+                                                    child: Text(
+                                                      HelpersService.prettify(
+                                                          value["Table_name"]),
+                                                      style: TextStyle(
+                                                        fontSize:
+                                                            promptFontSize,
+                                                      ),
+                                                    ),
+                                                  );
+                                                }).toList(),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                        ],
+                        ),
                       ),
-                    ),
+                      SizedBox(height: 10),
+                      HelpersService.customButton(
+                          context,
+                          0.9,
+                          promptFontSize,
+                          FlutterI18n.translate(context, "UPLOAD"),
+                          Icon(Icons.upload),
+                          const Color.fromARGB(255, 163, 241, 74),
+                          Colors.black,
+                          5, () async {
+                        await doUploadAcrostic(context);
+                      }),
+                    ],
                   ),
-                  SizedBox(height: 10),
-                  HelpersService.customButton(
-                      context,
-                      0.9,
-                      promptFontSize,
-                      FlutterI18n.translate(context, "UPLOAD"),
-                      Icon(Icons.upload),
-                      const Color.fromARGB(255, 163, 241, 74),
-                      Colors.black,
-                      5, () async {
-                    await doUploadAcrostic(context);
-                  }),
-                ],
-              ),
-            ));
+                ));
           },
         );
       },
@@ -916,6 +943,7 @@ class TablePageState extends State<TablePage> {
   Future<void> doUploadAcrostic(BuildContext context) async {
     debugPrint("doUploadAcrostic called");
     if (!mounted) return;
+    FocusManager.instance.primaryFocus?.unfocus();
     String table = "";
     String formattedTable = "";
     if (isNewTable == false) {
@@ -945,17 +973,9 @@ class TablePageState extends State<TablePage> {
         return;
       }
     }
-    HelpersService.showProgress(
-      context,
-      FlutterI18n.translate(context, "PROGRESS_INSERT_ACROSTIC"),
-    );
-    var name = widget.inputWord.toUpperCase();
+    var name = widget.inputWord;
     int guestId = 1;
-    dynamic checkWheres = {
-      "User_ID": guestId,
-      "Information": acrosticInfoController.text.trim(),
-      "Name": name,
-    };
+    dynamic checkWheres = {"Name": name};
     bool isExists = false;
     if (isNewTable != true) {
       isExists = await insertCheckExists(
@@ -964,14 +984,16 @@ class TablePageState extends State<TablePage> {
         formattedTable,
         checkWheres,
       );
-      debugPrint("insertCheckExists DONE isExists = $isExists");
+      debugPrint(
+          "insertCheckExists DONE formattedTable = $formattedTable, checkWheres = $checkWheres, isNewTable FALSE, isExists = $isExists");
     }
     if (isExists == true) {
-      HelpersService.hideProgress(context);
+      //HelpersService.hideProgress(context);
       HelpersService.showPopup(
         context,
         title: FlutterI18n.translate(context, "PROMPT_ALERT"),
-        message: FlutterI18n.translate(context, "ACROSTIC_ALREADY_EXISTS"),
+        message: FlutterI18n.translate(context, "ACROSTIC_ALREADY_EXISTS",
+            translationParams: {"nM": name}),
       );
       return;
     }
@@ -993,10 +1015,27 @@ class TablePageState extends State<TablePage> {
 
     if (isNewTable == true) {
       //CREATE THE TABLE FIRST ====>
-      HelpersService.hideProgress(context);
       bool isCreated = await createTable(context, formattedTable);
       debugPrint("IS TABLE CREATED = $isCreated");
+      if (isCreated == false) {
+        return;
+      } else {
+        //{"Table_name":"animal_orders","User_ID":"8","Username":"harryman75"}
+        dropdownTables?.add({
+          "Table_name": formattedTable,
+          "User_ID": guestUserID,
+          "Username": "GUEST"
+        });
+        dropdownTables?.sort((a, b) => a["Table_name"]
+            .toString()
+            .toLowerCase()
+            .compareTo(b["Table_name"].toString().toLowerCase()));
+      }
     }
+    HelpersService.showProgress(
+      context,
+      FlutterI18n.translate(context, "PROGRESS_INSERT_ACROSTIC"),
+    );
 
     //===========================>
     queries.add(SyncQuery(
@@ -1004,14 +1043,14 @@ class TablePageState extends State<TablePage> {
       null,
       DB_Type_ID.DB_ACROSTICS.value,
       formattedTable,
-      Op_Type_ID.INSERT_TYPES.value,
+      Op_Type_ID.INSERT.value,
       colsIns,
       [valsIns],
       checkWheres,
       null,
     ));
     debugPrint("Prepared queries for autosync: ${json.encode(queries)}");
-    HelpersService.hideProgress(context);
+
     //autoSync(queries, opTypeId, userIdOld, names, entryOld, entry, image)
 
     dynamic res = await autoSync(
@@ -1028,7 +1067,7 @@ class TablePageState extends State<TablePage> {
     HelpersService.hideProgress(context);
     if (res["isSuccess"] == true) {
       debugPrint(
-          "INSERT MNEMONIC autosync_text= ${json.encode(res["results"])}");
+          "INSERT ACROSTIC autosync_text= ${json.encode(res["results"])}");
       isNewTable = false;
       HelpersService.showPopup(
         context,
@@ -1054,11 +1093,12 @@ class TablePageState extends State<TablePage> {
   ) async {
     HelpersService.showProgress(
         context, FlutterI18n.translate(context, "PROGRESS_CHECKING_EXISTS"));
-    var params = {
+    dynamic params = {
       "database_type_id": myDBTypeID,
       "table_name": tableName,
       "wheres": wheres,
     };
+    print("insertCheckExists params: $params");
     bool isRequestSuccess = true;
     http.Response response = http.Response("", 200);
     try {
@@ -1077,6 +1117,7 @@ class TablePageState extends State<TablePage> {
     if (isRequestSuccess == true) {
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = json.decode(response.body);
+        print("insertCheckExists response data: $data");
         if (data["SUCCESS"] == true) {
           if (data["IS_EXISTS"] == true) {
             return true;
@@ -1100,12 +1141,6 @@ class TablePageState extends State<TablePage> {
 
   Future<bool> createTable(BuildContext context, String formattedTable) async {
     debugPrint("createTable called.");
-    HelpersService.showProgress(
-        context,
-        FlutterI18n.translate(context, "PROGRESS_CREATE_TABLE",
-            translationParams: {
-              "tBL": HelpersService.prettify(formattedTable)
-            }));
     //"Creating table $table, please wait......"
 
     //----------------------------------------------------------------------
@@ -1132,9 +1167,15 @@ class TablePageState extends State<TablePage> {
       HelpersService.showPopup(context,
           message: FlutterI18n.translate(context, "CREATE_TABLE_ALREADY_EXISTS",
               translationParams: {"tBL": formattedTable}));
-      HelpersService.hideProgress(context);
+      //HelpersService.hideProgress(context);
       return false;
     } else {
+      HelpersService.showProgress(
+          context,
+          FlutterI18n.translate(context, "PROGRESS_CREATE_TABLE",
+              translationParams: {
+                "tBL": HelpersService.prettify(formattedTable)
+              }));
       //var columns = "`ID` INTEGER PRIMARY KEY AUTOINCREMENT,`Name` tinytext,`Information` TEXT,`Acrostics` TEXT,`Image` blob";
       var cols = ["ID", "Name", "Information", "Acrostics", "Image", "User_ID"];
       var vals = [
@@ -1168,7 +1209,7 @@ class TablePageState extends State<TablePage> {
           DB_Type_ID.DB_ACROSTICS.value,
           formattedTable,
           Op_Type_ID.CREATE_INDEX.value,
-          ["Name", "User_ID"],
+          ["Name"],
           [],
           {},
           null));
@@ -1346,8 +1387,7 @@ class TablePageState extends State<TablePage> {
                                       children: [
                                         Text(
                                             "${FlutterI18n.translate(context, "YOUR_ACROSTIC_SENTENCE", translationParams: {
-                                                  "acrWor":
-                                                      inputWord.toUpperCase()
+                                                  "acrWor": inputWord
                                                 })} ",
                                             textAlign: TextAlign.left,
                                             style: TextStyle(

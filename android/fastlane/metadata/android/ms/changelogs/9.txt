@@ -1,0 +1,5 @@
+Ciri untuk menunjukkan contoh akrostik mengikut kategori telah ditambah.
+
+Ciri untuk memuat naik akrostik dengan nama, maklumat nama, kategori atau kategori baharu dan imej telah ditambah.
+
+Ciri untuk mengalih keluar iklan selama 24 jam telah ditambah.

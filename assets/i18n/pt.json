@@ -1,6 +1,7 @@
 {
     "ACROSTIC": "Acróstico",
     "ACROSTICS_TABLE": "Tabela de Acrósticos",
+    "ACROSTIC_ALREADY_EXISTS": "Este acróstico para '{nM}' já existe.",
     "APP_OFFLINE": "Aplicativo offline. Não conectado.",
     "APP_TITLE": "Criador de acrósticos",
     "CAMERA": "Câmera",
@@ -100,6 +101,7 @@
     "POPUP_NO_ADS_MESSAGE2": "Aproveite uma experiência sem anúncios no **{mDev}** por apenas **{mPr}**!",
     "POPUP_NO_ADS_TITLE": "Não quer distrações?",
     "PROGRESS_CHECKING_EXISTS": "Verificando se já existe...",
+    "PROGRESS_CREATE_TABLE": "Criando tabela, '{tBL}' ...",
     "PROGRESS_INSERT_ACROSTIC": "Inserindo acróstico, aguarde...",
     "PROGRESS_INSERT_ACROSTIC:": "Inserindo acróstico, aguarde...",
     "PROMPT_ADS_FREE": "Agora você não tem anúncios",

@@ -1,0 +1,5 @@
+Lisätty ominaisuus, jolla voi näyttää esimerkkiakrostikauksia luokittain.
+
+Lisätty ominaisuus, jolla voi ladata akrostikoita, joissa on nimi, nimitiedot, luokka tai uusi luokka ja kuva.
+
+Lisätty ominaisuus, jolla voi poistaa mainokset 24 tunniksi.

@@ -1,0 +1,1 @@
+Dodana je funkcija za prikaz primerov akrostihov po kategorijah. Dodana je funkcija za nalaganje akrostihov z imenom, podatki o imenu, kategorijo ali novo kategorijo in sliko. Dodana je funkcija za odstranitev oglasov za 24 ur.

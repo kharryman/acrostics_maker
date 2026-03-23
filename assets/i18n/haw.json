@@ -1,6 +1,7 @@
 {
     "ACROSTIC": "ʻAcrostic",
     "ACROSTICS_TABLE": "Papa Acrostics",
+    "ACROSTIC_ALREADY_EXISTS": "Ua loaʻa mua kēia acrostic no, '{nM}'.",
     "APP_OFFLINE": "App offline. ʻAʻole pili.",
     "APP_TITLE": "Mea Hana Akrostics",
     "CAMERA": "Kāmela",
@@ -100,6 +101,7 @@
     "POPUP_NO_ADS_MESSAGE2": "E hauʻoli i kahi ʻike hoʻolaha ʻole ma **{mDev}** no **{mPr}** wale nō!",
     "POPUP_NO_ADS_TITLE": "ʻAʻole makemake i nā mea hoʻonāwaliwali?",
     "PROGRESS_CHECKING_EXISTS": "Ke nānā nei inā loaʻa mua ...",
+    "PROGRESS_CREATE_TABLE": "Ke hana nei i ka papaʻaina, '{tBL}' ...",
     "PROGRESS_INSERT_ACROSTIC": "Ke hoʻokomo nei i ka acrostic, e kali ...",
     "PROGRESS_INSERT_ACROSTIC:": "Ke hoʻokomo nei i ka acrostic, e kali...,",
     "PROMPT_ADS_FREE": "ʻAʻohe hoʻolaha āu i kēia manawa",

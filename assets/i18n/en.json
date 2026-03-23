@@ -1,6 +1,7 @@
 {
     "ACROSTIC": "Acrostic",
     "ACROSTICS_TABLE": "Acrostics Table",
+    "ACROSTIC_ALREADY_EXISTS": "This acrostic for, '{nM}', already exists.",
     "APP_OFFLINE": "App offline. Not connected.",
     "APP_TITLE": "Acrostics Maker",
     "CAMERA": "Camera",
@@ -100,6 +101,7 @@
     "POPUP_NO_ADS_MESSAGE2": "Enjoy an ad-free experience on **{mDev}** for just **{mPr}**!",
     "POPUP_NO_ADS_TITLE": "Want No Distractions?",
     "PROGRESS_CHECKING_EXISTS": "Checking if already exists ...",
+    "PROGRESS_CREATE_TABLE": "Creating table, '{tBL}' ...",
     "PROGRESS_INSERT_ACROSTIC": "Inserting acrostic, please wait ...",
     "PROGRESS_INSERT_ACROSTIC:": "Inserting acrostic, please wait...,",
     "PROMPT_ADS_FREE": "You now have no ads",

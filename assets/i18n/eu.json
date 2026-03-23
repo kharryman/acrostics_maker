@@ -1,6 +1,7 @@
 {
     "ACROSTIC": "Akrostikoa",
     "ACROSTICS_TABLE": "Akrostikoen taula",
+    "ACROSTIC_ALREADY_EXISTS": "'{nM}' akrostiko hau dagoeneko existitzen da.",
     "APP_OFFLINE": "Aplikazioa lineaz kanpo. Ez dago konektatuta.",
     "APP_TITLE": "Akrostikoen sortzailea",
     "CAMERA": "Kamera",
@@ -100,6 +101,7 @@
     "POPUP_NO_ADS_MESSAGE2": "Gozatu iragarkirik gabeko esperientzia batez **{mDev}** **{mPr}** soilik!",
     "POPUP_NO_ADS_TITLE": "Ez al duzu distrakziorik nahi?",
     "PROGRESS_CHECKING_EXISTS": "Dagoeneko existitzen den egiaztatzen...",
+    "PROGRESS_CREATE_TABLE": "'{tBL}' taula sortzen...",
     "PROGRESS_INSERT_ACROSTIC": "Akrostikoa txertatzen, itxaron mesedez...",
     "PROGRESS_INSERT_ACROSTIC:": "Akrostikoa txertatzen, itxaron mesedez...",
     "PROMPT_ADS_FREE": "Orain ez duzu iragarkirik",

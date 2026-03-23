@@ -1,6 +1,7 @@
 {
     "ACROSTIC": "Acrostih",
     "ACROSTICS_TABLE": "Tabelul acrostice",
+    "ACROSTIC_ALREADY_EXISTS": "Acest acrostih pentru „{nM}” există deja.",
     "APP_OFFLINE": "Aplicația offline. Nu este conectat.",
     "APP_TITLE": "Creator de acrostice",
     "CAMERA": "Cameră",
@@ -100,6 +101,7 @@
     "POPUP_NO_ADS_MESSAGE2": "Bucurați-vă de o experiență fără anunțuri pe **{mDev}** pentru doar **{mPr}**!",
     "POPUP_NO_ADS_TITLE": "Nu vrei distrageri?",
     "PROGRESS_CHECKING_EXISTS": "Se verifică dacă există deja...",
+    "PROGRESS_CREATE_TABLE": "Se creează tabelul '{tBL}' ...",
     "PROGRESS_INSERT_ACROSTIC": "Se introduce acrostihul, vă rugăm să așteptați...",
     "PROGRESS_INSERT_ACROSTIC:": "Se introduce acrostihul, vă rugăm să așteptați...",
     "PROMPT_ADS_FREE": "Acum nu aveți reclame",

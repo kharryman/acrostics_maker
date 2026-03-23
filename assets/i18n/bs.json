@@ -1,6 +1,7 @@
 {
     "ACROSTIC": "Akrostik",
     "ACROSTICS_TABLE": "Tablica akrostiha",
+    "ACROSTIC_ALREADY_EXISTS": "Ovaj akrostih za '{nM}' već postoji.",
     "APP_OFFLINE": "Aplikacija van mreže. Nije povezano.",
     "APP_TITLE": "Acrostics Maker",
     "CAMERA": "Kamera",
@@ -100,6 +101,7 @@
     "POPUP_NO_ADS_MESSAGE2": "Uživajte u iskustvu bez oglasa na **{mDev}** za samo **{mPr}**!",
     "POPUP_NO_ADS_TITLE": "Želite bez ometanja?",
     "PROGRESS_CHECKING_EXISTS": "Provjeravam da li već postoji...",
+    "PROGRESS_CREATE_TABLE": "Kreiranje tabele, '{tBL}' ...",
     "PROGRESS_INSERT_ACROSTIC": "Ubacivanje akrostiha, molimo pričekajte...",
     "PROGRESS_INSERT_ACROSTIC:": "Ubacivanje akrostiha, molimo pričekajte...",
     "PROMPT_ADS_FREE": "Sada nemate reklame",

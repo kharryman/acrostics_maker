@@ -1,6 +1,7 @@
 {
     "ACROSTIC": "Acrostic",
     "ACROSTICS_TABLE": "Ripanga Acrostics",
+    "ACROSTIC_ALREADY_EXISTS": "Kei te wātea kē tēnei acrostic mō '{nM}'.",
     "APP_OFFLINE": "Taupānga tuimotu. Kaore i hono.",
     "APP_TITLE": "Kaihanga Acrostics",
     "CAMERA": "Kāmera",
@@ -100,6 +101,7 @@
     "POPUP_NO_ADS_MESSAGE2": "Kia pai te wheako panui-kore i runga i **{mDev}** mo **{mPr}** noa!",
     "POPUP_NO_ADS_TITLE": "Kei te pirangi kaore he whakararuraru?",
     "PROGRESS_CHECKING_EXISTS": "Kei te tirotiro mēnā kei te wātea kē ...",
+    "PROGRESS_CREATE_TABLE": "Te hanga ripanga, '{tBL}' ...",
     "PROGRESS_INSERT_ACROSTIC": "Kei te whakauru i te acrostic, tatari mai...",
     "PROGRESS_INSERT_ACROSTIC:": "Kei te whakauru i te acrostic, tatari mai...,",
     "PROMPT_ADS_FREE": "Karekau he panui inaianei",

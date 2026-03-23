@@ -1,6 +1,7 @@
 {
     "ACROSTIC": "Akrostik",
     "ACROSTICS_TABLE": "Akrostický stôl",
+    "ACROSTIC_ALREADY_EXISTS": "Tento akrostich pre '{nM}' už existuje.",
     "APP_OFFLINE": "Aplikácia offline. Nepripojené.",
     "APP_TITLE": "Acrostics Maker",
     "CAMERA": "Fotoaparát",
@@ -100,6 +101,7 @@
     "POPUP_NO_ADS_MESSAGE2": "Užite si zážitok bez reklám na **{mDev}** len za **{mPr}**!",
     "POPUP_NO_ADS_TITLE": "Nechcete žiadne rozptýlenie?",
     "PROGRESS_CHECKING_EXISTS": "Kontroluje sa, či už existuje...",
+    "PROGRESS_CREATE_TABLE": "Vytvára sa tabuľka '{tBL}' ...",
     "PROGRESS_INSERT_ACROSTIC": "Vkladám akrostich, čakajte prosím...",
     "PROGRESS_INSERT_ACROSTIC:": "Vkladanie akrostichu, čakajte prosím...",
     "PROMPT_ADS_FREE": "Teraz nemáte žiadne reklamy",

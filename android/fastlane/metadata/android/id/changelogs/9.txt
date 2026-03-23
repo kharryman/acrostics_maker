@@ -1,0 +1,5 @@
+Menambahkan fitur untuk menampilkan contoh akrostik berdasarkan kategori.
+
+Menambahkan fitur untuk mengunggah akrostik dengan nama, informasi nama, kategori atau kategori baru, dan gambar.
+
+Menambahkan fitur untuk menghapus iklan selama 24 jam.
