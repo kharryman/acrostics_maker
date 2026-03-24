@@ -1,0 +1,4 @@
+Verbessertes Tabellenlayout:
+Akrostichon-Buchstaben haben eine Hintergrundfarbe.
+Bessere Wortauswahl.
+Das aktuelle Akrostichon-Adjektiv wird beim Scrollen hervorgehoben.

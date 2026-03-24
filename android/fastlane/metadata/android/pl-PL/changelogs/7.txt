@@ -1,0 +1,4 @@
+Ulepszony układ tabeli: 
+Litery akrostychów mają kolor tła. 
+Lepszy wybór słów. 
+Aktualny przymiotnik akrostychowy jest podświetlony powyżej podczas przewijania.

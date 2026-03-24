@@ -1,0 +1,5 @@
+Lepsza obsługa offline.
+Ulepszony układ tabeli:
+Litery akrostychu mają kolor tła.
+Lepszy dobór słów.
+Aktualny przymiotnik akrostychu jest podświetlony powyżej podczas przewijania.

@@ -1,0 +1,3 @@
+Funksie bygevoeg om voorbeeld-akrostiese snitte per kategorie te wys. 
+Funksie bygevoeg om akrostiese snitte met 'n naam, naaminligting, kategorie of nuwe kategorie, en beeld op te laai. 
+Funksie bygevoeg om advertensies vir 24 uur te verwyder.

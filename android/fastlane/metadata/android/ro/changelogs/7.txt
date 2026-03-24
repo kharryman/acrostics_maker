@@ -1,0 +1,4 @@
+Aspect îmbunătățit al tabelului:
+  Literele acrostice au culoarea de fundal.
+  O selecție mai bună a cuvintelor.
+  Adjectivul acrostic actual este evidențiat mai sus în timpul derulării.

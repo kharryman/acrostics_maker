@@ -1,0 +1,1 @@
+Lade till funktion för att visa exempel på akrostikoner per kategori. Lade till funktion för att ladda upp akrostikoner med namn, namninformation, kategori eller ny kategori och bild. Lade till funktion för att ta bort annonser i 24 timmar.

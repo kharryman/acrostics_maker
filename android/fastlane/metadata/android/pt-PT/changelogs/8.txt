@@ -1,0 +1,5 @@
+Melhor manuseamento offline.
+Layout de tabela melhorado:
+As letras do acróstico têm cor de fundo.
+Melhor seleção de palavras.
+O adjetivo acróstico atual é destacado acima durante a rolagem.

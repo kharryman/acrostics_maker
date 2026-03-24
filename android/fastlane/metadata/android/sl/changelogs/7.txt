@@ -1,0 +1,4 @@
+Izboljšana postavitev tabele:
+  Akrostih ima barvo ozadja.
+  Boljša izbira besed.
+  Trenutni pridevnik v akrostihu je med pomikanjem zgoraj označen.

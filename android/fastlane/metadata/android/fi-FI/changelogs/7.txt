@@ -1,0 +1,4 @@
+Parannettu pöytäasettelu:
+  Acrostic-kirjaimilla on taustaväri.
+  Parempi sanavalinta.
+  Nykyinen akrostinen adjektiivi on korostettuna yllä vierittäessä.

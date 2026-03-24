@@ -1,0 +1,5 @@
+Se agregó la función para mostrar ejemplos de acrósticos por categoría.
+
+Se agregó la función para subir acrósticos con nombre, información del nombre, categoría (o nueva categoría) e imagen.
+
+Se agregó la función para eliminar los anuncios durante 24 horas.

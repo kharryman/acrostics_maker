@@ -1,0 +1,1 @@
+Dodana je značajka za prikaz primjera akrostiha po kategoriji. Dodana je značajka za prijenos akrostiha s imenom, podacima o imenu, kategorijom ili novom kategorijom i slikom. Dodana je značajka za uklanjanje oglasa na 24 sata.

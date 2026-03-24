@@ -1,0 +1,2 @@
+Jobb offline kezelés. 
+Továbbfejlesztett táblázatelrendezés: Az akrosztichon betűk háttérszínnel rendelkeznek. Jobb szókijelölés. Az aktuális akrosztichon melléknév görgetés közben fent kiemelve jelenik meg.

@@ -1,0 +1,5 @@
+Bessere Offline-Verarbeitung.
+Verbessertes Tabellenlayout:
+Akrostichonen haben eine Hintergrundfarbe.
+Bessere Wortauswahl.
+Das aktuelle Akrostichon-Adjektiv wird beim Scrollen hervorgehoben.

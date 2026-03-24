@@ -1,0 +1,5 @@
+Gestionare offline îmbunătățită.
+Aspect îmbunătățit al tabelului:
+Literele acrostihurilor au fundal colorat.
+Selectare mai bună a cuvintelor.
+Adjectivul acrostih curent este evidențiat deasupra la derulare.

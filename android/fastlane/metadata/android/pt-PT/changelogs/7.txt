@@ -1,0 +1,4 @@
+Layout de tabela aprimorado: 
+As letras acrósticas têm cor de fundo. 
+Melhor seleção de palavras. 
+O adjetivo acróstico atual é destacado acima durante a rolagem.

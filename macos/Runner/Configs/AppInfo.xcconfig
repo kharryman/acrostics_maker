@@ -8,7 +8,7 @@
 PRODUCT_NAME = acrostics_maker
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.lfq.acrosticsMaker
+PRODUCT_BUNDLE_IDENTIFIER = com.example.acrosticsMaker
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2023 com.lfq. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2025 com.example. All rights reserved.

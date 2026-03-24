@@ -3,11 +3,15 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:acrostics_maker/menu.dart';
+import 'package:acrostics_maker/acrostics_page.dart';
+import 'package:acrostics_maker/globals.dart';
+import 'package:acrostics_maker/services/ads.dart';
+import 'package:acrostics_maker/services/helpers.dart';
+import 'package:acrostics_maker/components/menu.dart';
+import 'package:acrostics_maker/services/iap.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_i18n/loaders/decoders/base_decode_strategy.dart';
 import 'package:flutter_i18n/loaders/decoders/json_decode_strategy.dart';
@@ -17,16 +21,14 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 // ignore: library_prefixes
 import 'table.dart';
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:multiselect/multiselect.dart';
 //offline:
-import 'dict_big.dart';
-import 'alp.dart';
+import 'data/alp.dart';
 //to get reviews:
 import 'package:advanced_in_app_review/advanced_in_app_review.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
@@ -34,388 +36,24 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 const String testDevice = '974550CBC7D4EA4718A67165E2E3B868';
 const String myIpad = '00008020-0014301102D1002E';
 const String myIphone11 = 'A8EC231A-DCFC-405C-8A0D-62E9F5BA1918';
-const int maxFailedLoadAttempts = 3;
-InterstitialAd? interstitialAd;
-int numInterstitialLoadAttempts = 0;
-dynamic defaultLanguage = {
-  "LID": "8",
-  "name1": "English",
-  "name2": "LANGUAGE_ENGLISH",
-  "value": "en"
-};
-List<dynamic> availLanguages = [defaultLanguage];
-dynamic selectedAcrosticsLanguage = defaultLanguage;
-dynamic appLanguage = defaultLanguage;
-List<dynamic> defaultTypes = [
-  {"Type": "Colors", "Trans": "TYPE_COLOR"},
-  {"Type": "Directions", "Trans": "TYPE_DIRECTIONS"},
-  {"Type": "Nationalities", "Trans": "TYPE_NATIONALITIES"},
-  {"Type": "Number", "Trans": "TYPE_NUMBER"},
-  {"Type": "Opposites", "Trans": "TYPE_OPPOSITES"},
-  {"Type": "Part_Speech", "Trans": "TYPE_PART_SPEECH"},
-  {"Type": "Themes", "Trans": "TYPE_THEMES"},
-  {"Type": "Times", "Trans": "TYPE_TIMES"}
-];
-List<dynamic> dropdownTypes = defaultTypes;
-
-dynamic defaultData = {
-  "COMPLETED_TABLES": [
-    {"Type": "Colors", "Table": "blue"},
-    {"Type": "Colors", "Table": "brown"},
-    {"Type": "Colors", "Table": "gray"},
-    {"Type": "Colors", "Table": "green"},
-    {"Type": "Colors", "Table": "orange"},
-    {"Type": "Colors", "Table": "pink"},
-    {"Type": "Colors", "Table": "purple"},
-    {"Type": "Colors", "Table": "red"},
-    {"Type": "Colors", "Table": "white"},
-    {"Type": "Colors", "Table": "yellow"},
-    {"Type": "Directions", "Table": "east"},
-    {"Type": "Directions", "Table": "north"},
-    {"Type": "Directions", "Table": "northwest"},
-    {"Type": "Directions", "Table": "south"},
-    {"Type": "Directions", "Table": "southeast"},
-    {"Type": "Directions", "Table": "southwest"},
-    {"Type": "Directions", "Table": "west"},
-    {"Type": "Nationalities", "Table": "afghanistan"},
-    {"Type": "Nationalities", "Table": "africa"},
-    {"Type": "Nationalities", "Table": "asia"},
-    {"Type": "Nationalities", "Table": "australia"},
-    {"Type": "Nationalities", "Table": "belgium"},
-    {"Type": "Nationalities", "Table": "canada"},
-    {"Type": "Nationalities", "Table": "china"},
-    {"Type": "Nationalities", "Table": "denmark"},
-    {"Type": "Nationalities", "Table": "egypt"},
-    {"Type": "Nationalities", "Table": "europe"},
-    {"Type": "Nationalities", "Table": "finland"},
-    {"Type": "Nationalities", "Table": "france"},
-    {"Type": "Nationalities", "Table": "germany"},
-    {"Type": "Nationalities", "Table": "greece"},
-    {"Type": "Nationalities", "Table": "india"},
-    {"Type": "Nationalities", "Table": "iraq"},
-    {"Type": "Nationalities", "Table": "ireland"},
-    {"Type": "Nationalities", "Table": "italy"},
-    {"Type": "Nationalities", "Table": "japan"},
-    {"Type": "Nationalities", "Table": "netherlandsdt"},
-    {"Type": "Nationalities", "Table": "northamerica"},
-    {"Type": "Nationalities", "Table": "norway"},
-    {"Type": "Nationalities", "Table": "pakistan"},
-    {"Type": "Nationalities", "Table": "portugal"},
-    {"Type": "Nationalities", "Table": "rome"},
-    {"Type": "Nationalities", "Table": "spain"},
-    {"Type": "Nationalities", "Table": "sweden"},
-    {"Type": "Nationalities", "Table": "uk"},
-    {"Type": "Nationalities", "Table": "usa"},
-    {"Type": "Nationalities", "Table": "vietnam"},
-    {"Type": "Number", "Table": "eight"},
-    {"Type": "Number", "Table": "five"},
-    {"Type": "Number", "Table": "four"},
-    {"Type": "Number", "Table": "nine"},
-    {"Type": "Number", "Table": "one"},
-    {"Type": "Number", "Table": "seven"},
-    {"Type": "Number", "Table": "six"},
-    {"Type": "Number", "Table": "ten"},
-    {"Type": "Number", "Table": "three"},
-    {"Type": "Number", "Table": "two"},
-    {"Type": "Opposites", "Table": "above"},
-    {"Type": "Opposites", "Table": "afraid"},
-    {"Type": "Opposites", "Table": "alive"},
-    {"Type": "Opposites", "Table": "bad"},
-    {"Type": "Opposites", "Table": "behind"},
-    {"Type": "Opposites", "Table": "below"},
-    {"Type": "Opposites", "Table": "bent"},
-    {"Type": "Opposites", "Table": "best"},
-    {"Type": "Opposites", "Table": "big"},
-    {"Type": "Opposites", "Table": "blurry"},
-    {"Type": "Opposites", "Table": "bored"},
-    {"Type": "Opposites", "Table": "brave"},
-    {"Type": "Opposites", "Table": "bright"},
-    {"Type": "Opposites", "Table": "buy"},
-    {"Type": "Opposites", "Table": "chaos"},
-    {"Type": "Opposites", "Table": "cheap"},
-    {"Type": "Opposites", "Table": "clean"},
-    {"Type": "Opposites", "Table": "clear"},
-    {"Type": "Opposites", "Table": "closed"},
-    {"Type": "Opposites", "Table": "cold"},
-    {"Type": "Opposites", "Table": "complicated"},
-    {"Type": "Opposites", "Table": "crazy"},
-    {"Type": "Opposites", "Table": "cruel"},
-    {"Type": "Opposites", "Table": "dark"},
-    {"Type": "Opposites", "Table": "dead"},
-    {"Type": "Opposites", "Table": "deep"},
-    {"Type": "Opposites", "Table": "delicious"},
-    {"Type": "Opposites", "Table": "different"},
-    {"Type": "Opposites", "Table": "difficult"},
-    {"Type": "Opposites", "Table": "dirty"},
-    {"Type": "Opposites", "Table": "disgusting"},
-    {"Type": "Opposites", "Table": "dry"},
-    {"Type": "Opposites", "Table": "easy"},
-    {"Type": "Opposites", "Table": "energetic"},
-    {"Type": "Opposites", "Table": "excited"},
-    {"Type": "Opposites", "Table": "expensive"},
-    {"Type": "Opposites", "Table": "far"},
-    {"Type": "Opposites", "Table": "fast"},
-    {"Type": "Opposites", "Table": "fat"},
-    {"Type": "Opposites", "Table": "female"},
-    {"Type": "Opposites", "Table": "few"},
-    {"Type": "Opposites", "Table": "fiction"},
-    {"Type": "Opposites", "Table": "found"},
-    {"Type": "Opposites", "Table": "fragrant"},
-    {"Type": "Opposites", "Table": "go"},
-    {"Type": "Opposites", "Table": "good"},
-    {"Type": "Opposites", "Table": "hard"},
-    {"Type": "Opposites", "Table": "heavy"},
-    {"Type": "Opposites", "Table": "hot"},
-    {"Type": "Opposites", "Table": "infrontof"},
-    {"Type": "Opposites", "Table": "kind"},
-    {"Type": "Opposites", "Table": "light"},
-    {"Type": "Opposites", "Table": "loose"},
-    {"Type": "Opposites", "Table": "lose"},
-    {"Type": "Opposites", "Table": "lost"},
-    {"Type": "Opposites", "Table": "loud"},
-    {"Type": "Opposites", "Table": "male"},
-    {"Type": "Opposites", "Table": "many"},
-    {"Type": "Opposites", "Table": "narrow"},
-    {"Type": "Opposites", "Table": "near"},
-    {"Type": "Opposites", "Table": "normal"},
-    {"Type": "Opposites", "Table": "old"},
-    {"Type": "Opposites", "Table": "open"},
-    {"Type": "Opposites", "Table": "organized"},
-    {"Type": "Opposites", "Table": "poor"},
-    {"Type": "Opposites", "Table": "pretty"},
-    {"Type": "Opposites", "Table": "quiet"},
-    {"Type": "Opposites", "Table": "recent"},
-    {"Type": "Opposites", "Table": "rich"},
-    {"Type": "Opposites", "Table": "rough"},
-    {"Type": "Opposites", "Table": "same"},
-    {"Type": "Opposites", "Table": "sane"},
-    {"Type": "Opposites", "Table": "sell"},
-    {"Type": "Opposites", "Table": "shallow"},
-    {"Type": "Opposites", "Table": "short"},
-    {"Type": "Opposites", "Table": "simple"},
-    {"Type": "Opposites", "Table": "slow"},
-    {"Type": "Opposites", "Table": "small"},
-    {"Type": "Opposites", "Table": "smart"},
-    {"Type": "Opposites", "Table": "smooth"},
-    {"Type": "Opposites", "Table": "soft"},
-    {"Type": "Opposites", "Table": "stinky"},
-    {"Type": "Opposites", "Table": "stop"},
-    {"Type": "Opposites", "Table": "straight"},
-    {"Type": "Opposites", "Table": "strange"},
-    {"Type": "Opposites", "Table": "strong"},
-    {"Type": "Opposites", "Table": "tall"},
-    {"Type": "Opposites", "Table": "thick"},
-    {"Type": "Opposites", "Table": "thin"},
-    {"Type": "Opposites", "Table": "tight"},
-    {"Type": "Opposites", "Table": "tired"},
-    {"Type": "Opposites", "Table": "truth"},
-    {"Type": "Opposites", "Table": "ugly"},
-    {"Type": "Opposites", "Table": "weak"},
-    {"Type": "Opposites", "Table": "wet"},
-    {"Type": "Opposites", "Table": "wide"},
-    {"Type": "Opposites", "Table": "win"},
-    {"Type": "Opposites", "Table": "worst"},
-    {"Type": "Part_Speech", "Table": "adjective"},
-    {"Type": "Part_Speech", "Table": "adjectiveage"},
-    {"Type": "Part_Speech", "Table": "adjectivecolor"},
-    {"Type": "Part_Speech", "Table": "adjectiveintensity"},
-    {"Type": "Part_Speech", "Table": "adjectivematerial"},
-    {"Type": "Part_Speech", "Table": "adjectivenationality"},
-    {"Type": "Part_Speech", "Table": "adjectivenumber"},
-    {"Type": "Part_Speech", "Table": "adjectivequality"},
-    {"Type": "Part_Speech", "Table": "adjectivereligion"},
-    {"Type": "Part_Speech", "Table": "adjectiveshape"},
-    {"Type": "Part_Speech", "Table": "adjectivesize"},
-    {"Type": "Part_Speech", "Table": "adjectivetexture"},
-    {"Type": "Part_Speech", "Table": "adverb"},
-    {"Type": "Part_Speech", "Table": "conjunction"},
-    {"Type": "Part_Speech", "Table": "noun"},
-    {"Type": "Part_Speech", "Table": "preposition"},
-    {"Type": "Part_Speech", "Table": "verb"},
-    {"Type": "Themes", "Table": "business"},
-    {"Type": "Themes", "Table": "drama"},
-    {"Type": "Themes", "Table": "entertainment"},
-    {"Type": "Themes", "Table": "fashion"},
-    {"Type": "Themes", "Table": "food"},
-    {"Type": "Themes", "Table": "health"},
-    {"Type": "Themes", "Table": "military"},
-    {"Type": "Themes", "Table": "music"},
-    {"Type": "Themes", "Table": "politics"},
-    {"Type": "Themes", "Table": "religion"},
-    {"Type": "Themes", "Table": "science"},
-    {"Type": "Themes", "Table": "subject"},
-    {"Type": "Themes", "Table": "technology"},
-    {"Type": "Times", "Table": "after"},
-    {"Type": "Times", "Table": "beginning"},
-    {"Type": "Times", "Table": "early"},
-    {"Type": "Times", "Table": "finish"},
-    {"Type": "Times", "Table": "later"},
-    {"Type": "Times", "Table": "now"},
-    {"Type": "Times", "Table": "past"}
-  ],
-  "CATEGORIES": {
-    "Colors": {
-      "1": "Colors",
-      "2": "Couleurs",
-      "3": "Farben",
-      "4": "Colori",
-      "5": "Colores",
-      "8": "Colors",
-      "12": "Couleurs",
-      "13": "Farben",
-      "20": "Colori",
-      "34": "Colores"
-    },
-    "Directions": {
-      "1": "Directions",
-      "2": "Directions",
-      "3": "Richtungen",
-      "4": "Indicazioni",
-      "5": "Direcciones",
-      "8": "Directions",
-      "12": "Directions",
-      "13": "Richtungen",
-      "20": "Indicazioni",
-      "34": "Direcciones"
-    },
-    "Materials": {
-      "1": "Materials",
-      "2": "Matériaux",
-      "3": "Materialien",
-      "4": "Materiali",
-      "5": "Materiales",
-      "8": "Materials",
-      "12": "Matériaux",
-      "13": "Materialien",
-      "20": "Materiali",
-      "34": "Materiales"
-    },
-    "Nationalities": {
-      "1": "Nationalities",
-      "2": "Nationalités",
-      "3": "Nationalitäten",
-      "4": "Nazionalità",
-      "5": "Nacionalidades",
-      "8": "Nationalities",
-      "12": "Nationalités",
-      "13": "Nationalitäten",
-      "20": "Nazionalità",
-      "34": "Nacionalidades"
-    },
-    "Number": {
-      "1": "Number",
-      "2": "Nombre",
-      "3": "Nummer",
-      "4": "Numero",
-      "5": "Número",
-      "8": "Number",
-      "12": "Nombre",
-      "13": "Nummer",
-      "20": "Numero",
-      "34": "Número"
-    },
-    "Opposites": {
-      "1": "Opposites",
-      "2": "Les contraires",
-      "3": "Gegensätze",
-      "4": "Gli opposti",
-      "5": "Opuestos",
-      "8": "Opposites",
-      "12": "Les contraires",
-      "13": "Gegensätze",
-      "20": "Gli opposti",
-      "34": "Opuestos"
-    },
-    "Part_Speech": {
-      "1": "Part_Speech",
-      "2": "Part_Speech",
-      "3": "Teil_Rede",
-      "4": "Parte_Discorso",
-      "5": "Parte_discurso",
-      "8": "Part_Speech",
-      "12": "Part_Speech",
-      "13": "Teil_Rede",
-      "20": "Parte_Discorso",
-      "34": "Parte_discurso"
-    },
-    "Religions": {
-      "1": "Religions",
-      "2": "Religions",
-      "3": "Religionen",
-      "4": "Religioni",
-      "5": "Religiones",
-      "8": "Religions",
-      "12": "Religions",
-      "13": "Religionen",
-      "20": "Religioni",
-      "34": "Religiones"
-    },
-    "Shapes": {
-      "1": "Shapes",
-      "2": "Formes",
-      "3": "Formen",
-      "4": "Forme",
-      "5": "formas",
-      "8": "Shapes",
-      "12": "Formes",
-      "13": "Formen",
-      "20": "Forme",
-      "34": "formas"
-    },
-    "Themes": {
-      "1": "Themes",
-      "2": "Thèmes",
-      "3": "Themen",
-      "4": "Temi",
-      "5": "Temas",
-      "8": "Themes",
-      "12": "Thèmes",
-      "13": "Themen",
-      "20": "Temi",
-      "34": "Temas"
-    },
-    "Times": {
-      "1": "Times",
-      "2": "Fois",
-      "3": "Mal",
-      "4": "Volte",
-      "5": "Veces",
-      "8": "Times",
-      "12": "Fois",
-      "13": "Mal",
-      "20": "Volte",
-      "34": "Veces"
-    }
-  }
-};
 
 List<String> dropdownAdjectives = [];
 dynamic allCategories = [];
-dynamic selectedType = {};
+dynamic selectedType;
 String selectedAdjective = '';
 bool isInitiated = false;
-String priceNoAds = "\$1";
-bool isAds = true;
-String removeAdsProductId = "remove_ads";
-
-class MyObject {
-  String name;
-  dynamic value;
-
-  MyObject({required this.name, this.value});
-}
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  print("main RETURNING $kIsWeb");
+  debugPrint("main RETURNING $kIsWeb");
   if (kIsWeb == false) {
     var testDevices = <String>[];
     if (Platform.isAndroid) {
       testDevices = [testDevice];
-      removeAdsProductId = "remove_ads";
+      Globals.removeAdsProductId = "remove_ads";
     } else if (Platform.isIOS) {
       testDevices = [myIpad, myIphone11];
-      removeAdsProductId = "remove_ads_acrostics_maker";
+      Globals.removeAdsProductId = "remove_ads_acrostics_maker";
     }
     MobileAds.instance
       ..initialize()
@@ -424,35 +62,23 @@ Future<void> main() async {
       ));
     InAppPurchase.instance.isAvailable().then((available) {
       if (!available) {
-        print("In-app purchases not available on this device.");
+        debugPrint("In-app purchases not available on this device.");
       }
     });
   } else {
-    print("main NOT SHOWING AD");
+    debugPrint("main NOT SHOWING AD");
   }
   //String deviceId = await getDeviceId();
-  //print('Device ID: $deviceId');
+  //debugPrint('Device ID: $deviceId');
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => AppData(), child: MyApp())
   ], child: MyApp()));
 }
 
 class AppData extends ChangeNotifier {
-  dynamic selectedLanguage = defaultLanguage;
-
-  Future<void> setLanguage(dynamic myLanguage) async {
-    selectedLanguage = myLanguage;
-    appLanguage = selectedLanguage;
-    await MyHomeState().setData("LANGUAGE", selectedLanguage["value"]);
-    BuildContext? context = MyHomeState().scaffoldKey.currentContext;
-    await MyHomeState().initiateTypesAdjectives(context, false);
-    print("AppData.setLanguage dropdownTypes = ${json.encode(dropdownTypes)}");
-    notifyListeners();
-  }
-
   void setIsAds(bool myIsAds) {
-    print("AppData setIsAds called myIsAds = $myIsAds");
-    isAds = myIsAds;
+    debugPrint("AppData setIsAds called myIsAds = $myIsAds");
+    Globals.isAds = myIsAds;
   }
 
   bool menuOpen = false;
@@ -461,59 +87,159 @@ class AppData extends ChangeNotifier {
   }
 }
 
-class MyApp extends StatelessWidget {
-  MyApp({super.key});
-  final int ofThousandShowAds = 425;
-  List<BaseDecodeStrategy> decodeStrategies = [JsonDecodeStrategy()];
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+  @override
+  State<MyApp> createState() => MyAppState();
+}
+
+class MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  static MyAppState? instance;
+
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+  List<BaseDecodeStrategy> decodeStrategies = [JsonDecodeStrategy()];
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  late StreamSubscription<List<ConnectivityResult>> connSubscription;
+  final HelpersService helpers = HelpersService();
+  Locale _locale = const Locale('en');
+
+  @override
+  void initState() {
+    super.initState();
+    instance = this;
+    WidgetsBinding.instance.addObserver(this);
+
+    Globals.selectedAcrosticsLanguage = Globals.languages.firstWhere(
+        (dynamic lang) => lang["LID"] == Globals.defaultLanguage["LID"]);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      setSavedLanguage();
+    });
+  }
+
+  void setSavedLanguage() async {
+    String savedLanguageCode =
+        (await HelpersService.getData("LANGUAGE")) ?? "en";
+    Globals.appLanguage = Globals.languages.firstWhere(
+      (item) => item["value"] == savedLanguageCode,
+    );
+    Locale locale = HelpersService.getAppLocale(savedLanguageCode);
+    debugPrint(
+      "setSavedLanguage savedLanguageCode = $savedLanguageCode, locale = $locale",
+    );
+    //if (!mounted) return;
+    setState(() {
+      _locale = locale;
+    });
+  }
+
+  Future<void> changeLanguage(String passedLanguageCode) async {
+    debugPrint(
+        "changeLanguage called, passedLanguageCode = $passedLanguageCode");
+    await HelpersService.setData("LANGUAGE", passedLanguageCode);
+    Globals.appLanguage = Globals.languages.firstWhere(
+      (item) => item["value"] == passedLanguageCode,
+    );
+    Locale locale = HelpersService.getAppLocale(passedLanguageCode);
+    if (!mounted) return;
+    setState(() {
+      _locale = locale;
+    });
+    if (mounted) {
+      try {
+        //await FlutterI18n.refresh(context, locale);
+      } catch (e, st) {
+        debugPrint("FlutterI18n refresh failed: $e\n$st");
+      }
+    }
+  }
+
+  static MyAppState? of(BuildContext context) {
+    return context.findAncestorStateOfType<MyAppState>();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    AdService.disposeAll();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    String appTitle =
-        "Acrostics Maker"; //FlutterI18n.translate(context, "APP_TITLE");
     return MaterialApp(
+      locale: _locale,
+      title: 'Acrostics Maker',
+      debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,
+        useMaterial3: true,
+      ),
       localizationsDelegates: [
         FlutterI18nDelegate(
           translationLoader: FileTranslationLoader(
-              decodeStrategies: decodeStrategies,
-              basePath: "assets/i18n",
-              fallbackFile: "en",
-              useCountryCode: false),
+            decodeStrategies: decodeStrategies,
+            basePath: "assets/i18n",
+            fallbackFile: "en",
+            useCountryCode: false,
+          ),
           missingTranslationHandler: (key, locale) {
-            print(
-                "--- Missing Key: $key, languageCode: ${locale?.languageCode}");
+            if (Globals.isAppStarted == true) {
+              debugPrint(
+                "--- Missing Key: $key, languageCode: ${locale?.languageCode}",
+              );
+            }
           },
         ),
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate
+        ...GlobalMaterialLocalizations.delegates,
       ],
-      title: appTitle,
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(
-              seedColor: Color.fromRGBO(200, 255, 200, 1.0))),
+      supportedLocales: const [
+        Locale('af'),
+        Locale('bs'),
+        Locale('cs'),
+        Locale('cy'),
+        Locale('da'),
+        Locale('de'),
+        Locale('en'),
+        Locale('es'),
+        Locale('et'),
+        Locale('eu'),
+        Locale('fi'),
+        Locale('fr'),
+        Locale('ga'),
+        Locale('hr'),
+        Locale('hu'),
+        Locale('id'),
+        Locale('it'),
+        Locale('lt'),
+        Locale('ms'),
+        Locale('pl'),
+        Locale('pt'),
+        Locale('ro'),
+        Locale('sk'),
+        Locale('sl'),
+        Locale('sv')
+      ],
       home: MyHome(),
     );
   }
 }
 
 // ignore: must_be_immutable
-class MyHome extends StatefulWidget {
+class MyHome extends StatefulWidget with WidgetsBindingObserver {
   @override
   MyHomeState createState() => MyHomeState();
 }
 
-bool isAppOnline = true;
-
 class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
   late StreamSubscription<ConnectivityResult> subscription;
-  late BannerAd bannerAd;
-  bool isBannerAdReady = false;
-  String bannerIdAndroid = "ca-app-pub-8514966468184377/3605875610";
-  String bannerIdIos = "ca-app-pub-8514966468184377/2831979873";
+  Locale _locale = const Locale('en');
 
-  bool isLoading = false;
+  BannerAd? bannerAd;
+  bool isBannerAdReady = false;
+
   final TextEditingController inputController = TextEditingController();
   String inputWord = "";
   List<String> inputList = [];
@@ -528,178 +254,10 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
   int countAllSelected = 0;
   bool isCancel = false;
   String selectedDropdownValue = "SOMETHING_SELECTED";
-  Map<String, List<Map<String, String>>> myDic = {
-    "A": [dicA1, dicA2],
-    "B": [dicB1, dicB2],
-    "C": [dicC1, dicC1, dicC3],
-    "D": [dicD1, dicD2],
-    "E": [dicE1],
-    "F": [dicF1],
-    "G": [dicG1],
-    "H": [dicH1],
-    "I": [dicI1],
-    "J": [dicJ1],
-    "K": [dicK1],
-    "L": [dicL1],
-    "M": [dicM1, dicM2],
-    "N": [dicN1],
-    "O": [dicO1],
-    "P": [dicP1, dicP2],
-    "Q": [dicQ1],
-    "R": [dicR1, dicR2],
-    "S": [dicS1, dicS2, dicS3],
-    "T": [dicT1, dicT2],
-    "U": [dicU1],
-    "V": [dicV1],
-    "W": [dicW1],
-    "X": [dicX1],
-    "Y": [dicY1],
-    "Z": [dicZ1],
-  };
 
   bool isPushNavigationStack = true;
   bool isAndroid = kIsWeb == false ? false : false;
   bool isIOS = kIsWeb == false ? false : false;
-
-  List<dynamic> languages = [
-    {
-      "LID": "1",
-      "name1": "Afrikaans",
-      "name2": "LANGUAGE_AFRIKAANS",
-      "value": "af"
-    },
-    {"LID": "2", "name1": "Euskara", "name2": "LANGUAGE_BASQUE", "value": "eu"},
-    {
-      "LID": "3",
-      "name1": "Bosanski",
-      "name2": "LANGUAGE_BOSNIAN",
-      "value": "bs"
-    },
-    {
-      "LID": "4",
-      "name1": "Hrvatski",
-      "name2": "LANGUAGE_CROATIAN",
-      "value": "hr"
-    },
-    {"LID": "5", "name1": "čeština", "name2": "LANGUAGE_CZECH", "value": "cs"},
-    {"LID": "6", "name1": "Dansk", "name2": "LANGUAGE_DANISH", "value": "da"},
-    {
-      "LID": "8",
-      "name1": "English",
-      "name2": "LANGUAGE_ENGLISH",
-      "value": "en"
-    },
-    {
-      "LID": "9",
-      "name1": "Eesti keel",
-      "name2": "LANGUAGE_ESTONIAN",
-      "value": "et"
-    },
-    {
-      "LID": "11",
-      "name1": "Suomalainen",
-      "name2": "LANGUAGE_FINNISH",
-      "value": "fi"
-    },
-    {
-      "LID": "12",
-      "name1": "Français",
-      "name2": "LANGUAGE_FRENCH",
-      "value": "fr"
-    },
-    {
-      "LID": "13",
-      "name1": "Deutsch",
-      "name2": "LANGUAGE_GERMAN",
-      "value": "de"
-    },
-    {
-      "LID": "14",
-      "name1": "Kreyòl ayisyen",
-      "name2": "LANGUAGE_HAITIAN_CREOLE",
-      "value": "ht"
-    },
-    {
-      "LID": "15",
-      "name1": "ʻŌlelo Hawaiʻi",
-      "name2": "LANGUAGE_HAWAIIAN",
-      "value": "haw"
-    },
-    {"LID": "16", "name1": "Hmoob", "name2": "LANGUAGE_HMONG", "value": "hmn"},
-    {
-      "LID": "17",
-      "name1": "Magyar",
-      "name2": "LANGUAGE_HUNGARIAN",
-      "value": "hu"
-    },
-    {
-      "LID": "18",
-      "name1": "Bahasa Indonesia",
-      "name2": "LANGUAGE_INDONESIAN",
-      "value": "id"
-    },
-    {"LID": "19", "name1": "Gaeilge", "name2": "LANGUAGE_IRISH", "value": "ga"},
-    {
-      "LID": "20",
-      "name1": "Italiano",
-      "name2": "LANGUAGE_ITALIAN",
-      "value": "it"
-    },
-    {
-      "LID": "22",
-      "name1": "Lëtzebuergesch",
-      "name2": "LANGUAGE_LUXEMBOURGISH",
-      "value": "lb"
-    },
-    {"LID": "23", "name1": "Melayu", "name2": "LANGUAGE_MALAY", "value": "ms"},
-    {"LID": "24", "name1": "Malti", "name2": "LANGUAGE_MALTESE", "value": "mt"},
-    {"LID": "25", "name1": "Maori", "name2": "LANGUAGE_MAORI", "value": "mi"},
-    {"LID": "27", "name1": "Polski", "name2": "LANGUAGE_POLISH", "value": "pl"},
-    {
-      "LID": "28",
-      "name1": "Português",
-      "name2": "LANGUAGE_PORTUGUESE",
-      "value": "pt"
-    },
-    {
-      "LID": "29",
-      "name1": "Română",
-      "name2": "LANGUAGE_ROMANIAN",
-      "value": "ro"
-    },
-    {"LID": "30", "name1": "Samoa", "name2": "LANGUAGE_SAMOAN", "value": "sm"},
-    {
-      "LID": "31",
-      "name1": "Slovensko",
-      "name2": "LANGUAGE_SLOVAK",
-      "value": "sk"
-    },
-    {
-      "LID": "32",
-      "name1": "Slovenščina",
-      "name2": "LANGUAGE_SLOVENIAN",
-      "value": "sl"
-    },
-    {
-      "LID": "33",
-      "name1": "Soomaali",
-      "name2": "LANGUAGE_SOMALI",
-      "value": "so"
-    },
-    {
-      "LID": "34",
-      "name1": "Español",
-      "name2": "LANGUAGE_SPANISH",
-      "value": "es"
-    },
-    {
-      "LID": "35",
-      "name1": "Svenska",
-      "name2": "LANGUAGE_SWEDISH",
-      "value": "sv"
-    },
-    {"LID": "39", "name1": "Cymraeg", "name2": "LANGUAGE_WELSH", "value": "cy"}
-  ];
 
   bool isLanguagesLoading = false;
   bool isInitiatingTypesAdjectives = false;
@@ -717,11 +275,18 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   StreamSubscription<List<PurchaseDetails>>? purchaseSubscription;
 
+  late final StreamSubscription<List<ConnectivityResult>>
+      connectivitySubscription;
+
   @override
   initState() {
     super.initState();
+    debugPrint(
+        "MyHomeState initState:Globals.availLanguages = ${Globals.availLanguages}, selectedAcrosticsLanguage = ${Globals.selectedAcrosticsLanguage}");
     if (kIsWeb == false) {
-      initializeInAppPurchase();
+      if (Platform.isIOS) {
+        initializeInAppPurchase();
+      }
       AdvancedInAppReview()
           .setMinDaysBeforeRemind(7)
           .setMinDaysAfterInstall(2)
@@ -729,54 +294,79 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
           .setMinSecondsBeforeShowDialog(4)
           .monitor();
     }
-    BuildContext? context = scaffoldKey.currentContext;
-    initiateAll(context);
-    if (kIsWeb == false) {
-      createInterstitialAd();
-      loadBannerAd();
+    initConnectivityListener();
+
+    if (kIsWeb == false && Globals.isAds == true) {
+      AdService.loadInterstitial();
     }
-    subscription = Connectivity().onConnectivityChanged.listen((result) async {
-      isAppOnline = true;
-      if (result == ConnectivityResult.none) {
-        print("ACROSTICS MAKER NETWORK DISCONNECTED.");
-        isAppOnline = false;
-      }
-      await doNetworkChange();
+    isInitiated = true;
+  }
+
+  void initConnectivityListener() {
+    // Listen for connectivity changes
+    final Connectivity connectivity = Connectivity();
+    connectivitySubscription = connectivity.onConnectivityChanged
+        .listen((List<ConnectivityResult> results) {
+      final result =
+          results.isNotEmpty ? results.first : ConnectivityResult.none;
+      Globals.isAppOnline = result != ConnectivityResult.none;
+      debugPrint(
+          '🔌 Connectivity changed: $result  |  isOnline=${Globals.isAppOnline}');
+      doNetworkChange();
     });
 
-    if (isAds == true) {
-      createInterstitialAd();
-      loadBannerAd();
-    }
+    // Check initial state
+    connectivity.checkConnectivity().then((List<ConnectivityResult> results) {
+      final result =
+          results.isNotEmpty ? results.first : ConnectivityResult.none;
+      Globals.isAppOnline = result != ConnectivityResult.none;
+      debugPrint(
+          '📶 Initial connectivity: $result  |  isOnline=${Globals.isAppOnline}');
+      doNetworkChange();
+    });
   }
 
   doNetworkChange() async {
-    if (isAppOnline == false) {
+    if (Globals.isAppOnline == false) {
       setState(() {
-        print("OFFLINE...");
-        availLanguages = [defaultLanguage];
+        debugPrint("OFFLINE...");
+        Globals.availLanguages = Globals.languages
+            .where(
+                (dynamic lang) => lang["LID"] == Globals.defaultLanguage["LID"])
+            .toList();
+        Globals.selectedAcrosticsLanguage = Globals.languages.firstWhere(
+            (dynamic lang) => lang["LID"] == Globals.defaultLanguage["LID"]);
+        //debugPrint("selectedAcrosticsLanguage = ${jsonEncode(selectedAcrosticsLanguage)}");
         isLanguagesLoading = false;
-        dropdownTypes = List<dynamic>.from(defaultTypes);
-        finishInitiateTypesAdjectives("8", defaultData);
+        Globals.dropdownTypes = List<dynamic>.from(Globals.defaultTypes);
+        finishInitiateTypesAdjectives("8", Globals.defaultData);
         //myList = ["English(English)"];
       });
     } else {
       BuildContext? context = scaffoldKey.currentContext;
       await initiateAll(context);
-      //if (kIsWeb == false) {
-      //  createInterstitialAd();
-      //}
       if (kIsWeb == false) {
         await initializeInAppPurchase();
+        AdService.checkAds();
+        if (Globals.isAds == true) {
+          bannerAd = await AdService.createBanner(
+            onLoaded: () => setState(() {}),
+          );
+        }
       }
     }
   }
 
   @override
-  didChangeAppLifecycleState(AppLifecycleState state) {
+  void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       if (kIsWeb == false) {
-        //initializeInAppPurchase();
+        if (Platform.isAndroid) {
+          initializeInAppPurchase();
+        }
+        if (Globals.isAppOnline) {
+          AdService.checkAds();
+        }
       }
     }
   }
@@ -794,299 +384,197 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
           iap.purchaseStream.listen((List<PurchaseDetails> purchases) async {
         PurchaseDetails? purchaseRemoveAds = purchases.isNotEmpty
             ? purchases.firstWhere(
-                (purchase) => purchase.productID == removeAdsProductId)
+                (purchase) => purchase.productID == Globals.removeAdsProductId)
             : null;
 
         if (purchaseRemoveAds != null) {
           if (purchaseRemoveAds.status == PurchaseStatus.purchased ||
               purchaseRemoveAds.status == PurchaseStatus.restored) {
-            print(
-                "main initializeInAppPurchase $removeAdsProductId ${purchaseRemoveAds.status == PurchaseStatus.purchased ? "PURCHASED" : "RESTORED"}!");
-            setState(() {
-              disposeAds();
-              isAds = false;
-            });
+            debugPrint(
+                "main initializeInAppPurchase ${Globals.removeAdsProductId} ${purchaseRemoveAds.status == PurchaseStatus.purchased ? "PURCHASED" : "RESTORED"}!");
+            if (Globals.isForceAds == false) {
+              setState(() {
+                disposeAds();
+                Globals.isAds = false;
+              });
+            }
             if (purchaseRemoveAds.pendingCompletePurchase) {
-              print("Completing purchase...");
+              debugPrint("Completing purchase...");
               await MenuState().showSuccessThanksBuy();
               await InAppPurchase.instance.completePurchase(purchaseRemoveAds);
             }
           } else if (purchaseRemoveAds.status == PurchaseStatus.pending) {
-            print(
+            debugPrint(
                 "IAP.listen purchaseRemoveAds.status == PurchaseStatus.pending ...");
             //await InAppPurchase.instance.completePurchase(purchaseRemoveAds);
             await MenuState().showSuccessThanksBuy();
           } else if (purchaseRemoveAds.status == PurchaseStatus.error) {
-            // Handle failed purchase
-            print(
-                "main initializeInAppPurchase $removeAdsProductId Purchase error: ${purchaseRemoveAds.error}.");
-            //if (mounted) {
-            //  WidgetsBinding.instance.addPostFrameCallback((_) {
-            await MyHomeState().showPopup(context,
-                "${FlutterI18n.translate(context, "PROMPT_PURCHASING_ERROR")}: ${purchaseRemoveAds.error}");
-            // });
-            //}
+            debugPrint(
+                "main initializeInAppPurchase ${Globals.removeAdsProductId} Purchase error: ${purchaseRemoveAds.error}.");
+            await HelpersService.showPopup(context,
+                message:
+                    "${FlutterI18n.translate(context, "PROMPT_PURCHASING_ERROR")}: ${purchaseRemoveAds.error}");
           }
         }
       }, onError: (error) {
-        print("Purchase Error: $error");
+        debugPrint("Purchase Error: $error");
       }, onDone: () {
         purchaseSubscription?.cancel(); // Clean up after use
       }, cancelOnError: true);
-      await restorePurchases();
-    }
-  }
-
-  Future<void> restorePurchases() async {
-    print("restorePurchases called");
-    if (kIsWeb == true) {
-      //MyHomeState().showPopup(context, "CAN'T RESTORE ADS ON WEB!");
-      print("Cant restore purchases on web-app.");
-    } else {
-      //setState(() {
-      //  isRestoring = true;
-      //});
-      final InAppPurchase iapInstance = InAppPurchase.instance;
-      bool isAvailable = await iapInstance.isAvailable();
-      if (isAvailable) {
-        // Fetch past purchases
-        try {
-          await iapInstance.restorePurchases();
-        } catch (e) {
-          print("Failed to restore purchases");
-          //ScaffoldMessenger.of(context).showSnackBar(
-          //  SnackBar(content: Text("Failed to restore purchases")),
-          //);
-          //setState(() {
-          //  isRestoring = false;
-          //});
-          return;
-        }
-      }
+      await IAP.restorePurchases();
     }
   }
 
   setAvailLanguages() async {
     //showProgress(
     //    context, FlutterI18n.translate(context, "PROGRESS_ADD_COMMENT"));
-    dynamic data = {"SUCCESS": false};
-    bool isSuccess = true;
-    List<dynamic> gotLanguages = [];
-    bool isRequestSuccess = true;
-    Response response = http.Response("", 200);
-    try {
-      response = await http.get(Uri.parse(
-          'https://www.learnfactsquick.com/lfq_app_php/get_dict_langs.php'));
-    } catch (e) {
-      isRequestSuccess = false;
-      isAppOnline = false;
-      await doNetworkChange();
-    }
-    if (isRequestSuccess == true) {
-      //hideProgress(context);
-      if (response.statusCode == 200) {
-        data = Map<String, dynamic>.from(json.decode(response.body));
-        print("GET AVAIL LANGUAGES data = ${json.encode(data)}");
-        if (data["SUCCESS"] == true) {
-          print("GOT LANGUAGES = ${json.encode(data)}");
-          gotLanguages = data["LANGUAGES"];
-        } else {
-          print("GET LANGUAGES ERROR: ${data["ERROR"]}");
-          isSuccess = false;
-          await showPopup(context, data["ERROR"]);
-          //showPopup(context, data["ERROR"]);
-        }
-      } else {
-        isSuccess = false;
-        await showPopup(
-            context, FlutterI18n.translate(context, "NETWORK_ERROR"));
-      }
-      setState(() {
-        isLanguagesLoading = false;
-        if (isSuccess == false) {
-          availLanguages = [defaultLanguage];
-        } else {
-          availLanguages = [];
-          List<String> languageValues = [];
-          List<dynamic> availLangs;
-          for (int i = 0; i < gotLanguages.length; i++) {
-            availLangs = (MyHomeState().languages.where((dynamic language) =>
-                language["value"] == gotLanguages[i]["Code"])).toList();
-            if (availLangs.isNotEmpty &&
-                !languageValues.contains(availLangs[0]["value"])) {
-              languageValues.add(availLangs[0]["value"]);
-              availLanguages.add(availLangs[0]);
-            }
-          }
-          resetMyList();
-        }
-      });
-    }
-  }
-
-  setSavedLanguage(BuildContext? context) async {
-    String savedLanguage = (await getData("LANGUAGE")) ?? "";
-    print("savedLanguage = ${json.encode(savedLanguage)}");
-    if (savedLanguage != "") {
-      appLanguage = List<dynamic>.from(languages
-          .where((dynamic lang) => lang["value"] == savedLanguage)
-          .toList())[0];
-      print("SET SAVED LANGUAGE, appLanguage = ${json.encode(appLanguage)}");
-      try {
-        if (context != null) {
-          FlutterI18n.refresh(context, Locale(savedLanguage));
-        }
-      } catch (e) {
-        print("Error refreshing saved language");
-      }
+    if (Globals.isAppOnline == false) {
+      HelpersService.showPopup(context,
+          message: FlutterI18n.translate(context, "NOT_ONLINE"));
     } else {
-      //FlutterI18n.refresh(context, Locale('en'));
+      dynamic data = {"SUCCESS": false};
+      bool isSuccess = true;
+      List<dynamic> gotLanguages = [];
+      bool isRequestSuccess = true;
+      Response response = http.Response("", 200);
+      try {
+        response = await http.get(Uri.parse(
+            'https://www.learnfactsquick.com/lfq_app_php/get_dict_langs.php'));
+      } catch (e) {
+        isRequestSuccess = false;
+        Globals.isAppOnline = false;
+        await doNetworkChange();
+      }
+      if (isRequestSuccess == true) {
+        //hideProgress(context);
+        if (response.statusCode == 200) {
+          data = Map<String, dynamic>.from(json.decode(response.body));
+          debugPrint("GET AVAIL LANGUAGES data = ${json.encode(data)}");
+          if (data["SUCCESS"] == true) {
+            debugPrint("GOT LANGUAGES = ${json.encode(data)}");
+            gotLanguages = data["LANGUAGES"];
+            Globals.DB_PREFIX = data["DB_PREFIX"];
+          } else {
+            debugPrint("GET LANGUAGES ERROR: ${data["ERROR"]}");
+            isSuccess = false;
+            await HelpersService.showPopup(context, message: data["ERROR"]);
+            //showPopup(context, data["ERROR"]);
+          }
+        } else {
+          isSuccess = false;
+          await HelpersService.showPopup(context,
+              message: FlutterI18n.translate(context, "NETWORK_ERROR"));
+        }
+        setState(() {
+          isLanguagesLoading = false;
+          if (isSuccess == false) {
+            Globals.availLanguages = [Globals.defaultLanguage];
+          } else {
+            Globals.availLanguages = [];
+            List<String> languageValues = [];
+            List<dynamic> availLangs;
+            for (int i = 0; i < gotLanguages.length; i++) {
+              availLangs = Globals.languages
+                  .where((dynamic language) =>
+                      language["value"] == gotLanguages[i]["Code"])
+                  .toList();
+              if (availLangs.isNotEmpty &&
+                  !languageValues.contains(availLangs[0]["value"])) {
+                languageValues.add(availLangs[0]["value"]);
+                Globals.availLanguages.add(availLangs[0]);
+              }
+            }
+            if (Globals.availLanguages.isEmpty) {
+              Globals.availLanguages = [Globals.defaultLanguage];
+            }
+            resetMyList();
+          }
+        });
+      }
     }
-    //setState((){});
   }
 
-  // To save data
-  Future<void> setData(String key, String value) async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString(key, value);
-  }
-
-// To read data
-  Future<String?> getData(String key) async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(key);
+  static MyHomeState? of(BuildContext context) {
+    return context.findAncestorStateOfType<MyHomeState>();
   }
 
   Future<bool> isNetworkAvailable() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.mobile) {
-      print("CONNECTED TO MOBILE DATA");
+      debugPrint("CONNECTED TO MOBILE DATA");
       return true;
     } else if (connectivityResult == ConnectivityResult.wifi) {
-      print("CONNECTED TO WIFI");
+      debugPrint("CONNECTED TO WIFI");
       return true;
     }
-    print("NOT CONNECTED");
+    debugPrint("NOT CONNECTED");
     return false;
   }
 
-  Future<void> showPopup(BuildContext context, String message) async {
-    print("showPopup called");
-    return showDialog<void>(
-      context: context,
-      barrierDismissible:
-          false, // Prevent dismissing by tapping outside the popup
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(FlutterI18n.translate(context, "PROMPT_ALERT")),
-          content: Text(message),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the popup
-              },
-              child: Text(FlutterI18n.translate(context, "CLOSE")),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> showConfirm(BuildContext context, String title, String message,
-      String cancelText, String okText, Function callback) async {
-    print("showshowConfirm called");
-    return showDialog<void>(
-      context: context,
-      barrierDismissible:
-          false, // Prevent dismissing by tapping outside the popup
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title),
-          content: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.70,
-              child: SingleChildScrollView(child: Html(data: message))),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the popup
-              },
-              child: Text(cancelText),
-            ),
-            TextButton(
-              onPressed: () {
-                callback();
-              },
-              child: Text(okText),
-            )
-          ],
-        );
-      },
-    );
-  }
-
   Future<void> initiateAll(context) async {
-    //var isOnline = await isNetworkAvailable();
-    //if (isOnline == true) {
     await setAvailLanguages();
     await initiateTypesAdjectives(context, true);
-    //}
-    isInitiated = true;
   }
 
   Future<void> initiateTypesAdjectives(context, isSetState) async {
-    isInitiatingTypesAdjectives = true;
-    String appLanguageId = appLanguage["LID"];
-    print(
-        "initiateTypesAdjectives called, isSetState = $isSetState, appLanguageId = $appLanguageId");
-    List<String> availLIDs =
-        List<String>.from(availLanguages.map((lang) => lang["LID"]).toList());
-    print("initiateTypesAdjectives availLIDs = $availLIDs");
-    if (!availLIDs.contains(appLanguage["LID"])) {
-      appLanguageId = "8"; //ENGLISH
-    }
-    bool isRequestSuccess = true;
-    Response response = http.Response("", 200);
-    try {
-      response = await http.get(Uri.parse(
-          'https://www.learnfactsquick.com/lfq_app_php/get_alp_tabs_complete_app.php?language_id=${selectedAcrosticsLanguage["LID"]}&app_language_id=$appLanguageId'));
-    } catch (e) {
-      isRequestSuccess = false;
-      isAppOnline = false;
-      isInitiatingTypesAdjectives = false;
-      await doNetworkChange();
-    }
-    if (isRequestSuccess == true) {
-      if (response.statusCode == 200) {
-        // If the server returns a 200 OK response, parse the JSON data
-        final Map<String, dynamic> data = json.decode(response.body);
-        print("initiateTypesAdjectives STATUS=200!!!");
-        if (data["SUCCESS"] == true) {
-          if (isSetState == true) {
-            setState(() {
-              print("setState TRUE, CALLING finishInitiateTypesAdjectives");
+    if (Globals.isAppOnline == false) {
+      HelpersService.showPopup(context,
+          message: FlutterI18n.translate(context, "NOT_ONLINE"));
+    } else {
+      isInitiatingTypesAdjectives = true;
+      String appLanguageId = Globals.appLanguage["LID"];
+      debugPrint(
+          "initiateTypesAdjectives called, isSetState = $isSetState, appLanguageId = $appLanguageId");
+      List<String> availLIDs = List<String>.from(
+          Globals.availLanguages.map((lang) => lang["LID"]).toList());
+      debugPrint("initiateTypesAdjectives availLIDs = $availLIDs");
+      if (!availLIDs.contains(Globals.appLanguage["LID"])) {
+        appLanguageId = "8"; //ENGLISH
+      }
+      bool isRequestSuccess = true;
+      Response response = http.Response("", 200);
+      try {
+        response = await http.get(Uri.parse(
+            'https://www.learnfactsquick.com/lfq_app_php/get_alp_tabs_complete_app.php?language_id=${Globals.selectedAcrosticsLanguage["LID"]}&app_language_id=$appLanguageId'));
+      } catch (e) {
+        isRequestSuccess = false;
+        Globals.isAppOnline = false;
+        isInitiatingTypesAdjectives = false;
+        await doNetworkChange();
+      }
+      if (isRequestSuccess == true) {
+        if (response.statusCode == 200) {
+          // If the server returns a 200 OK response, parse the JSON data
+          final Map<String, dynamic> data = json.decode(response.body);
+          debugPrint("initiateTypesAdjectives STATUS=200!!!");
+          if (data["SUCCESS"] == true) {
+            if (isSetState == true) {
+              setState(() {
+                debugPrint(
+                    "setState TRUE, CALLING finishInitiateTypesAdjectives");
+                finishInitiateTypesAdjectives(appLanguageId, data);
+                isInitiatingTypesAdjectives = false;
+              });
+            } else {
+              //setState(() {
               finishInitiateTypesAdjectives(appLanguageId, data);
               isInitiatingTypesAdjectives = false;
-            });
+              //});
+            }
+            debugPrint("initiateTypesAdjectives DONE SUCCESSFULLY");
           } else {
-            //setState(() {
-            finishInitiateTypesAdjectives(appLanguageId, data);
-            isInitiatingTypesAdjectives = false;
-            //});
+            await HelpersService.showPopup(context, message: data["ERROR"]);
+            setState(() {
+              isInitiatingTypesAdjectives = false;
+            });
           }
-          print("initiateTypesAdjectives DONE SUCCESSFULLY");
         } else {
-          await showPopup(context, data["ERROR"]);
+          await HelpersService.showPopup(context,
+              message: FlutterI18n.translate(context, "NETWORK_ERROR"));
           setState(() {
             isInitiatingTypesAdjectives = false;
           });
         }
-      } else {
-        await showPopup(
-            context, FlutterI18n.translate(context, "NETWORK_ERROR"));
-        setState(() {
-          isInitiatingTypesAdjectives = false;
-        });
       }
     }
   }
@@ -1095,38 +583,25 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
     try {
       completedTables = List<dynamic>.from(data["COMPLETED_TABLES"]);
       allCategories = data["CATEGORIES"];
-      //List<String> uniqueTypes = List<String>.from(Set.from(completedTables
-      //    .map((tbl) => tbl["Type"])
-      //    .whereType<String>()
-      //    .toSet()));
-      //dropdownTypes = [];
-      //print("initiateTypesAdjectives appLanguageId = $appLanguageId");
-      //for (int u = 0; u < uniqueTypes.length; u++) {
-      //  dropdownTypes.add({
-      //    "Type": uniqueTypes[u],
-      //    "Trans": allCategories[uniqueTypes[u]][appLanguageId]
-      //  });
-      //}
-      //dropdownTypes = List<dynamic>.from(completedTables);
-      //print("949 dropdownTypes = ${json.encode(dropdownTypes)}");
       selectedAllAdjectives = [];
       for (int i = 0; i < completedTables.length; i++) {
         selectedAllAdjectives.add([]);
       }
-      if (dropdownTypes.isNotEmpty) {
-        selectedType = dropdownTypes[0];
-        dropdownAdjectives = getDropdownAdjectives(dropdownTypes[0]["Type"]);
+      if (Globals.dropdownTypes.isNotEmpty) {
+        selectedType = Globals.dropdownTypes[0];
+        dropdownAdjectives =
+            getDropdownAdjectives(Globals.dropdownTypes[0]["Type"]);
         selectedAdjective = dropdownAdjectives[0];
-        print(
+        debugPrint(
             "finishInitiateTypesAdjectives DONE dropdownAdjectives = ${json.encode(dropdownAdjectives)}");
       }
     } catch (e) {
-      print("ERROR FINISH initiateTypesAdjectives = $e");
+      debugPrint("ERROR FINISH initiateTypesAdjectives = $e");
     }
   }
 
   List<String> getDropdownAdjectives(String type) {
-    print("getDropdownAdjectives type $type");
+    debugPrint("getDropdownAdjectives type $type");
     List<String> myDropdownAdjectives = List<String>.from((List<dynamic>.from(
             completedTables
                 .where((dynamic tableObj) => tableObj["Type"] == type)))
@@ -1134,13 +609,13 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
         .whereType<String>()
         .toSet()
         .toList());
-    print(
+    debugPrint(
         "getDropdownAdjectives RETURNING myDropdownAdjectives = ${json.encode(myDropdownAdjectives)}");
     return myDropdownAdjectives;
   }
 
   setType(type) {
-    print("setType type = $type");
+    debugPrint("setType type = $type");
     if (selectedType != type) {
       setState(() {
         selectedType = type;
@@ -1152,7 +627,7 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
         if (dropdownAdjectives.isNotEmpty) {
           selectedAdjective = dropdownAdjectives[0];
         }
-        selectedTypeIndex = dropdownTypes.indexOf(type);
+        selectedTypeIndex = Globals.dropdownTypes.indexOf(type);
       });
     }
   }
@@ -1163,52 +638,13 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
     });
   }
 
-  void showProgress(BuildContext context, message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Center(
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white, // Background color
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            padding: EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
-                ),
-                SizedBox(height: 16.0),
-                Text(
-                  message,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 18.0,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  void hideProgress(BuildContext context) {
-    print("hideProgress called");
-    Navigator.of(context, rootNavigator: true).pop();
-    isLoading = false;
-  }
-
   String buildUrlString(params) {
-    //print("buildUrlString called, params = $params");
+    //debugPrint("buildUrlString called, params = $params");
     var ret = [];
     for (var p in params.keys) {
       ret.add("${Uri.encodeComponent(p)}=${Uri.encodeComponent(params[p])}");
     }
-    //print("buildUrlString ret = {$ret}");
+    //debugPrint("buildUrlString ret = {$ret}");
     return ret.join('&');
   }
 
@@ -1216,7 +652,7 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
     if (validateCreate() == false) {
       return;
     } else {
-      showInterstitialAd(() async {
+      AdService.showInterstitialAd(() async {
         if (getIsUseOffline() == true) {
           await createAcrosticsOld(context);
         } else {
@@ -1228,22 +664,29 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
 
   bool validateCreate() {
     inputWord = inputController.text;
+    countAllSelected = 0;
+    for (var i = 0; i < selectedAllAdjectives.length; i++) {
+      for (var j = 0; j < selectedAllAdjectives[i].length; j++) {
+        countAllSelected++;
+      }
+    }
     if (inputWord.trim() == '') {
-      showPopup(context, FlutterI18n.translate(context, "INPUT_WORD_RETRY"));
+      HelpersService.showPopup(context,
+          message: FlutterI18n.translate(context, "INPUT_WORD_RETRY"));
       return false;
     } else if (countAllSelected == 0) {
-      showPopup(
-          context, FlutterI18n.translate(context, "PROMPT_SELECT_ADJECTIVES"));
+      HelpersService.showPopup(context,
+          message: FlutterI18n.translate(context, "PROMPT_SELECT_ADJECTIVES"));
       return false;
     }
     return true;
   }
 
   Future<void> createAcrosticsOld(context) async {
-    print("createAcrosticsOld called");
+    debugPrint("createAcrosticsOld called");
     var progressMessage =
         FlutterI18n.translate(context, "LOAD_ACROSTICS_OFFLINE");
-    showProgress(context, progressMessage);
+    HelpersService.showProgress(context, progressMessage);
     await Future.delayed(Duration(milliseconds: 200));
     dynamic response = {
       "SUCCESS": true,
@@ -1255,13 +698,13 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
     uniqueLetters = List<String>.from(Set<String>.from(inputSplit));
     List<String> selectedSendAdjectives = [];
     List<dynamic> selectedTypesAdjectives = [];
-    print(
+    debugPrint(
         "createAcrostics selectedAllAdjectives = ${json.encode(selectedAllAdjectives)}");
     for (var i = 0; i < selectedAllAdjectives.length; i++) {
       for (var j = 0; j < selectedAllAdjectives[i].length; j++) {
         selectedSendAdjectives.add(selectedAllAdjectives[i][j]);
         selectedTypesAdjectives.add({
-          "type": dropdownTypes[i]["Type"],
+          "type": Globals.dropdownTypes[i]["Type"],
           "adjective": selectedAllAdjectives[i][j]
         });
       }
@@ -1288,7 +731,8 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
     List<Map<String, String>> dicVars = [];
     List<String> dicWords = [];
     for (int i = 0; i < uniqueLetters.length; i++) {
-      dicVars = List<Map<String, String>>.from(myDic[uniqueLetters[i]]!);
+      dicVars =
+          List<Map<String, String>>.from(Globals.myDic[uniqueLetters[i]]!);
       for (int j = 0; j < dicVars.length; j++) {
         dicWords = dicVars[j].keys.toList();
         for (int k = 0; k < dicWords.length; k++) {
@@ -1306,7 +750,7 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
         }
       }
     }
-    hideProgress(context);
+    HelpersService.hideProgress(context);
     Navigator.push(
         context,
         MaterialPageRoute(
@@ -1322,82 +766,91 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
   }
 
   Future<void> createAcrosticsNew(context) async {
-    print("createAcrosticsNew called");
-
-    print("CREATING ACROSTICS!");
-    inputWord = inputController.text;
-    var progressMessage =
-        FlutterI18n.translate(context, "LOAD_ACROSTICS_ONLINE");
-    showProgress(context, progressMessage);
-    var inputSplit = inputWord.split("");
-    uniqueLetters = List<String>.from(Set<String>.from(inputSplit));
-    List<String> selectedSendAdjectives = [];
-    List<dynamic> selectedTypesAdjectives = [];
-    print(
-        "createAcrostics selectedAllAdjectives = ${json.encode(selectedAllAdjectives)}");
-    for (var i = 0; i < selectedAllAdjectives.length; i++) {
-      for (var j = 0; j < selectedAllAdjectives[i].length; j++) {
-        selectedSendAdjectives.add(selectedAllAdjectives[i][j]);
-        selectedTypesAdjectives.add({
-          "type": dropdownTypes[i]["Type"],
-          "adjective": selectedAllAdjectives[i][j]
-        });
-      }
-    }
-    String appLanguageId = appLanguage["LID"];
-    print("initiateTypesAdjectives called, appLanguageId = $appLanguageId");
-    List<String> availLIDs =
-        List<String>.from(availLanguages.map((lang) => lang["LID"]).toList());
-    print("initiateTypesAdjectives availLIDs = $availLIDs");
-    if (!availLIDs.contains(appLanguage["LID"])) {
-      appLanguageId = "8"; //ENGLISH
-    }
-    Map<String, dynamic> params = {
-      "selectedThemes": selectedSendAdjectives,
-      "uniqueLetters": uniqueLetters,
-      "languageId": selectedAcrosticsLanguage["LID"],
-      "appLanguageId": appLanguageId
-    };
-    print(
-        "createAcrostics NEXT CALLING get_alphabet_tables_completed_entries_app");
-    bool isRequestSuccess = true;
-    Response response = http.Response("", 200);
-    try {
-      response = await http.post(
-          Uri.parse('https://www.learnfactsquick.com/lfq_app_php/get_acrs.php'),
-          body: json.encode(params));
-    } catch (e) {
-      hideProgress(context);
-      isRequestSuccess = false;
-      isAppOnline = false;
-      await doNetworkChange();
-    }
-    if (isRequestSuccess == true) {
-      //print("createAcrostics GENERATE_ALL RESPONSE = $response");
-      if (response.statusCode == 200) {
-        // If the server returns a 200 OK response, parse the JSON data
-        final Map<String, dynamic> data = json.decode(response.body);
-        print(
-            "createAcrostics get_alphabet_tables_completed_entries_app DECODED data! = ${json.encode(data)}");
-        if (data["SUCCESS"] == true) {
-          hideProgress(context);
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => TablePage(
-                      inputWord: inputWord,
-                      selectedTypesAdjectives: selectedTypesAdjectives,
-                      entries: List<dynamic>.from(data["ENTRIES"]))));
-        } else {
-          print("createAcrostics SUCCESS=false");
-          hideProgress(context);
-          showPopup(context,
-              "${FlutterI18n.translate(context, "ERROR_MAKING_ACROSTICS")}: ${data["ERROR"]}");
+    debugPrint("createAcrosticsNew called");
+    if (Globals.isAppOnline == false) {
+      HelpersService.showPopup(context,
+          message: FlutterI18n.translate(context, "NOT_ONLINE"));
+    } else {
+      debugPrint("CREATING ACROSTICS!");
+      inputWord = inputController.text;
+      var progressMessage =
+          FlutterI18n.translate(context, "LOAD_ACROSTICS_ONLINE");
+      HelpersService.showProgress(context, progressMessage);
+      var inputSplit = inputWord.split("");
+      uniqueLetters = List<String>.from(Set<String>.from(inputSplit));
+      List<String> selectedSendAdjectives = [];
+      List<dynamic> selectedTypesAdjectives = [];
+      debugPrint(
+          "createAcrostics selectedAllAdjectives = ${json.encode(selectedAllAdjectives)}");
+      for (var i = 0; i < selectedAllAdjectives.length; i++) {
+        for (var j = 0; j < selectedAllAdjectives[i].length; j++) {
+          selectedSendAdjectives.add(selectedAllAdjectives[i][j]);
+          selectedTypesAdjectives.add({
+            "type": Globals.dropdownTypes[i]["Type"],
+            "adjective": selectedAllAdjectives[i][j]
+          });
         }
-      } else {
-        showPopup(context,
-            "${FlutterI18n.translate(context, "ERROR_MAKING_ACROSTICS")}: ${json.encode(e)}");
-        hideProgress(context);
+      }
+
+      String appLanguageId = Globals.appLanguage["LID"];
+      debugPrint(
+          "initiateTypesAdjectives called, appLanguageId = $appLanguageId");
+      List<String> availLIDs = List<String>.from(
+          Globals.availLanguages.map((lang) => lang["LID"]).toList());
+      debugPrint("initiateTypesAdjectives availLIDs = $availLIDs");
+      if (!availLIDs.contains(Globals.appLanguage["LID"])) {
+        appLanguageId = "8"; //ENGLISH
+      }
+      Map<String, dynamic> params = {
+        "selectedThemes": selectedSendAdjectives,
+        "uniqueLetters": uniqueLetters,
+        "languageId": Globals.selectedAcrosticsLanguage["LID"],
+        "appLanguageId": appLanguageId
+      };
+      debugPrint(
+          "createAcrostics NEXT CALLING get_alphabet_tables_completed_entries_app");
+      bool isRequestSuccess = true;
+      Response response = http.Response("", 200);
+      try {
+        response = await http.post(
+            Uri.parse(
+                'https://www.learnfactsquick.com/lfq_app_php/get_acrs.php'),
+            body: json.encode(params));
+      } catch (e) {
+        HelpersService.hideProgress(context);
+        isRequestSuccess = false;
+        Globals.isAppOnline = false;
+        await doNetworkChange();
+      }
+      if (isRequestSuccess == true) {
+        //debugPrint("createAcrostics GENERATE_ALL RESPONSE = $response");
+        if (response.statusCode == 200) {
+          // If the server returns a 200 OK response, parse the JSON data
+          final Map<String, dynamic> data = json.decode(response.body);
+          debugPrint(
+              "createAcrostics get_alphabet_tables_completed_entries_app DECODED data! = ${json.encode(data)}");
+          if (data["SUCCESS"] == true) {
+            HelpersService.hideProgress(context);
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => TablePage(
+                        inputWord: inputWord,
+                        selectedTypesAdjectives: selectedTypesAdjectives,
+                        entries: List<dynamic>.from(data["ENTRIES"]))));
+          } else {
+            debugPrint("createAcrostics SUCCESS=false");
+            HelpersService.hideProgress(context);
+            HelpersService.showPopup(context,
+                message:
+                    "${FlutterI18n.translate(context, "ERROR_MAKING_ACROSTICS")}: ${data["ERROR"]}");
+          }
+        } else {
+          HelpersService.showPopup(context,
+              message:
+                  "${FlutterI18n.translate(context, "ERROR_MAKING_ACROSTICS")}: ${json.encode(e)}");
+          HelpersService.hideProgress(context);
+        }
       }
     }
   }
@@ -1434,27 +887,8 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
                         Icon(Icons.delete)
                       ]))),
         ));
-        /*selectedDropdownItems.add(DropdownMenuItem(
-          value: selectedAllAdjectives[i][j],
-          child: Container(
-            decoration: BoxDecoration(color: Colors.white),
-            child: Row(
-              children: <Widget>[
-                Text(dropdownTypes[i] +
-                    (": ").toString() +
-                    selectedAllAdjectives[i][j]),
-                SizedBox(width: 8),
-                InkWell(
-                    onTap: () => {cancelSelected(i, j)},
-                    child: Icon(FontAwesomeIcons.ban)),
-              ],
-            ),
-          ),
-        ));
-        */
       }
     }
-    //return selectedDropdownItems;
   }
 
   cancelSelected(i, j) {
@@ -1466,210 +900,71 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
     });
   }
 
-  convertDynamicDoubleListDynamic(myDynamic) {
-    List<List<dynamic>> myList = [];
-    if (myDynamic is List<dynamic>) {
-      // Loop through the dynamic data and check if each element is a List<dynamic>
-      for (dynamic item in myDynamic) {
-        if (item is List<dynamic>) {
-          // Cast the inner list to List<dynamic> and add it to the result
-          myList.add(item);
-        } else {
-          //JUST ADD EMPTY LIST AS PLACEHOLDER:
-          myList.add([]);
-        }
-      }
-    }
-    return myList;
-  }
-
-  copyToClipboard(context, myText) {
-    Clipboard.setData(ClipboardData(text: myText));
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-          content: Text(
-              "${FlutterI18n.translate(context, "TEXT")}, '$myText', ${FlutterI18n.translate(context, "COPIED_TO_CLIPBOARD")}.")),
-    );
-  }
-
-  static final AdRequest request = AdRequest(
-    keywords: <String>[
-      'acrostics generator',
-      'memorize lists',
-      'improve memory',
-      'remember words',
-      'define words',
-      'study tool',
-      'learning tool'
-    ],
-    contentUrl: 'https://learnfactsquick.com/#/alphabet_acrostics_generator',
-    nonPersonalizedAds: true,
-  );
-
-  void createInterstitialAd() {
-    print("createInterstitialAd interstitialAd CALLED.");
-    //setState(() {
-    //  isMakeMajor = false;
-    //});
-    var adUnitId = Platform.isAndroid
-        ? 'ca-app-pub-8514966468184377/1433817858'
-        : 'ca-app-pub-8514966468184377/1586501727';
-    print("Using appId: $adUnitId kDebugMode = $kDebugMode");
-    InterstitialAd.load(
-        adUnitId: adUnitId,
-        request: request,
-        adLoadCallback: InterstitialAdLoadCallback(
-          onAdLoaded: (InterstitialAd ad) {
-            print('My InterstitialAd $ad loaded');
-            interstitialAd = ad;
-            numInterstitialLoadAttempts = 0;
-            interstitialAd!.setImmersiveMode(true);
-            print("interstitialAd == null ? : ${interstitialAd == null}");
-            //setState(() {
-            //  isMakeMajor = true;
-            //});
-          },
-          onAdFailedToLoad: (LoadAdError error) {
-            print('interstitialAd failed to load: $error.');
-            numInterstitialLoadAttempts += 1;
-            interstitialAd = null;
-            //setState(() {
-            //  isMakeMajor = false;
-            //});
-            if (numInterstitialLoadAttempts < maxFailedLoadAttempts) {
-              createInterstitialAd();
-            }
-          },
-        ));
-  }
-
-  void showInterstitialAd(Function callback) {
-    print("showInterstitialAd called");
-    if (kIsWeb == true) {
-      print('Can not run ads on web!.');
-      callback();
-    } else if (isAds == false) {
-      print('isAds FALSE. SHOW NO-ADS WAS PURCHASED!.');
-      callback();
-    } else if (interstitialAd == null) {
-      print('Warning: attempt to show interstitialAd before loaded.');
-      callback();
-    } else {
-      Random random = Random();
-      var isShowAd =
-          (kIsWeb == false && random.nextInt(1000) < MyApp().ofThousandShowAds);
-      if (isShowAd != true) {
-        callback();
-      } else {
-        interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
-          onAdShowedFullScreenContent: (InterstitialAd ad) =>
-              debugPrint('interstitialAd onAdShowedFullScreenContent.'),
-          onAdDismissedFullScreenContent: (InterstitialAd ad) {
-            ad.dispose();
-            createInterstitialAd();
-            callback();
-          },
-          onAdFailedToShowFullScreenContent:
-              (InterstitialAd ad, AdError error) {
-            ad.dispose();
-            createInterstitialAd();
-            callback();
-          },
-        );
-        interstitialAd!.show();
-        interstitialAd = null;
-      }
-    }
-  }
-
-  void loadBannerAd() {
-    String addUnitId = Platform.isAndroid ? bannerIdAndroid : bannerIdIos;
-    bannerAd = BannerAd(
-      adUnitId: addUnitId,
-      size: AdSize.banner,
-      request: AdRequest(),
-      listener: BannerAdListener(
-        onAdLoaded: (_) {
-          setState(() {
-            isBannerAdReady = true;
-          });
-        },
-        onAdFailedToLoad: (ad, error) {
-          print('BannerAd failed to load: $error');
-          ad.dispose();
-        },
-      ),
-    );
-    bannerAd.load();
-  }
-
   getTransLangValue(dynamic value) {
     return "${value["name1"]}(${FlutterI18n.translate(context, value["name2"])})";
   }
 
   resetMyList() {
-    print("resetMyList called");
+    debugPrint("resetMyList called");
 
-    dynamic myLanguage = List<dynamic>.from(languages
+    dynamic myLanguage = List<dynamic>.from(Globals.languages
         .where((dynamic lang) =>
-            lang["value"] == selectedAcrosticsLanguage["value"])
+            lang["value"] == Globals.selectedAcrosticsLanguage["value"])
         .toList())[0];
-    List<dynamic> foundLangs = List<dynamic>.from(availLanguages
+    List<dynamic> foundLangs = List<dynamic>.from(Globals.availLanguages
         .where((myEle) => myEle["value"] == myLanguage["value"])
         .toList());
 
     if (foundLangs.isNotEmpty) {
       dynamic myLang = foundLangs[0];
-      selectedAcrosticsLanguage = myLang;
+      Globals.selectedAcrosticsLanguage = Globals.languages
+          .firstWhere((dynamic lang) => lang["LID"] == myLang["LID"]);
     } else {
-      selectedAcrosticsLanguage = null;
+      Globals.selectedAcrosticsLanguage = Globals.languages.firstWhere(
+          (dynamic lang) => lang["LID"] == Globals.defaultLanguage["LID"]);
     }
   }
 
   setLanguage(BuildContext context, newLanguage) {
-    print("setLanguage called, newLanguage = $newLanguage");
+    debugPrint("setLanguage called, newLanguage = $newLanguage");
     Future.delayed(Duration(microseconds: 10), () {
       setState(() {
-        selectedAcrosticsLanguage = newLanguage;
+        Globals.selectedAcrosticsLanguage = Globals.languages
+            .firstWhere((dynamic lang) => lang["LID"] == newLanguage["LID"]);
         for (var i = 0; i < selectedAllAdjectives.length; i++) {
           selectedAllAdjectives[i] = [];
         }
         createSelectedDropdown();
-        print("main.setLanguage calling initiateTypesAdjectives setState=true");
+        debugPrint(
+            "main.setLanguage calling initiateTypesAdjectives setState=true");
         initiateTypesAdjectives(context, true);
       });
     });
   }
 
-  isLinkPlayStore() {
-    return (kIsWeb || Platform.isAndroid);
-  }
-
-  isLinkAppStore() {
-    return (kIsWeb || Platform.isIOS);
-  }
-
   updateSelf() {
-    print("MyHomeState updateSelf called");
+    debugPrint("MyHomeState updateSelf called");
     setState(() {});
   }
 
   bool getIsUseOffline() {
-    String appLanguageId = appLanguage["LID"];
-    List<String> availLIDs =
-        List<String>.from(availLanguages.map((lang) => lang["LID"]).toList());
-    if (!availLIDs.contains(appLanguage["LID"])) {
+    debugPrint(
+        "getIsUseOffline called, isOnline = ${Globals.isAppOnline}, isAds = $Globals.isAds");
+    String appLanguageId = Globals.appLanguage["LID"];
+    List<String> availLIDs = List<String>.from(
+        Globals.availLanguages.map((lang) => lang["LID"]).toList());
+    if (!availLIDs.contains(Globals.appLanguage["LID"])) {
       appLanguageId = "8"; //ENGLISH
     }
-    String languageId = selectedAcrosticsLanguage["LID"];
-    bool isUse = (isAds == false &&
-        ((languageId == "8" && appLanguageId == "8") || isAppOnline == false));
+    String languageId = Globals.selectedAcrosticsLanguage["LID"];
+    bool isUse = (Globals.isAds == false &&
+        ((languageId == "8" && appLanguageId == "8")));
     return isUse;
   }
 
   void disposeAds() {
-    interstitialAd?.dispose();
-    bannerAd.dispose();
+    AdService.disposeAll();
+    bannerAd?.dispose();
   }
 
   @override
@@ -1677,13 +972,25 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
     super.dispose();
     subscription.cancel();
     if (kIsWeb == false) {
-      print("DISPOSING interstitialAd !!!");
-      interstitialAd?.dispose();
+      debugPrint("DISPOSING interstitialAd !!!");
+      bannerAd?.dispose();
     }
+  }
+
+  seeAcrostics(BuildContext context) async {
+    debugPrint("seeAcrostics called");
+    AdService.showInterstitialAd(() {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => AcrosticsPage()),
+      );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    debugPrint(
+        "Main build Widget called, selectedAcrosticLanguage = ${jsonEncode(Globals.selectedAcrosticsLanguage)}, availLanguages = ${jsonEncode(Globals.availLanguages)}");
     final TextStyle commonTextStyle = TextStyle(
       fontSize: 16.0,
       color: Colors.black,
@@ -1691,7 +998,8 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
       fontFamily: 'Arial', // Specify the font family
     );
     double screenWidth = MediaQuery.of(context).size.width;
-    double linkButtonSize = screenWidth * 0.7 > 300 ? screenWidth * 0.7 : 300;
+    double promptFontSize =
+        (screenWidth * 0.016 + 4) < 11 ? 11 : (screenWidth * 0.016 + 4);
     double linksFontSize =
         (screenWidth * 0.014 + 4) < 10 ? 10 : (screenWidth * 0.014 + 4);
     return isInitiated == false
@@ -1725,6 +1033,7 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
             appBar: AppBar(
                 backgroundColor: Theme.of(context).colorScheme.inversePrimary,
                 title: Text(FlutterI18n.translate(context, "APP_TITLE")),
+                centerTitle: true,
                 actions: <Widget>[
                   Menu(context: context, page: 'main', updateParent: updateSelf)
                 ]),
@@ -1735,7 +1044,7 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                       Visibility(
-                          visible: isAppOnline == false,
+                          visible: Globals.isAppOnline == false,
                           child: Container(
                               height: linksFontSize + 3,
                               width: double.infinity,
@@ -1794,7 +1103,8 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
                                       .black), // Set the border color to transparent
                             ),
                             child: Visibility(
-                              visible: dropdownTypes.isNotEmpty,
+                              visible: (Globals.dropdownTypes.isNotEmpty &&
+                                  selectedType != null),
                               child: DropdownButtonHideUnderline(
                                   child: DropdownButton<dynamic>(
                                 value: selectedType,
@@ -1803,7 +1113,7 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
                                   //appState.selectedType = newValue!;
                                   //});
                                 },
-                                items: dropdownTypes
+                                items: Globals.dropdownTypes
                                     .map<DropdownMenuItem<dynamic>>(
                                         (dynamic value) {
                                   return DropdownMenuItem<dynamic>(
@@ -1834,6 +1144,7 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
                           padding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
                           child: Visibility(
                             visible: dropdownAdjectives.isNotEmpty &&
+                                selectedType != null &&
                                 isInitiatingTypesAdjectives == false,
                             child: DropDownMultiSelect(
                               separator: ", ",
@@ -1841,7 +1152,8 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
                                 labelText: "",
                                 labelStyle: commonTextStyle,
                               ),
-                              whenEmpty: selectedType["Type"] != null
+                              whenEmpty: selectedType != null &&
+                                      selectedType["Type"] != null
                                   ? FlutterI18n.translate(
                                       context, "SELECT_TYPE_ADJECTIVES",
                                       translationParams: {
@@ -1914,166 +1226,165 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
                                               fontSize: linksFontSize)),
                                     ),
                                   )),
-                              DropdownButton<dynamic>(
-                                value: selectedAcrosticsLanguage,
-                                onChanged: (newLanguage) {
-                                  setLanguage(context, newLanguage);
-                                },
-                                hint: Text(FlutterI18n.translate(
-                                    context, "SELECT_LANGUAGE")),
-                                items: availLanguages
-                                    .map<DropdownMenuItem<dynamic>>(
-                                        (dynamic value) {
-                                  return DropdownMenuItem<dynamic>(
-                                    value: value,
-                                    child: Text(getTransLangValue(value),
+                              Visibility(
+                                visible: (Globals.availLanguages.isNotEmpty &&
+                                    Globals.selectedAcrosticsLanguage != null),
+                                child: DropdownButton<String>(
+                                  value: Globals
+                                      .selectedAcrosticsLanguage?["value"],
+                                  onChanged: (newLanguage) {
+                                    final foundLanguage =
+                                        Globals.availLanguages.firstWhere(
+                                      (item) => item["value"] == newLanguage,
+                                    );
+                                    if (foundLanguage != null) {
+                                      setLanguage(context, foundLanguage);
+                                    }
+                                  },
+                                  hint: Text(FlutterI18n.translate(
+                                      context, "SELECT_LANGUAGE")),
+                                  items: Globals.availLanguages
+                                      .map<DropdownMenuItem<String>>((lang) {
+                                    return DropdownMenuItem<String>(
+                                      value: lang["value"], // ✅ string
+                                      child: Text(
+                                        getTransLangValue(lang),
                                         style:
-                                            TextStyle(fontSize: linksFontSize)),
-                                  );
-                                }).toList(),
+                                            TextStyle(fontSize: linksFontSize),
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
                               ),
                             ]),
                       ),
-                      Row(
-                        children: [
-                          Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.9,
-                                child: ElevatedButton(
-                                    style: ButtonStyle(
-                                        shape: WidgetStateProperty.all(
-                                          RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                                5.0), // Adjust the radius as needed
-                                          ),
-                                        ),
-                                        backgroundColor: goButtonColor),
-                                    onPressed: (isInitiated == true)
-                                        ? () async {
-                                            doCreateAcrostics(context);
-                                          }
-                                        : null,
-                                    child: Text(
-                                        FlutterI18n.translate(
-                                            context, "CREATE_ACROSTICS"),
-                                        style: TextStyle(fontSize: 12))),
-                              )),
-                        ],
+                      Center(
+                        child: HelpersService.customButton(
+                            context,
+                            0.95,
+                            promptFontSize,
+                            FlutterI18n.translate(
+                              context,
+                              "CREATE_ACROSTICS",
+                            ),
+                            Icon(Icons.construction),
+                            goButtonColor,
+                            Colors.black,
+                            5,
+                            (isInitiated == true)
+                                ? () async {
+                                    doCreateAcrostics(context);
+                                  }
+                                : null),
                       ),
-                      Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: SizedBox(
-                            width: linkButtonSize,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                launchUrl(
-                                    Uri.parse('https://learnfactsquick.com'));
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color.fromARGB(
-                                    255,
-                                    204,
-                                    159,
-                                    252), // Change the button's background color
-                                foregroundColor:
-                                    Colors.white, // Change the text color
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Image.asset(
-                                    'assets/images/lfq_icon.png',
-                                    width: 25, // Set the desired width
-                                    height: 25, // Set the desired height
-                                  ),
-                                  SizedBox(width: 8),
-                                  Text(
-                                      FlutterI18n.translate(
-                                          context, "PROMPT_TOOLS_WEBSITE"),
-                                      style: TextStyle(
-                                          fontSize: linksFontSize)), // Text
-                                ],
-                              ),
-                            )),
-                      ),
-                      Visibility(
-                        visible: isLinkPlayStore(),
-                        child: Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: SizedBox(
-                              width: linkButtonSize,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  launchUrl(Uri.parse(
-                                      'https://play.google.com/store/apps/dev?id=5263177578338103821'));
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors
-                                      .green, // Change the button's background color
-                                  foregroundColor:
-                                      Colors.white, // Change the text color
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Icon(Icons
-                                        .play_circle_fill), // Google Play icon
-                                    SizedBox(
-                                        width:
-                                            8), // Add some space between the icon and text
-                                    Text(
-                                        FlutterI18n.translate(
-                                            context, "PROMPT_APPS_PLAY_STORE"),
-                                        style: TextStyle(
-                                            fontSize: linksFontSize)), // Text
-                                  ],
-                                ),
-                              )),
+                      SizedBox(height: 15),
+                      Center(
+                        child: HelpersService.customButton(
+                          context,
+                          0.75,
+                          promptFontSize,
+                          FlutterI18n.translate(
+                            context,
+                            "SEE_ACROSTICS",
+                          ),
+                          Icon(Icons.visibility),
+                          Colors.lightBlueAccent,
+                          Colors.black,
+                          5,
+                          (Globals.isAppOnline == true)
+                              ? () async {
+                                  seeAcrostics(context);
+                                }
+                              : null,
                         ),
                       ),
-                      Visibility(
-                        visible: isLinkAppStore(),
+                      SizedBox(height: 20),
+                      Align(
+                        alignment: Alignment.centerLeft,
                         child: Padding(
-                            padding: EdgeInsets.all(10.0),
-                            child: SizedBox(
-                                width: linkButtonSize,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    launchUrl(Uri.parse(
-                                        'https://apps.apple.com/us/developer/keith-harryman/id1693739510'));
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors
-                                        .blue, // Change the button's background color
-                                    foregroundColor:
-                                        Colors.white, // Change the text color
+                          padding: const EdgeInsets.only(left: 15.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                textAlign: TextAlign.left,
+                                FlutterI18n.translate(
+                                  context,
+                                  "SEE_LFQ_WEBSITE_OTHER_APPS",
+                                ),
+                                style: TextStyle(
+                                  fontStyle: FontStyle.italic,
+                                  fontSize: promptFontSize,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blue[800],
+                                ),
+                              ),
+                              HelpersService.customButton(
+                                context,
+                                0.80,
+                                promptFontSize,
+                                FlutterI18n.translate(
+                                  context,
+                                  "PROMPT_TOOLS_WEBSITE",
+                                ),
+                                Image.asset(
+                                  'assets/images/lfq_icon.png',
+                                  width: 20,
+                                  height: 20,
+                                ),
+                                Color.fromARGB(255, 204, 159, 252),
+                                Colors.white,
+                                15,
+                                () => launch('https://learnfactsquick.com'),
+                              ),
+                              if (HelpersService.isLinkPlayStore())
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 12.0),
+                                  child: HelpersService.customButton(
+                                    context,
+                                    0.80,
+                                    promptFontSize,
+                                    FlutterI18n.translate(
+                                      context,
+                                      "PROMPT_APPS_PLAY_STORE",
+                                    ),
+                                    Icon(Icons.play_circle_fill),
+                                    Colors.green,
+                                    Colors.white,
+                                    15,
+                                    () => launch(
+                                      'https://play.google.com/store/apps/dev?id=5263177578338103821',
+                                    ),
                                   ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Icon(Icons
-                                          .download_sharp), // Google Play icon
-                                      SizedBox(
-                                          width:
-                                              8), // Add some space between the icon and text
-                                      Text(
-                                          FlutterI18n.translate(
-                                              context, "PROMPT_APPS_APP_STORE"),
-                                          style: TextStyle(
-                                              fontSize: linksFontSize)), // Text
-                                    ],
+                                ),
+                              if (HelpersService.isLinkAppStore())
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 12.0),
+                                  child: HelpersService.customButton(
+                                    context,
+                                    0.80,
+                                    promptFontSize,
+                                    FlutterI18n.translate(
+                                      context,
+                                      "PROMPT_APPS_APP_STORE",
+                                    ),
+                                    Icon(Icons.download_sharp),
+                                    Colors.blue,
+                                    Colors.white,
+                                    15,
+                                    () => launch(
+                                      'https://apps.apple.com/us/developer/keith-harryman/id1693739510',
+                                    ),
                                   ),
-                                ))),
+                                ),
+                            ],
+                          ),
+                        ),
                       ),
                     ]))),
-            bottomNavigationBar: (isAds == true && isBannerAdReady)
-                ? Container(
-                    color: Colors.white,
-                    width: bannerAd.size.width.toDouble(),
-                    height: bannerAd.size.height.toDouble(),
-                    child: AdWidget(ad: bannerAd),
-                  )
-                : null);
+            bottomNavigationBar: Globals.isAds
+                ? AdService.bottomBanner(bannerAd: bannerAd)
+                : null,
+          );
   }
 }

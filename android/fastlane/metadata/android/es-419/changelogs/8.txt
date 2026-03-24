@@ -1,0 +1,5 @@
+Mejor manejo sin conexión. 
+Diseño de tabla mejorado: 
+Las letras de los acrósticos tienen color de fondo. 
+Mejor selección de palabras. 
+El adjetivo acróstico actual se resalta arriba al desplazarse.

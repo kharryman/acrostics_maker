@@ -1,0 +1,2 @@
+Parempi offline-käsittely. 
+Parannettu taulukon asettelu: Akrostikkokirjaimilla on taustaväri. Parempi sanavalinta. Nykyinen akrostikkoadjektiivi näkyy korostettuna yllä vieritettäessä.

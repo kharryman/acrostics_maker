@@ -1,0 +1,4 @@
+Improved table layout:
+  Acrostic letters have background color.
+  Better word selection.
+  The current acrostic adjective is highlighted above while scrolling.

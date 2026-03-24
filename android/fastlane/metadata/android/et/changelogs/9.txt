@@ -1,0 +1,5 @@
+Lisatud funktsioon näidis-akrostikuste kuvamiseks kategooriate kaupa.
+
+Lisatud funktsioon akrostihhonide üleslaadimiseks nime, nimeinfo, kategooria või uue kategooria ja pildiga.
+
+Lisatud funktsioon reklaamide eemaldamiseks 24 tunniks.

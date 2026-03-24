@@ -1,0 +1,1 @@
+Lepší práce offline. Vylepšené rozvržení tabulky: Písmena v akrostichu mají barvu pozadí. Lepší výběr slov. Aktuální akrostichové přídavné jméno je při posouvání zvýrazněno nahoře.

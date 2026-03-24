@@ -1,0 +1,4 @@
+Vylepšené rozložení tabulky:
+  Akrostická písmena mají barvu pozadí.
+  Lepší výběr slov.
+  Aktuální přídavné jméno akrostich je při rolování zvýrazněno výše.

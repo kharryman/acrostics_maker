@@ -1,0 +1,4 @@
+Layout della tabella migliorato: 
+Le lettere dell'acrostico hanno un colore di sfondo. 
+Migliore selezione delle parole. 
+L'aggettivo acrostico corrente è evidenziato sopra durante lo scorrimento.

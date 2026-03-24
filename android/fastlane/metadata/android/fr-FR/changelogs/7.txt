@@ -1,0 +1,4 @@
+Mise en page améliorée du tableau :
+Les acrostiches ont une couleur d'arrière-plan.
+Meilleure sélection de mots.
+L'adjectif acrostiche actuel est mis en surbrillance au-dessus lors du défilement.

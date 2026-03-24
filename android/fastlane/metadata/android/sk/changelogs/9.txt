@@ -1,0 +1,1 @@
+Pridaná funkcia zobrazenia príkladov akrostichov podľa kategórie. Pridaná funkcia nahrávania akrostichov s názvom, informáciami o názve, kategóriou alebo novou kategóriou a obrázkom. Pridaná funkcia odstránenia reklám na 24 hodín.

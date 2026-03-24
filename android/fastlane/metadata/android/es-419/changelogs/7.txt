@@ -1,0 +1,4 @@
+Diseño de tabla mejorado:
+Las letras del acróstico tienen color de fondo.
+Mejor selección de palabras.
+El adjetivo acróstico actual se resalta arriba al desplazarse.

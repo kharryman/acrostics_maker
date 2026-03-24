@@ -1,0 +1,5 @@
+Ajout d'une fonctionnalité permettant d'afficher des exemples d'acrostiches par catégorie.
+
+Ajout d'une fonctionnalité permettant d'importer des acrostiches avec un titre, des informations sur le titre, une catégorie (existante ou nouvelle) et une image.
+
+Ajout d'une fonctionnalité permettant de masquer les publicités pendant 24 heures.

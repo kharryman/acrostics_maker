@@ -1,0 +1,1 @@
+Bättre offlinehantering. Förbättrad tabelllayout: Akrostikonbokstäver har bakgrundsfärg. Bättre ordval. Det aktuella akrostikonadjektivet markeras ovan när du skrollar.

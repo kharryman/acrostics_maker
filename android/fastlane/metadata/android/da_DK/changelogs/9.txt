@@ -1,0 +1,3 @@
+Tilføjet funktion til at vise eksempler på akrostikoner efter kategori. 
+Tilføjet funktion til at uploade akrostikoner med navn, navneoplysninger, kategori eller ny kategori og billede. 
+Tilføjet funktion til at fjerne annoncer i 24 timer.

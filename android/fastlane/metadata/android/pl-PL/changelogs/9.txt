@@ -1,0 +1,3 @@
+Dodano funkcję wyświetlania przykładowych akrostychów według kategorii.
+Dodano funkcję przesyłania akrostychów z nazwą, informacjami o nazwie, kategorią lub nową kategorią oraz obrazkiem.
+Dodano funkcję usuwania reklam na 24 godziny.
