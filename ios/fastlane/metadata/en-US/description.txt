@@ -1,0 +1,10 @@
+Acrostics maker is a tool to help create acrostics for names such that names themselves become acronyms. It is useful for remembering the key qualities of things.
+One example is the word 'aardvark' or a single species of nocturnal African anteaters ho dig for ants. It can be represented as:
+African
+Ants
+Ravenous
+Digging
+Vampire
+Alone
+Represented
+Kingdom
