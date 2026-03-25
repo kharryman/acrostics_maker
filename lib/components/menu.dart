@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
+import 'dart:io';
 
 import '../main.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
@@ -196,7 +197,7 @@ class MenuList extends StatefulWidget {
 class MenuListState extends State<MenuList> {
   bool isShowHelp = false;
   bool isRestoring = false;
-  bool isFeatureRestoreButton = false;
+  bool isFeatureRestoreButton = true;
   ProductDetails? productNoAds;
 
   @override
@@ -632,7 +633,7 @@ class MenuListState extends State<MenuList> {
                                     elevation: 5, // Shadow effect
                                   ),
                                 ))),
-                      if (isFeatureRestoreButton == true)
+                      if (Globals.isAds == true && isFeatureRestoreButton == true && (kIsWeb == true || Platform.isIOS))
                         NonDismissingPopupMenuItem(
                             value: "RESTORE_PURCHASES",
                             onTap: () {
