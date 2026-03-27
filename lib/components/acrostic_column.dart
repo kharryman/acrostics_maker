@@ -4,11 +4,20 @@ import 'package:acrostics_maker/globals.dart';
 import 'package:acrostics_maker/main.dart';
 import 'package:acrostics_maker/services/helpers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:http/http.dart' as http;
 import 'package:visibility_detector/visibility_detector.dart';
 
 String visibilityCondition = "";
+
+class WordGroup {
+  final String label; // e.g., "adjective: type"
+  final List<dynamic> alp; // entries where DICT==0
+  final List<dynamic> dic; // entries where DICT==1
+
+  WordGroup({required this.label, required this.alp, required this.dic});
+}
 
 class AcrosticColumn extends StatefulWidget {
   final int index;
@@ -19,8 +28,6 @@ class AcrosticColumn extends StatefulWidget {
   final bool isWordStart;
 
   final TextEditingController inputController;
-  final TextEditingController autoController;
-  final FocusNode focusNode;
 
   final List<String> scrollTopics;
   Map<String, String> dictSuggestions;
@@ -47,8 +54,6 @@ class AcrosticColumn extends StatefulWidget {
     required this.isWordLettersDictLoaded,
     required this.isWordStart,
     required this.inputController,
-    required this.autoController,
-    required this.focusNode,
     required this.scrollTopics,
     required this.dictSuggestions,
     required this.onMainChanged,
@@ -70,12 +75,100 @@ class AcrosticColumn extends StatefulWidget {
 class _AcrosticColumnState extends State<AcrosticColumn> {
   double stateCellHeight = 0.0;
   List<VisibilityDetector> adjGroups = [];
+  List<String> selectedAcrosticWords = [];
+  List<List<dynamic>> finalFilteredEntriesAlp = [];
+  List<List<dynamic>> finalFilteredEntriesDic = [];
+  List<String> typeAdjStrs = [];
+
+  TextEditingController autoController = TextEditingController();
+  FocusNode focusNodes = FocusNode();
+
+  final List<Map<String, dynamic>> listViewItems = [];
+  List<WordGroup> listViewGroups = [];
 
   @override
   void initState() {
     super.initState();
-    setState(() {
-      getWordRadios(widget.index);
+    selectedAcrosticWords = widget.selectedAcrosticWords;
+    debugPrint(
+        "AcrosticColumn initState called for index ${widget.index}, letter = ${widget.letter}");
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      setState(() {
+        //getWordRadios();
+        //getWordRadios:
+        List<dynamic> selectedTypesAdjectives = widget.selectedTypesAdjectives;
+        List<dynamic> filteredEntriesLetter = [];
+        List<dynamic> filteredEntriesAlp = [];
+        List<dynamic> filteredEntriesDic = [];
+        filteredEntriesLetter = widget.entries
+            .where((dynamic entry) => entry["Letter"] == widget.letter)
+            .toList();
+        for (int i = 0; i < widget.selectedTypesAdjectives.length; i++) {
+          String typeAdjStr =
+              "${selectedTypesAdjectives[i]["type"]}: ${selectedTypesAdjectives[i]["adjective"]}";
+          // HEADER
+          listViewItems.add({
+            "type": "header",
+            "label": typeAdjStr,
+            "groupIndex": i,
+          });
+          typeAdjStrs.add(typeAdjStr);
+          //GET finalFilteredEntriesAlp: ===========================================================>
+          //debugPrint("getWordRadios ADDING RADIO FOR TYPE ${selectedTypesAdjectives[fJ]["adjective"]}");
+          //NOW GET entries HAVING inputList[fI]=entry(Letter) AND adjective=selectedTypesAdjectives[fJ].Table=entry(Table_name):
+          //ADD ADJECTIVES:=========================================>
+          filteredEntriesAlp = filteredEntriesLetter
+              .where((dynamic entry) => entry["DICT"] == "0")
+              .toList();
+          filteredEntriesAlp = filteredEntriesAlp
+              .where((dynamic entry) =>
+                  entry["Table_name"] ==
+                  selectedTypesAdjectives[i]["adjective"])
+              .toList();
+          //debugPrint("filteredEntries = ${json.encode(filteredEntries)}");
+          debugPrint(
+              "letterList[fI] = ${widget.letter}, filteredEntriesAlp.length = ${filteredEntriesAlp.length}");
+          for (var entry in filteredEntriesAlp) {
+            listViewItems.add({
+              "type": "alp",
+              "data": entry,
+              "groupIndex": i,
+            });
+          }
+          finalFilteredEntriesAlp.add(filteredEntriesAlp);
+
+          //GET finalFilteredEntriesDic: ===========================================================>
+          // DICTIONARY HEADER
+          listViewItems.add({
+            "type": "dic_header",
+            "label": FlutterI18n.translate(context, "DICTIONARY_WORDS"),
+            "groupIndex": i,
+          });
+          filteredEntriesDic = filteredEntriesLetter
+              .where((dynamic entry) => entry["DICT"] == "1")
+              .toList();
+          filteredEntriesDic = filteredEntriesDic
+              .where((dynamic entry) =>
+                  entry["Table_name"] ==
+                  selectedTypesAdjectives[i]["adjective"])
+              .toList();
+          debugPrint(
+              "letterList[fI] = ${widget.letter}, filteredEntriesDic.length = ${filteredEntriesDic.length}");
+          for (var entry in filteredEntriesDic) {
+            listViewItems.add({
+              "type": "dic",
+              "data": entry,
+              "groupIndex": i,
+            });
+          }
+          finalFilteredEntriesDic.add(filteredEntriesDic);
+          listViewGroups.add(WordGroup(
+              label: typeAdjStr,
+              alp: filteredEntriesAlp,
+              dic: filteredEntriesDic));
+        }
+      });
     });
   }
 
@@ -192,253 +285,114 @@ class _AcrosticColumnState extends State<AcrosticColumn> {
     return Wrap(direction: Axis.horizontal, children: texts);
   }
 
-  getWordRadios(i) {
-    //print("AcrosticColumn getWordRadios called for index $i, letter = ${widget.letter}");
-    final fI = widget.index;
-    List<dynamic> entries = widget.entries;
-    List<dynamic> selectedTypesAdjectives = widget.selectedTypesAdjectives;
-    List<dynamic> filteredEntriesLetter = [];
-    List<dynamic> filteredEntriesAlp = [];
-    List<dynamic> filteredEntriesDic = [];
-    List<Widget> wordsRadios = [];
-    ListTile myRadio;
-    filteredEntriesLetter = entries
-        .where((dynamic entry) => entry["Letter"] == widget.letter)
-        .toList();
-    debugPrint("IM HERE1");
-    //debugPrint("filteredEntriesLetter = ${json.encode(filteredEntriesLetter)}");
-
-    adjGroups = [];
-    for (int j = 0; j < selectedTypesAdjectives.length; j++) {
-      wordsRadios = [];
-      final fJ = j;
-      final typeAdjStr =
-          "${selectedTypesAdjectives[fJ]["type"]}: ${selectedTypesAdjectives[fJ]["adjective"]}";
-      //debugPrint("getWordRadios ADDING RADIO FOR TYPE ${selectedTypesAdjectives[fJ]["adjective"]}");
-      //NOW GET entries HAVING inputList[fI]=entry(Letter) AND adjective=selectedTypesAdjectives[fJ].Table=entry(Table_name):
-      wordsRadios.add(Column(children: [
-        Center(
-          child: Text(typeAdjStr,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-        )
-      ]));
-      //ADD ADJECTIVES:=========================================>
-      filteredEntriesAlp = filteredEntriesLetter
-          .where((dynamic entry) => entry["DICT"] == "0")
-          .toList();
-      filteredEntriesAlp = filteredEntriesAlp
-          .where((dynamic entry) =>
-              entry["Table_name"] == selectedTypesAdjectives[fJ]["adjective"])
-          .toList();
-      //debugPrint("filteredEntries = ${json.encode(filteredEntries)}");
-      debugPrint(
-          "letterList[fI] = ${widget.letter}, filteredEntriesAlp.length = ${filteredEntriesAlp.length}");
-      final finalFilteredEntriesAlp = filteredEntriesAlp;
-      for (int e = 0; e < finalFilteredEntriesAlp.length; e++) {
-        final fE = e;
-        //debugPrint("filteredEntries[e] = ${json.encode(filteredEntries[e]["Entry"])}");
-        myRadio = ListTile(
-            dense: true,
-            title: Text(finalFilteredEntriesAlp[fE]["Entry"] ?? ""),
-            tileColor: widget.selectedAcrosticWords[fI] ==
-                    finalFilteredEntriesAlp[fE]["Word"]
-                ? Colors.blue.withOpacity(0.2)
-                : Colors.transparent,
-            //value: finalFilteredEntriesAlp[e]["Word"] ?? "",
-            //groupValue: selectedAcrosticWords[fI],
-            onTap: () {
-              setState(() {
-                String value = finalFilteredEntriesAlp[fE]["Word"].toString();
-                String myVal = HelpersService.getFormattedWord(value);
-                widget.selectedAcrosticWords[fI] = value;
-                widget.inputController.text = myVal;
-                debugPrint(
-                    "selected value alp = $value, selectedAcrosticWords[$fI] = ${widget.selectedAcrosticWords[fI]}");
-                widget.setSelectedAcrosticWords(widget.selectedAcrosticWords);
-                widget.showAcrostic();
-              });
-            });
-        wordsRadios.add(myRadio);
-      }
-
-      //ADD DICTIONARY:=========================================>
-      wordsRadios.add(Column(children: [
-        Center(
-          child: Text("${FlutterI18n.translate(context, "DICTIONARY_WORDS")}:",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontStyle: FontStyle.italic,
-                  fontSize: 12)),
-        )
-      ]));
-      filteredEntriesDic = filteredEntriesLetter
-          .where((dynamic entry) => entry["DICT"] == "1")
-          .toList();
-      filteredEntriesDic = filteredEntriesDic
-          .where((dynamic entry) =>
-              entry["Table_name"] == selectedTypesAdjectives[fJ]["adjective"])
-          .toList();
-      debugPrint(
-          "letterList[fI] = ${widget.letter}, filteredEntriesDic.length = ${filteredEntriesDic.length}");
-      final finalFilteredEntriesDic = filteredEntriesDic;
-      for (int e = 0; e < finalFilteredEntriesDic.length; e++) {
-        final fE = e;
-        myRadio = ListTile(
-            title: getDicEntry(finalFilteredEntriesDic[fE]),
-            //value: finalFilteredEntriesDic[e]["Word"],
-            //groupValue: selectedAcrosticWords[fI],
-            tileColor: widget.selectedAcrosticWords[fI] ==
-                    finalFilteredEntriesDic[fE]["Word"]
-                ? Colors.blue.withOpacity(0.2)
-                : Colors.transparent,
-            onTap: () {
-              setState(() {
-                String value = finalFilteredEntriesDic[fE]["Word"].toString();
-                String myVal = HelpersService.getFormattedWord(value);
-                widget.selectedAcrosticWords[fI] = value;
-                debugPrint(
-                    "selected value dict = $value, selectedAcrosticWords[$fI] = ${widget.selectedAcrosticWords[fI]}");
-                widget.inputController.text = myVal;
-                widget.setSelectedAcrosticWords(widget.selectedAcrosticWords);
-                widget.showAcrostic();
-              });
-            });
-        wordsRadios.add(myRadio);
-      }
-      adjGroups.add(VisibilityDetector(
-          key: Key('item_${fI}_$fJ'),
-          onVisibilityChanged: (visibilityInfo) {
-            // Check if the item is fully visible
-            Rect visibleRect = visibilityInfo.visibleBounds;
-            double visibleHeight = visibleRect.height;
-            double visibleWidth = visibleRect.width;
-            if (stateCellHeight == 0.0) {
-              stateCellHeight = MediaQuery.of(context).size.height - 175;
-            }
-            debugPrint(
-                "$typeAdjStr visibilityInfo.visibleFraction = ${visibilityInfo.visibleFraction}, visibleHeight = $visibleHeight, stateCellHeight = $stateCellHeight");
-            String nowVisibilityCondition = "WORD_${fI}_TYPE_$typeAdjStr";
-            if (nowVisibilityCondition != visibilityCondition &&
-                (visibilityInfo.visibleFraction == 1.0 ||
-                    visibleHeight > (0.5 * stateCellHeight))) {
-              debugPrint(
-                  "Visibility changed! visibilityCondition = $visibilityCondition, setting state!");
-              visibilityCondition = "WORD_${fI}_TYPE_$typeAdjStr";
-              setState(() {
-                widget.scrollTopics[fI] = typeAdjStr;
-              });
-            }
-          },
-          child: Column(
-            children: wordsRadios,
-          )));
-    }
-    return adjGroups;
-  }
-
   @override
   Widget build(BuildContext context) {
     stateCellHeight = widget.cellHeight;
-    return Column(
-      children: [
-        // 🔹 TOP TEXTFIELD
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-                height: 55,
-                padding: EdgeInsets.all(2.0),
-                decoration: BoxDecoration(
-                    border: Border(
-                      left: BorderSide(
-                          color: widget.isWordStart
-                              ? Colors.black
-                              : ((widget.index == 0 &&
-                                      widget.isAcrosticDone == true)
-                                  ? Colors.green
-                                  : Colors.transparent),
-                          width: 5.0),
-                      top: BorderSide(
-                          color: widget.isAcrosticDone == true
-                              ? Colors.green
-                              : Colors.transparent,
-                          width: 5.0),
-                      right: BorderSide(
-                          color: ((widget.index ==
-                                      (widget.letterList.length - 1)) &&
-                                  widget.isAcrosticDone == true)
-                              ? Colors.green
-                              : Colors.transparent,
-                          width: 5.0),
-                      bottom: BorderSide(
-                          color: widget.isAcrosticDone == true
-                              ? Colors.green
-                              : Colors.transparent,
-                          width: 5.0),
+    final fI = widget.index;
+    return Column(children: [
+      // 🔹 TOP TEXTFIELD
+      Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+              height: 55,
+              padding: EdgeInsets.all(2.0),
+              decoration: BoxDecoration(
+                  border: Border(
+                    left: BorderSide(
+                        color: widget.isWordStart
+                            ? Colors.black
+                            : ((widget.index == 0 &&
+                                    widget.isAcrosticDone == true)
+                                ? Colors.green
+                                : Colors.transparent),
+                        width: 5.0),
+                    top: BorderSide(
+                        color: widget.isAcrosticDone == true
+                            ? Colors.green
+                            : Colors.transparent,
+                        width: 5.0),
+                    right: BorderSide(
+                        color:
+                            ((widget.index == (widget.letterList.length - 1)) &&
+                                    widget.isAcrosticDone == true)
+                                ? Colors.green
+                                : Colors.transparent,
+                        width: 5.0),
+                    bottom: BorderSide(
+                        color: widget.isAcrosticDone == true
+                            ? Colors.green
+                            : Colors.transparent,
+                        width: 5.0),
+                  ),
+                  color: widget.inputController.text.trim() == ''
+                      ? Colors.pinkAccent
+                      : Colors.lightGreenAccent,
+                  image: DecorationImage(
+                      image: AssetImage('assets/images/transparent.png'),
+                      fit: BoxFit.fill)),
+              child: SizedBox(
+                height: 50,
+                child: TextField(
+                    controller: widget.inputController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: '..',
                     ),
-                    color: widget.inputController.text.trim() == ''
-                        ? Colors.pinkAccent
-                        : Colors.lightGreenAccent,
-                    image: DecorationImage(
-                        image: AssetImage('assets/images/transparent.png'),
-                        fit: BoxFit.fill)),
-                child: SizedBox(
-                  height: 50,
-                  child: TextField(
-                      controller: widget.inputController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: '..',
-                      ),
-                      keyboardType: TextInputType.text,
-                      onChanged: (value) {
-                        setState(() {
-                          if (widget.inputController.text.trim() != "" &&
-                              widget.inputController.text
-                                      .substring(0, 1)
-                                      .toUpperCase() !=
-                                  widget.letter.toUpperCase()) {
-                            widget.inputController.text = "";
-                          } else {
-                            widget.inputController.text =
-                                HelpersService.getFormattedWord(value);
-                            widget.selectedAcrosticWords[widget.index] = value;
-                            widget.setSelectedAcrosticWords(
-                                widget.selectedAcrosticWords);
-                            widget.showAcrostic();
-                            //debugPrint("selected value = $value, selectedAcrosticWords[$i] = ${selectedAcrosticWords[i]}");
-                          }
-                        });
-                      },
-                      onEditingComplete: () {
-                        //if (Platform.isAndroid) {
-                        //  focusNode.unfocus();
-                        //} else if (Platform.isIOS) {
-                        FocusScope.of(context).unfocus();
-                        //}
+                    keyboardType: TextInputType.text,
+                    inputFormatters: [
+                      TextInputFormatter.withFunction((oldValue, newValue) {
+                        final formatted =
+                            HelpersService.getFormattedWord(newValue.text);
+
+                        if (formatted.isNotEmpty &&
+                            formatted.substring(0, 1).toUpperCase() !=
+                                widget.letter.toUpperCase()) {
+                          return oldValue;
+                        }
+
+                        return TextEditingValue(
+                          text: formatted,
+                          selection:
+                              TextSelection.collapsed(offset: formatted.length),
+                        );
                       }),
-                )),
-            Container(
-                height: 55,
-                width: widget.columnWidth,
-                decoration: BoxDecoration(
-                    border: Border(
-                        left: BorderSide(
-                            color: Colors.black,
-                            width: widget.isWordStart ? 5.0 : 1.0),
-                        top: BorderSide(color: Colors.black, width: 1.0),
-                        right: BorderSide(color: Colors.black, width: 1.0),
-                        bottom: BorderSide(color: Colors.black, width: 1.0))),
-                child: Padding(
+                    ],
+                    onChanged: (value) {
+                      selectedAcrosticWords[widget.index] = value;
+                      widget.selectedAcrosticWords[widget.index] = value;
+                      widget.setSelectedAcrosticWords(selectedAcrosticWords);
+                      widget.showAcrostic();
+                    },
+                    onEditingComplete: () {
+                      //if (Platform.isAndroid) {
+                      //  focusNode.unfocus();
+                      //} else if (Platform.isIOS) {
+                      FocusScope.of(context).unfocus();
+                      //}
+                    }),
+              )),
+          Container(
+              height: 55,
+              width: widget.columnWidth,
+              decoration: BoxDecoration(
+                  border: Border(
+                      left: BorderSide(
+                          color: Colors.black,
+                          width: widget.isWordStart ? 5.0 : 1.0),
+                      top: BorderSide(color: Colors.black, width: 1.0),
+                      right: BorderSide(color: Colors.black, width: 1.0),
+                      bottom: BorderSide(color: Colors.black, width: 1.0))),
+              child: Padding(
                   padding: const EdgeInsets.fromLTRB(10, 2, 10, 2),
                   child: Autocomplete<String>(fieldViewBuilder: ((context,
                       textEditingController, focusNode, onFieldSubmitted) {
-                    //autoFields[i] = textEditingController;
-                    //focusNodes[i] = focusNode;
+                    autoController = textEditingController;
+                    focusNode = focusNode;
                     return TextField(
-                        controller: widget.autoController,
-                        focusNode: widget.focusNode,
+                        controller: autoController,
+                        focusNode: focusNode,
                         onEditingComplete: onFieldSubmitted,
                         cursorColor: Colors.black,
                         onChanged: (value) => (setState(() {})),
@@ -450,14 +404,14 @@ class _AcrosticColumnState extends State<AcrosticColumn> {
                             hintText: FlutterI18n.translate(
                                 context, "SEARCH_DICTIONARY"),
                             suffixIcon: Visibility(
-                                visible: widget.autoController.text.isNotEmpty,
+                                visible: autoController.text.isNotEmpty,
                                 child: IconButton(
                                     icon: Icon(
                                       Icons.clear,
                                       color: Colors.black,
                                     ),
                                     onPressed: () => setState(() {
-                                          widget.autoController.clear();
+                                          autoController.clear();
                                         })))));
                   }), optionsBuilder:
                       (TextEditingValue textEditingValue) async {
@@ -466,7 +420,7 @@ class _AcrosticColumnState extends State<AcrosticColumn> {
                     if (textEditingValue.text == '') {
                       return [];
                     } else if (textEditingValue.text.trim() == "") {
-                      widget.autoController.text = "";
+                      autoController.text = "";
                       return [];
                     } else {
                       List<Map<String, String>> suggs = [];
@@ -505,131 +459,225 @@ class _AcrosticColumnState extends State<AcrosticColumn> {
                     }
                   }, onSelected: (String selection) {
                     debugPrint('You just selected $selection');
-                    widget.autoController.text = "";
+                    autoController.text = "";
                     widget.doSelectWord(widget.index, selection);
                   }, optionsViewBuilder: (BuildContext context,
                       AutocompleteOnSelected<String> onSelected,
                       Iterable<String> options) {
                     return Align(
-                      alignment: Alignment.topLeft,
-                      child: Material(
-                        child: Container(
-                          height: widget.cellHeight * 0.8,
-                          width: widget.columnWidth - 10,
-                          margin: const EdgeInsets.only(top: 3.0),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(color: Colors.black)),
-                          child: ListView.builder(
-                            padding: EdgeInsets.zero,
-                            shrinkWrap: true,
-                            itemCount: options.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              final String option = options.elementAt(index);
-                              return Container(
-                                  width: widget.columnWidth - 10,
-                                  child: InkWell(
-                                    onTap: () {
-                                      onSelected(option);
-                                    },
-                                    child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(option),
-                                          Visibility(
-                                            visible: widget.dictSuggestions[
-                                                        option] !=
-                                                    null &&
-                                                widget.dictSuggestions[option]!
-                                                        .trim() !=
-                                                    '',
-                                            child: Text(
-                                                " -- ${widget.dictSuggestions[option]}"),
-                                          ),
-                                          Divider(
-                                            color: Colors.black,
-                                            height: 1,
-                                            thickness: 1,
-                                            indent: 0,
-                                            endIndent: 0,
-                                          ),
-                                        ]),
-                                  ));
-                            },
+                        alignment: Alignment.topLeft,
+                        child: Material(
+                          child: Container(
+                            height: widget.cellHeight * 0.8,
+                            width: widget.columnWidth - 10,
+                            margin: const EdgeInsets.only(top: 3.0),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(color: Colors.black)),
+                            child: ListView.builder(
+                              padding: EdgeInsets.zero,
+                              shrinkWrap: true,
+                              itemCount: options.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                final String option = options.elementAt(index);
+                                return Container(
+                                    width: widget.columnWidth - 10,
+                                    child: InkWell(
+                                      onTap: () {
+                                        onSelected(option);
+                                      },
+                                      child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(option),
+                                            Visibility(
+                                              visible: widget.dictSuggestions[
+                                                          option] !=
+                                                      null &&
+                                                  widget.dictSuggestions[
+                                                              option]!
+                                                          .trim() !=
+                                                      '',
+                                              child: Text(
+                                                  " -- ${widget.dictSuggestions[option]}"),
+                                            ),
+                                            Divider(
+                                              color: Colors.black,
+                                              height: 1,
+                                              thickness: 1,
+                                              indent: 0,
+                                              endIndent: 0,
+                                            ),
+                                          ]),
+                                    ));
+                              },
+                            ),
+                          ),
+                        ));
+                  })))
+        ],
+      ),
+      Container(
+          height: 50,
+          padding: EdgeInsets.all(2.0),
+          decoration: BoxDecoration(
+            color: Color(0xFFDAC7FD),
+            border: Border(
+              left: BorderSide(
+                  color: Colors.black, width: widget.isWordStart ? 5.0 : 2.0),
+              top: BorderSide(color: Colors.black, width: 2.0),
+              right: BorderSide(color: Colors.black, width: 2.0),
+              bottom: BorderSide(color: Colors.black, width: 2.0),
+            ),
+          ),
+          child: Center(
+              child: Text(widget.letter,
+                  style:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 14)))),
+      Container(
+          decoration: BoxDecoration(
+            border: Border(
+                left: BorderSide(
+                    color: Colors.black, width: widget.isWordStart ? 5.0 : 1.0),
+                top: BorderSide(color: Colors.black, width: 1.0),
+                right: BorderSide(color: Colors.black, width: 1.0),
+                bottom: BorderSide(color: Colors.black, width: 1.0)),
+          ),
+          height: widget.cellHeight,
+          width: widget.columnWidth,
+          child: Column(children: [
+            Container(
+              height: 35,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 253, 204, 55),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.pink.shade200,
+                      offset: Offset(0, 1),
+                      blurRadius: 20.0,
+                    ),
+                  ],
+                  border: Border.all(color: Colors.black26)),
+              child: Text(
+                widget.scrollTopics[widget.index],
+                style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: listViewGroups.length,
+                itemBuilder: (context, index) {
+                  final group = listViewGroups[index];
+                  final fI = widget.index;
+
+                  return VisibilityDetector(
+                    key: Key('group_${fI}_$index'),
+                    onVisibilityChanged: (visibilityInfo) {
+                      double visibleHeight =
+                          visibilityInfo.visibleBounds.height;
+                      if (stateCellHeight == 0.0) {
+                        stateCellHeight =
+                            MediaQuery.of(context).size.height - 175;
+                      }
+
+                      String nowVisibilityCondition =
+                          "WORD_${fI}_TYPE_${group.label}";
+
+                      if (nowVisibilityCondition != visibilityCondition &&
+                          (visibilityInfo.visibleFraction == 1.0 ||
+                              visibleHeight > (0.5 * stateCellHeight))) {
+                        visibilityCondition = nowVisibilityCondition;
+                        setState(() {
+                          widget.scrollTopics[fI] = group.label;
+                        });
+                      }
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Group Header
+                        Center(
+                          child: Text(
+                            group.label,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  }),
-                ))
-          ],
-        ),
-        Container(
-            height: 50,
-            padding: EdgeInsets.all(2.0),
-            decoration: BoxDecoration(
-              color: Color(0xFFDAC7FD),
-              border: Border(
-                left: BorderSide(
-                    color: Colors.black, width: widget.isWordStart ? 5.0 : 2.0),
-                top: BorderSide(color: Colors.black, width: 2.0),
-                right: BorderSide(color: Colors.black, width: 2.0),
-                bottom: BorderSide(color: Colors.black, width: 2.0),
-              ),
-            ),
-            child: Center(
-                child: Text(widget.letter,
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 14)))),
-        Container(
-            decoration: BoxDecoration(
-              border: Border(
-                  left: BorderSide(
-                      color: Colors.black,
-                      width: widget.isWordStart ? 5.0 : 1.0),
-                  top: BorderSide(color: Colors.black, width: 1.0),
-                  right: BorderSide(color: Colors.black, width: 1.0),
-                  bottom: BorderSide(color: Colors.black, width: 1.0)),
-            ),
-            height: widget.cellHeight,
-            width: widget.columnWidth,
-            child: Stack(children: [
-              SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                //controller: scrollControllers[i],
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [SizedBox(height: 35), ...adjGroups]),
-              ),
-              Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  height: 35,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 253, 204, 55),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.pink.shade200,
-                          offset: Offset(0, 1),
-                          blurRadius: 20.0,
-                        ),
+
+                        // ALP entries
+                        ...group.alp.map((entry) {
+                          final word = entry["Word"];
+                          return ListTile(
+                            dense: true,
+                            title: Text(entry["Entry"] ?? ""),
+                            tileColor: widget.selectedAcrosticWords[fI] == word
+                                ? Colors.blue.withOpacity(0.2)
+                                : Colors.transparent,
+                            onTap: () {
+                              final value = word.toString();
+                              final myVal =
+                                  HelpersService.getFormattedWord(value);
+
+                              setState(() {
+                                widget.selectedAcrosticWords[fI] = value;
+                                widget.inputController.value = TextEditingValue(
+                                  text: myVal,
+                                  selection: TextSelection.collapsed(
+                                      offset: myVal.length),
+                                );
+                                widget.showAcrostic();
+                              });
+                            },
+                          );
+                        }).toList(),
+
+                        // Dictionary header
+                        if (group.dic.isNotEmpty)
+                          Center(
+                            child: Text(
+                              "${FlutterI18n.translate(context, "DICTIONARY_WORDS")}:",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontStyle: FontStyle.italic,
+                                  fontSize: 12),
+                            ),
+                          ),
+
+                        // DICTIONARY entries
+                        ...group.dic.map((entry) {
+                          final word = entry["Word"];
+                          return ListTile(
+                            title: getDicEntry(entry),
+                            tileColor: widget.selectedAcrosticWords[fI] == word
+                                ? Colors.blue.withOpacity(0.2)
+                                : Colors.transparent,
+                            onTap: () {
+                              final value = word.toString();
+                              final myVal =
+                                  HelpersService.getFormattedWord(value);
+
+                              setState(() {
+                                widget.selectedAcrosticWords[fI] = value;
+                                widget.inputController.text = myVal;
+                                widget.showAcrostic();
+                              });
+                            },
+                          );
+                        }).toList(),
                       ],
-                      border: Border.all(color: Colors.black26)),
-                  child: Text(
-                    widget.scrollTopics[widget.index],
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
+                    ),
+                  );
+                },
               ),
-            ])),
-      ],
-    );
+            )
+          ]))
+    ]);
   }
 }

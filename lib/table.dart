@@ -42,7 +42,7 @@ class TablePageState extends State<TablePage> {
   List<String> selectedAcrosticWords = [];
   List<TextEditingController> inputControllers = [];
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  List<FocusNode> focusNodes = [];
+
   List<String> letterList = [];
   Set<int> wordBreakIndexes = {};
   List<ScrollController> scrollControllers = [];
@@ -68,7 +68,6 @@ class TablePageState extends State<TablePage> {
         "TablePageState initState called, letterList = ${json.encode(letterList)}, charList = ${json.encode(charList)}");
     for (var i = 0; i < letterList.length; i++) {
       inputControllers.add(TextEditingController());
-      focusNodes.add(FocusNode());
       dictSuggestions.add({});
       isWordLettersDictLoaded.add(false);
       scrollControllers.add(ScrollController());
@@ -1090,7 +1089,6 @@ class TablePageState extends State<TablePage> {
     List<List<String>> suggestions = [];
     Map<String, String> dicEnt;
     List<String> letterKeys = [];
-    List<TextEditingController> autoFields = [];
 
     for (int i = 0; i < letterList.length; i++) {
       dicEnt = getDictEntriesFromLetter(letterList[i].toLowerCase());
@@ -1101,7 +1099,6 @@ class TablePageState extends State<TablePage> {
       suggestions.add(letterKeys
           .map((String key) => key + (": ").toString() + dicEnt[key].toString())
           .toList());
-      autoFields.add(TextEditingController());
       //debugPrint("suggestions[0] = ${suggestions[0]}");
       myColumnWidths[i] = FixedColumnWidth(columnWidth);
       if (selectedAcrosticWords.length <= i) {
@@ -1274,8 +1271,6 @@ class TablePageState extends State<TablePage> {
                                     isWordLettersDictLoaded:
                                         isWordLettersDictLoaded[i],
                                     inputController: inputControllers[i],
-                                    autoController: autoFields[i],
-                                    focusNode: focusNodes[i],
                                     scrollTopics: scrollTopics,
                                     dictSuggestions: dictSuggestions[i],
                                     onMainChanged: (value) {
@@ -1294,6 +1289,8 @@ class TablePageState extends State<TablePage> {
                                       showAcrostic();
                                     },
                                     setSelectedAcrosticWords: (updatedWords) {
+                                      print(
+                                          "table.dart setSelectedAcrosticWords called with updatedWords = $updatedWords");
                                       setState(() {
                                         selectedAcrosticWords = updatedWords;
                                       });

@@ -1,0 +1,9 @@
+Paljon parempi vieritys ja yleinen nopeus taulukkoa käytettäessä, erityisesti valittaessa useita adjektiiveja akrostikoniksi.
+
+Lisätty mahdollisuus käyttää monisanaisia nimiä akrostikonissa, joten sanojen väliin voi lisätä välilyöntejä.
+
+Ladattaessa akrostikonin sanan tai nimen tiedot voidaan täyttää automaattisesti Wikipediasta.
+
+Lisätty ominaisuus, jolla näytetään esimerkkiakrostikat kategorioittain.
+
+Lisätty ominaisuus, jolla voidaan ladata akrostikoita nimellä, nimitiedoilla, kategorialla...

@@ -694,7 +694,7 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
       "RESULTS": "",
       "ENTRIES": [],
     };
-    var inputSplit = inputWord.toUpperCase().split("");
+    var inputSplit = inputWord.replaceAll(' ', '').toUpperCase().split("");
     uniqueLetters = List<String>.from(Set<String>.from(inputSplit));
     List<String> selectedSendAdjectives = [];
     List<dynamic> selectedTypesAdjectives = [];
@@ -776,7 +776,7 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
       var progressMessage =
           FlutterI18n.translate(context, "LOAD_ACROSTICS_ONLINE");
       HelpersService.showProgress(context, progressMessage);
-      var inputSplit = inputWord.split("");
+      var inputSplit = inputWord.replaceAll(' ', '').toUpperCase().split("");
       uniqueLetters = List<String>.from(Set<String>.from(inputSplit));
       List<String> selectedSendAdjectives = [];
       List<dynamic> selectedTypesAdjectives = [];
@@ -827,8 +827,7 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
         if (response.statusCode == 200) {
           // If the server returns a 200 OK response, parse the JSON data
           final Map<String, dynamic> data = json.decode(response.body);
-          debugPrint(
-              "createAcrostics get_alphabet_tables_completed_entries_app DECODED data! = ${json.encode(data)}");
+          //debugPrint("createAcrostics get_alphabet_tables_completed_entries_app DECODED data! = ${json.encode(data)}");
           if (data["SUCCESS"] == true) {
             HelpersService.hideProgress(context);
             Navigator.push(

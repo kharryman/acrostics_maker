@@ -1,0 +1,11 @@
+Palju parem kerimine ja üldine kiirus tabeli kasutamisel, eriti akrostihhoni jaoks paljude omadussõnade valimisel.
+
+Lisatud võimalus kasutada akrostihhonis mitmesõnalisi nimesid, seega on sõnade vahel lubatud tühikud.
+
+Üleslaadimisel saab akrostihhoni sõna või nime teabe automaatselt Vikipeediast täita.
+
+Lisatud funktsioon näidisakrostihhonide kuvamiseks kategooriate kaupa.
+
+Lisatud funktsioon akrostihhonide üleslaadimiseks nime, nimeteabe, kategooria või uue kategooria ja pildiga.
+
+Lisatud f...

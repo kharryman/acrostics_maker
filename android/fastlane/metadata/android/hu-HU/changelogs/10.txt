@@ -1,0 +1,9 @@
+Sokkal jobb görgetés és általános sebesség a táblázat használatakor, különösen, ha sok melléknevet választunk ki az akrosztichonhoz.
+
+Lehetőség több szavas nevek használatára az akrosztichonban, így a szavak között szóközök megengedettek.
+
+Feltöltéskor az akrosztichon szójának vagy nevének információi automatikusan kitölthetők a Wikipédiából.
+
+Funkció hozzáadva, amely kategóriák szerint mutat példákat az akrosztichonokra.
+
+Funkció hozzáadva, amely névvel, névadatokkal, kategóriával vagy új ka...

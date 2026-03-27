@@ -12,7 +12,7 @@ var lastDirSplit = cwdSplit.slice(0, -1);
 const yamlFile = fs.readFileSync('pubspec.yaml', 'utf8');
 const pubspec = yaml.parse(yamlFile);
 const fullAppVersion = pubspec.version;
-const  appVersion = fullAppVersion.split("+")[1];
+const appVersion = fullAppVersion.split("+")[1];
 console.log(`GOT appVersion: ${appVersion}`);
 
 fs.readFile(lastDirSplit.join("/") + "/google_api_key.txt", function (err, apiKey) {
@@ -74,7 +74,8 @@ fs.readFile(lastDirSplit.join("/") + "/google_api_key.txt", function (err, apiKe
                                             //    fs.mkdirSync(metaTransDir);
                                             //}
                                             if (targetLanguage.includes("en")) {
-                                                fs.writeFile(metaTransDir + "/" + appVersion + ".txt", notes, 'utf8', function () {
+                                                var trimmedNotes = String(notes).substring(0, 497) + "...";
+                                                fs.writeFile(metaTransDir + "/" + appVersion + ".txt", trimmedNotes, 'utf8', function () {
                                                     console.log("WROTE FILE: " + appVersion + ".txt FOR " + targetLanguage + ".");
                                                     fileIndex++;
                                                     setTimeout(function () {
@@ -115,7 +116,7 @@ fs.readFile(lastDirSplit.join("/") + "/google_api_key.txt", function (err, apiKe
                                                         if (translatedNotes.length >= 500) {
                                                             //console.log("RELEASE NOTES = " + releaseNotes);
                                                             translatedNotes = String(translatedNotes).substring(0, 497) + "...";
-                                                        }                                                        
+                                                        }
                                                         fs.writeFile(currentDirectory + "/android/fastlane/metadata/android/" + targetLanguage + "/changelogs/" + appVersion + ".txt", translatedNotes, 'utf8', function () {
                                                             console.log("WROTE FILE: " + appVersion + ".txt FOR " + targetLanguage + ".");
                                                             fileIndex++;

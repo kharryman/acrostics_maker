@@ -1,0 +1,9 @@
+Rolagem e velocidade geral muito melhores ao utilizar a tabela, especialmente ao selecionar muitos adjetivos para o acróstico.
+
+Foi adicionada a capacidade de usar nomes com várias palavras para o acróstico, permitindo espaços entre as palavras.
+
+Ao fazer o upload, as informações da palavra ou do nome do acróstico podem ser preenchidas automaticamente a partir da Wikipédia.
+
+Adicionada a função de mostrar exemplos de acrósticos por categoria.
+
+Adicionada a função de fazer o upload de acróstic...

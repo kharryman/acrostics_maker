@@ -1,0 +1,9 @@
+Penatalan dan kelajuan keseluruhan yang jauh lebih baik semasa menggunakan jadual, terutamanya semasa memilih banyak kata adjektif untuk akrostik.
+
+Keupayaan untuk menggunakan nama berbilang perkataan untuk akrostik telah ditambah, jadi ruang antara perkataan dibenarkan.
+
+Semasa memuat naik, maklumat perkataan atau nama akrostik boleh diisi secara automatik daripada Wikipedia.
+
+Ciri untuk menunjukkan contoh akrostik mengikut kategori telah ditambah.
+
+Ciri untuk memuat naik akrostik dengan nam...
