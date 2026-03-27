@@ -110,7 +110,7 @@
     "PROMPT_APPS_APP_STORE": "Podívejte se na další aplikace z App Store",
     "PROMPT_APPS_PLAY_STORE": "Podívejte se na další aplikace z Obchodu Play",
     "PROMPT_GET_APP_NO_ADS": "Odstraňte reklamy!",
-    "PROMPT_INPUT_ACRONYM": "Zadejte pouze jedno slovo (pouze písmena): Poté stiskněte ENTER",
+    "PROMPT_INPUT_ACRONYM": "Zadejte jedno slovo nebo název pouze s písmeny nebo mezerami.",
     "PROMPT_INPUT_WORD": "jedno slovo (písmena bez mezer)",
     "PROMPT_LANGUAGE": "Jazyk",
     "PROMPT_LETS_GO": "Pojďme!",

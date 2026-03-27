@@ -110,7 +110,7 @@
     "PROMPT_APPS_APP_STORE": "Vaadake muid rakendusi App Store'ist",
     "PROMPT_APPS_PLAY_STORE": "Vaadake teisi rakendusi Play poest",
     "PROMPT_GET_APP_NO_ADS": "Eemaldage reklaamid!",
-    "PROMPT_INPUT_ACRONYM": "Sisestage ainult üks sõna (ainult tähed): Seejärel vajutage ENTER",
+    "PROMPT_INPUT_ACRONYM": "Sisesta üks sõna või nimi, mis sisaldab ainult tähti või tühikuid.",
     "PROMPT_INPUT_WORD": "üks sõna (tähed ilma tühikuteta)",
     "PROMPT_LANGUAGE": "Keel",
     "PROMPT_LETS_GO": "Lähme!",

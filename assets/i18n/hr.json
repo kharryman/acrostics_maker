@@ -110,7 +110,7 @@
     "PROMPT_APPS_APP_STORE": "Pogledajte druge aplikacije iz App Storea",
     "PROMPT_APPS_PLAY_STORE": "Pogledajte druge aplikacije iz Trgovine Play",
     "PROMPT_GET_APP_NO_ADS": "Uklonite oglase!",
-    "PROMPT_INPUT_ACRONYM": "Unesite samo jednu riječ (samo slova): Zatim pritisnite ENTER",
+    "PROMPT_INPUT_ACRONYM": "Unesite jednu riječ ili ime samo sa slovima ili razmacima.",
     "PROMPT_INPUT_WORD": "jedna riječ (slova bez razmaka)",
     "PROMPT_LANGUAGE": "Jezik",
     "PROMPT_LETS_GO": "Idemo!",

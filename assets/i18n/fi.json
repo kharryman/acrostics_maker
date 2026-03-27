@@ -110,7 +110,7 @@
     "PROMPT_APPS_APP_STORE": "Katso muut sovellukset App Storesta",
     "PROMPT_APPS_PLAY_STORE": "Katso muita sovelluksia Play Kaupasta",
     "PROMPT_GET_APP_NO_ADS": "Poista Mainokset!",
-    "PROMPT_INPUT_ACRONYM": "Kirjoita vain yksi sana (vain kirjaimet): Paina sitten ENTER",
+    "PROMPT_INPUT_ACRONYM": "Kirjoita yksi sana tai nimi, jossa on vain kirjaimia tai välilyöntejä.",
     "PROMPT_INPUT_WORD": "yksi sana (kirjaimet ilman välilyöntejä)",
     "PROMPT_LANGUAGE": "Kieli",
     "PROMPT_LETS_GO": "Mennään!",

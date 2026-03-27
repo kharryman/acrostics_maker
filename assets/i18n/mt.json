@@ -110,7 +110,7 @@
     "PROMPT_APPS_APP_STORE": "Ara apps oħra mill-App Store",
     "PROMPT_APPS_PLAY_STORE": "Ara apps oħra mill-Play Store",
     "PROMPT_GET_APP_NO_ADS": "Neħħi Ir-Reklami!",
-    "PROMPT_INPUT_ACRONYM": "Daħħal kelma waħda biss (ittri biss): Imbagħad agħfas ENTER",
+    "PROMPT_INPUT_ACRONYM": "Daħħal kelma jew isem wieħed b'ittri jew spazji biss.",
     "PROMPT_INPUT_WORD": "kelma waħda (ittri mingħajr spazji)",
     "PROMPT_LANGUAGE": "Lingwa",
     "PROMPT_LETS_GO": "Ejja mmorru!",

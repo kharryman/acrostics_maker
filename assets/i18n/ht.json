@@ -110,7 +110,7 @@
     "PROMPT_APPS_APP_STORE": "Gade lòt aplikasyon ki soti nan App Store la",
     "PROMPT_APPS_PLAY_STORE": "Gade lòt aplikasyon ki soti nan Play Store",
     "PROMPT_GET_APP_NO_ADS": "Retire Ajoute yo!",
-    "PROMPT_INPUT_ACRONYM": "Antre yon mo sèlman (lèt sèlman): Lè sa a, peze ENTER",
+    "PROMPT_INPUT_ACRONYM": "Antre yon mo oswa yon non ki gen sèlman lèt oswa espas.",
     "PROMPT_INPUT_WORD": "yon mo (lèt ki pa gen espas)",
     "PROMPT_LANGUAGE": "Lang",
     "PROMPT_LETS_GO": "Ann ale!",

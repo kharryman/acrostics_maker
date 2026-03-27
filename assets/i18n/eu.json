@@ -110,7 +110,7 @@
     "PROMPT_APPS_APP_STORE": "Ikusi App Store-ko beste aplikazio batzuk",
     "PROMPT_APPS_PLAY_STORE": "Ikusi Play Store-ko beste aplikazio batzuk",
     "PROMPT_GET_APP_NO_ADS": "Kendu iragarkiak!",
-    "PROMPT_INPUT_ACRONYM": "Sartu hitz bakarra (hizkiak bakarrik): Ondoren, sakatu ENTER",
+    "PROMPT_INPUT_ACRONYM": "Idatzi letrak edo hutsuneak soilik dituen hitz edo izen bat.",
     "PROMPT_INPUT_WORD": "hitz bat (hutsunerik gabeko letrak)",
     "PROMPT_LANGUAGE": "Hizkuntza",
     "PROMPT_LETS_GO": "Goazen!",

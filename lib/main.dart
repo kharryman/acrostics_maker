@@ -1069,7 +1069,8 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
                             enabled: isInitiated,
                             inputFormatters: [
                               FilteringTextInputFormatter.allow(
-                                  RegExp(r'[a-zA-Z]')),
+                                  RegExp(r'[a-zA-Z ]')),
+                              SingleSpaceFormatter(),
                             ],
                             controller: inputController,
                             decoration: InputDecoration(
@@ -1079,9 +1080,12 @@ class MyHomeState extends State<MyHome> with WidgetsBindingObserver {
                                 hintStyle: TextStyle(fontSize: 12)),
                             keyboardType: TextInputType.text,
                             onEditingComplete: () {
+                              debugPrint("INPUT WORD EDITTING COMPLETE");
                               //if (Platform.isAndroid) {
                               //  focusNode.unfocus();
                               //} else if (Platform.isIOS) {
+                              inputController.text =
+                                  inputController.text.trim();
                               FocusScope.of(context).unfocus();
                               //}
                               doCreateAcrostics(context);

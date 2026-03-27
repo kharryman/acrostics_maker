@@ -110,7 +110,7 @@
     "PROMPT_APPS_APP_STORE": "Lihat aplikasi lain dari App Store",
     "PROMPT_APPS_PLAY_STORE": "Lihat aplikasi lain dari Play Store",
     "PROMPT_GET_APP_NO_ADS": "Hapus Iklan!",
-    "PROMPT_INPUT_ACRONYM": "Masukkan satu kata saja (hanya huruf): Lalu tekan ENTER",
+    "PROMPT_INPUT_ACRONYM": "Masukkan satu kata atau nama yang hanya terdiri dari huruf atau spasi.",
     "PROMPT_INPUT_WORD": "satu kata (huruf tanpa spasi)",
     "PROMPT_LANGUAGE": "Bahasa",
     "PROMPT_LETS_GO": "Ayo!",

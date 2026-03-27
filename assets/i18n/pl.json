@@ -110,7 +110,7 @@
     "PROMPT_APPS_APP_STORE": "Zobacz inne aplikacje ze sklepu App Store",
     "PROMPT_APPS_PLAY_STORE": "Zobacz inne aplikacje ze Sklepu Play",
     "PROMPT_GET_APP_NO_ADS": "Usuń reklamy!",
-    "PROMPT_INPUT_ACRONYM": "Wpisz tylko jedno słowo (tylko litery): Następnie naciśnij ENTER",
+    "PROMPT_INPUT_ACRONYM": "Wprowadź jedno słowo lub nazwę składającą się wyłącznie z liter i spacji.",
     "PROMPT_INPUT_WORD": "jedno słowo (litery bez spacji)",
     "PROMPT_LANGUAGE": "Język",
     "PROMPT_LETS_GO": "No to jedziemy!",

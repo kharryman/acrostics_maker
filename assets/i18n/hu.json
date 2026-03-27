@@ -110,7 +110,7 @@
     "PROMPT_APPS_APP_STORE": "Tekintse meg a többi alkalmazást az App Store-ból",
     "PROMPT_APPS_PLAY_STORE": "Nézzen meg más alkalmazásokat a Play Áruházból",
     "PROMPT_GET_APP_NO_ADS": "Távolítsa el a hirdetéseket!",
-    "PROMPT_INPUT_ACRONYM": "Csak egy szót írjon be (csak betűket): Ezután nyomja meg az ENTER billentyűt",
+    "PROMPT_INPUT_ACRONYM": "Írjon be egy szót vagy nevet, csak betűkkel vagy szóközökkel.",
     "PROMPT_INPUT_WORD": "egy szó (betűk szóközök nélkül)",
     "PROMPT_LANGUAGE": "Nyelv",
     "PROMPT_LETS_GO": "Menjünk!",

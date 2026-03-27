@@ -110,7 +110,7 @@
     "PROMPT_APPS_APP_STORE": "Féach aipeanna eile ón App Store",
     "PROMPT_APPS_PLAY_STORE": "Féach aipeanna eile ón Play Store",
     "PROMPT_GET_APP_NO_ADS": "Bain na Fógraí!",
-    "PROMPT_INPUT_ACRONYM": "Cuir isteach focal amháin (litreacha amháin): Ansin brúigh ENTER",
+    "PROMPT_INPUT_ACRONYM": "Cuir isteach focal nó ainm amháin le litreacha nó spásanna amháin.",
     "PROMPT_INPUT_WORD": "focal amháin (litreacha gan spásanna)",
     "PROMPT_LANGUAGE": "Teanga",
     "PROMPT_LETS_GO": "A ligean ar Téigh!",

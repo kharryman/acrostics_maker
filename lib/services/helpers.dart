@@ -634,4 +634,46 @@ class HelpersService {
     debugPrint("pickImage return image as bytes. Length: ${imageBytes.length}");
     return imageBytes;
   }
+
+  static String getFormattedWord(String val) {
+    String myVal = "";
+    if (val.isNotEmpty) {
+      myVal = val.substring(0, 1).toUpperCase();
+    }
+    if (val.length > 1) {
+      myVal += val.substring(1).toLowerCase();
+    }
+    return myVal;
+  }
+
+  static List<Map<String, String>> convertMapToListMap(
+      Map<String, String> myMap) {
+    debugPrint("convertMapToListMap called");
+    List<Map<String, String>> myListMap = [];
+    List<String> keys = Map<String, String>.from(myMap).keys.toList();
+    Map<String, String> listObj = {};
+    for (int i = 0; i < keys.length; i++) {
+      listObj = {};
+      listObj[keys[i]] = myMap[keys[i]]!;
+      //debugPrint("ADDING dictObj = ${json.encode(dictObj)}");
+      myListMap.add(listObj);
+    }
+    return myListMap;
+  }
+}
+
+class SingleSpaceFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    // Replace multiple spaces with a single space
+    String newText = newValue.text.replaceAll(RegExp(r'\s+'), ' ');
+
+    return TextEditingValue(
+      text: newText,
+      selection: TextSelection.collapsed(offset: newText.length),
+    );
+  }
 }

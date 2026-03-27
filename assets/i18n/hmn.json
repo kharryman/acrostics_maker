@@ -110,7 +110,7 @@
     "PROMPT_APPS_APP_STORE": "Saib lwm cov apps los ntawm App Store",
     "PROMPT_APPS_PLAY_STORE": "Saib lwm cov apps los ntawm Play Store",
     "PROMPT_GET_APP_NO_ADS": "Tshem tawm Cov Tshaj Tawm!",
-    "PROMPT_INPUT_ACRONYM": "Sau ib lo lus nkaus xwb (tsuas yog tsiaj ntawv): Tom qab ntawd nias ENTER",
+    "PROMPT_INPUT_ACRONYM": "Sau ib lo lus lossis lub npe nrog tsuas yog cov tsiaj ntawv lossis qhov chaw.",
     "PROMPT_INPUT_WORD": "ib lo lus (cov ntawv tsis muaj qhov chaw)",
     "PROMPT_LANGUAGE": "Lus",
     "PROMPT_LETS_GO": "Cia peb mus!",

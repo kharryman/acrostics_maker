@@ -110,7 +110,7 @@
     "PROMPT_APPS_APP_STORE": "Weitere Apps aus dem App Store anzeigen",
     "PROMPT_APPS_PLAY_STORE": "Weitere Apps aus dem Play Store anzeigen",
     "PROMPT_GET_APP_NO_ADS": "Entfernen Sie die Anzeigen!",
-    "PROMPT_INPUT_ACRONYM": "Geben Sie nur ein Wort ein (nur Buchstaben): Drücken Sie dann die EINGABETASTE",
+    "PROMPT_INPUT_ACRONYM": "Geben Sie ein Wort oder einen Namen ein, der nur aus Buchstaben oder Leerzeichen besteht.",
     "PROMPT_INPUT_WORD": "ein Wort (Buchstaben ohne Leerzeichen)",
     "PROMPT_LANGUAGE": "Sprache",
     "PROMPT_LETS_GO": "Lass uns gehen!",

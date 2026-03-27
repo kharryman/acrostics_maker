@@ -110,7 +110,7 @@
     "PROMPT_APPS_APP_STORE": "Vedeți alte aplicații din App Store",
     "PROMPT_APPS_PLAY_STORE": "Vedeți alte aplicații din Magazinul Play",
     "PROMPT_GET_APP_NO_ADS": "Eliminați reclamele!",
-    "PROMPT_INPUT_ACRONYM": "Introduceți un singur cuvânt (doar litere): Apoi apăsați ENTER",
+    "PROMPT_INPUT_ACRONYM": "Introduceți un cuvânt sau un nume cu doar litere sau spații.",
     "PROMPT_INPUT_WORD": "un cuvânt (litere fără spații)",
     "PROMPT_LANGUAGE": "Limba",
     "PROMPT_LETS_GO": "Să mergem!",

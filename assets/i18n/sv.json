@@ -110,7 +110,7 @@
     "PROMPT_APPS_APP_STORE": "Se andra appar från App Store",
     "PROMPT_APPS_PLAY_STORE": "Se andra appar från Play Butik",
     "PROMPT_GET_APP_NO_ADS": "Ta bort annonserna!",
-    "PROMPT_INPUT_ACRONYM": "Skriv bara ett ord (endast bokstäver): Tryck sedan på ENTER",
+    "PROMPT_INPUT_ACRONYM": "Ange ett ord eller namn med endast bokstäver eller mellanslag.",
     "PROMPT_INPUT_WORD": "ett ord (bokstäver utan mellanslag)",
     "PROMPT_LANGUAGE": "Språk",
     "PROMPT_LETS_GO": "Låt oss gå!",

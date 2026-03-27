@@ -111,7 +111,7 @@
     "PROMPT_APPS_APP_STORE": "Se andre apps fra App Store",
     "PROMPT_APPS_PLAY_STORE": "Se andre apps fra Play Butik",
     "PROMPT_GET_APP_NO_ADS": "Fjern annoncerne!",
-    "PROMPT_INPUT_ACRONYM": "Indtast kun ét ord (kun bogstaver): Tryk derefter på ENTER",
+    "PROMPT_INPUT_ACRONYM": "Indtast ét ord eller navn med kun bogstaver eller mellemrum.",
     "PROMPT_INPUT_WORD": "ét ord (bogstaver uden mellemrum)",
     "PROMPT_LANGUAGE": "Sprog",
     "PROMPT_LETS_GO": "Lad os gå!",

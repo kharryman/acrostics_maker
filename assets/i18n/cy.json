@@ -111,7 +111,7 @@
     "PROMPT_APPS_APP_STORE": "Gweld apiau eraill o'r App Store",
     "PROMPT_APPS_PLAY_STORE": "Gweld apiau eraill o'r Play Store",
     "PROMPT_GET_APP_NO_ADS": "Dileu Yr Hysbysebion!",
-    "PROMPT_INPUT_ACRONYM": "Rhowch un gair yn unig (llythrennau'n unig): Yna pwyswch ENTER",
+    "PROMPT_INPUT_ACRONYM": "Rhowch un gair neu enw gyda llythrennau neu fylchau yn unig.",
     "PROMPT_INPUT_WORD": "un gair (llythrennau heb fylchau)",
     "PROMPT_LANGUAGE": "Iaith",
     "PROMPT_LETS_GO": "Dewch i ni!",
