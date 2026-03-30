@@ -1,0 +1,6 @@
+Sokkal jobb görgetés és általános sebesség a táblázat használatakor, különösen, ha sok melléknevet választunk ki az akrosztikonhoz.
+
+Lehetőség több szavas nevek használatára az akrosztikonban, így a szavak között szóközök megengedettek.
+Feltöltéskor az akrosztikon szó vagy név információi automatikusan kitölthetők a Wikipédiából.
+Font hozzáadva, amely kategóriák szerint jelenít meg példa akrosztikonokat.
+Font hozzáadva, amely névvel, névadatokkal, kategóriával vagy új kategóriával és képpel e...

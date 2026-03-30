@@ -1,0 +1,9 @@
+Derulare și viteză generală mult mai bune la utilizarea tabelului, în special la selectarea multor adjective pentru acrostih.
+
+A fost adăugată posibilitatea de a utiliza nume formate din mai multe cuvinte pentru acrostih, astfel încât să fie permise spații între cuvinte.
+
+La încărcare, informațiile despre cuvântul sau numele acrostihului pot fi completate automat de pe Wikipedia.
+
+A fost adăugată o funcție de afișare a exemplelor de acrostih pe categorii.
+
+A fost adăugată o funcție de încărca...

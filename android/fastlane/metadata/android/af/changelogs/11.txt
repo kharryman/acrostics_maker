@@ -1,0 +1,5 @@
+Baie beter blaai en algehele spoed wanneer die tabel gebruik word, veral wanneer baie byvoeglike naamwoorde vir die akrostikon gekies word.
+Die vermoë om veelvuldige woordname vir die akrostikon te gebruik, is bygevoeg, sodat spasies tussen woorde toegelaat word.
+Wanneer inligting oor die akrostikonwoord of -naam opgelaai word, kan dit outomaties vanaf Wikipedia ingevul word.
+Funksie bygevoeg om voorbeeld-akrostikone per kategorie te wys.
+Funksie bygevoeg om akrostikone met 'n naam, naaminlig...

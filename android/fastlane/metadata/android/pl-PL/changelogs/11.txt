@@ -1,0 +1,5 @@
+Znacznie lepsze przewijanie i ogólna szybkość podczas korzystania z tabeli, szczególnie podczas wybierania wielu przymiotników do akrostychu.
+Dodano możliwość używania wielowyrazowych nazw akrostychu, dzięki czemu dozwolone są spacje między wyrazami.
+Podczas przesyłania, informacje o słowie lub nazwie akrostychu mogą być automatycznie uzupełniane z Wikipedii.
+Dodano funkcję wyświetlania przykładowych akrostychów według kategorii.
+Dodano funkcję przesyłania akrostychów z nazwą, informacjami o ...

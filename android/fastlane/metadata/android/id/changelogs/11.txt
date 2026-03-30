@@ -1,0 +1,7 @@
+Pengguliran dan kecepatan keseluruhan jauh lebih baik saat menggunakan tabel, terutama saat memilih banyak kata sifat untuk akrostik.
+
+Menambahkan kemampuan untuk menggunakan nama multi-kata untuk akrostik, sehingga spasi antar kata diperbolehkan.
+
+Saat mengunggah, informasi kata atau nama akrostik dapat diisi otomatis dari Wikipedia.
+Menambahkan fitur untuk menampilkan contoh akrostik berdasarkan kategori.
+Menambahkan fitur untuk mengunggah akrostik dengan nama, informasi nama, kategori atau...

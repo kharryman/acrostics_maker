@@ -1,0 +1,9 @@
+Se ha mejorado considerablemente la velocidad de desplazamiento y el uso de la tabla, especialmente al seleccionar varios adjetivos para el acróstico.
+
+Se ha añadido la posibilidad de usar nombres compuestos para el acróstico, permitiendo espacios entre palabras.
+
+Al subir un acróstico, la información de la palabra o el nombre se puede autocompletar desde Wikipedia.
+
+Se ha añadido la opción de mostrar ejemplos de acrósticos por categoría.
+
+Se ha añadido la opción de subir acrósticos con nombr...

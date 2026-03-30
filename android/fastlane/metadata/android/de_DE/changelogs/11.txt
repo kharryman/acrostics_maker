@@ -1,0 +1,4 @@
+Deutlich verbessertes Scrollen und höhere Gesamtgeschwindigkeit bei der Tabellennutzung, insbesondere bei der Auswahl vieler Adjektive für das Akrostichon.
+Die Möglichkeit, mehrteilige Namen für das Akrostichon zu verwenden, wurde hinzugefügt; Leerzeichen zwischen den Wörtern sind nun möglich.
+Beim Hochladen können die Informationen zum Akrostichon-Wort oder -Namen automatisch aus Wikipedia übernommen werden.
+Es wurde eine Funktion hinzugefügt, die Beispiel-Akrostichen nach Kategorie anzeigt....

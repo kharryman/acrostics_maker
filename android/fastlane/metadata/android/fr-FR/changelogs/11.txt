@@ -1,0 +1,7 @@
+Amélioration significative du défilement et de la vitesse globale lors de l'utilisation du tableau, notamment pour la sélection de nombreux adjectifs pour l'acrostiche.
+
+Possibilité désormais d'utiliser des noms composés pour l'acrostiche, avec la possibilité d'insérer des espaces entre les mots.
+
+Lors de l'importation, les informations relatives au mot ou au nom de l'acrostiche peuvent être préremplies à partir de Wikipédia.
+
+Ajout d'une fonctionnalité permettant d'afficher des exemples d'ac...

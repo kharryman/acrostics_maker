@@ -1,0 +1,5 @@
+Scorrimento e velocità complessiva nettamente migliorati con la tabella, soprattutto quando si selezionano molti aggettivi per l'acrostico.
+Aggiunta la possibilità di utilizzare nomi composti da più parole per l'acrostico, consentendo quindi l'inserimento di spazi tra le parole.
+Durante il caricamento, le informazioni relative alla parola o al nome dell'acrostico possono essere compilate automaticamente da Wikipedia.
+Aggiunta la funzione per visualizzare esempi di acrostici per categoria.
+Agg...

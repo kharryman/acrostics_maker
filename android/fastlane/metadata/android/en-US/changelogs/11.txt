@@ -1,0 +1,6 @@
+Much better scrolling and overall speed when using the table, especially when selecting many adjectives for the acrostic.
+Added ability to use multiple-word names for the acrostic, so spaces between words are allowed.
+When uploading, information of the acrostic word or name can be auto-filled from Wikipedia.
+Added feature to show example acrostics by category.
+Added feature to upload acrostics with a name, name information, category or new category, and image.
+Added a splash screen....
