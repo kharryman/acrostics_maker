@@ -1,16 +1,20 @@
 var fs = require('fs');
 //var https = require('https');
 var request = require('request');
+const path = require('path');
+
 var args = process.argv.slice(2);
+
 const currentDirectory = process.cwd();
 
 var googleAPIKey = "";//SET WHEN GOING TO USE!!!
-var cwdSplit = currentDirectory.split("\\");
-console.log("currentDirectory = " + currentDirectory);
+
+var cwdSplit = currentDirectory.split(path.sep);
 var lastDirSplit = cwdSplit.slice(0, -1);
-var lastDir = lastDirSplit.join("\\");
+var lastDir = lastDirSplit.join(path.sep);
+
 console.log("lastDir = " + lastDir);
-fs.readFile(lastDirSplit.join("/") + "/google_api_key.txt", function (err, apiKey) {
+fs.readFile(lastDir + "/google_api_key.txt", function (err, apiKey) {
     if (err) {
         console.log("ERROR GETTING GOOGLE API KEY: " + JSON.stringify(err));
     } else {

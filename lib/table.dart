@@ -1219,7 +1219,14 @@ class TablePageState extends State<TablePage> {
                                               } else {
                                                 debugPrint(
                                                     "Sharing yourAcrostic = $yourAcrostic");
-                                                Share.share(yourAcrostic);
+                                                //Share.share(yourAcrostic);
+                                                  final box = context.findRenderObject() as RenderBox;
+                                                  Share.share(
+                                                    yourAcrostic,
+                                                    sharePositionOrigin: box.paintBounds.shift(
+                                                      box.localToGlobal(Offset.zero),
+                                                    ),
+                                                  );
                                               }
                                             },
                                             child: Icon(Icons.share,
