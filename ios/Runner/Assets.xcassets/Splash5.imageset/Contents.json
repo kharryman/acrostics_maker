@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "167.png",
+      "filename" : "amtt_splash_anim05.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "180.png",
+      "filename" : "amtt_splash_anim05 1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "1024.png",
+      "filename" : "amtt_splash_anim05 2.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
